@@ -1,7 +1,8 @@
 #include "SWindow.h"
 
-
 #include <fmt/format.h>
+
+#include "base/SDLRenderer.h"
 
 namespace sdlpp {
 
@@ -13,11 +14,30 @@ namespace sdlpp {
         while (active_) {
             SDL_PollEvent(&event_);
 
-            switch (event_.type) {
+            switch (static_cast<SDL_EventType>(event_.type)) {
                 case SDL_QUIT: {
                     SDL_LogDebug(0, "SDL_QUIT");
                     break;
                 }
+                case SDL_DISPLAYEVENT: {
+                    auto &ev = event_.display;
+                    switch (static_cast<SDL_DisplayEventID>(ev.event)) {
+                        case SDL_DISPLAYEVENT_NONE:
+                            SDL_LogDebug(0, "display event: none index %d", ev.display);
+                            break;
+                        case SDL_DISPLAYEVENT_ORIENTATION:
+                            SDL_LogDebug(0, "display event: orientation %d change to %d", ev.display, ev.data1);
+                            break;
+                        case SDL_DISPLAYEVENT_CONNECTED:
+                            SDL_LogDebug(0, "display event: connected %d", ev.display);
+                            break;
+                        case SDL_DISPLAYEVENT_DISCONNECTED:
+                            SDL_LogDebug(0, "display event: disconnected %d", ev.display);
+                            break;
+                    }
+                    break;
+                }
+                case SDL_KEYUP:
                 case SDL_KEYDOWN: {
                     if (event_.key.windowID == this->GetID())
                         this->KeyEvent(event_.key);
@@ -25,16 +45,18 @@ namespace sdlpp {
                 }
                 case SDL_MOUSEMOTION: {
                     if (event_.motion.windowID == this->GetID())
-                        SDL_Log("mouse motion state %d x %d y %d  xrel %d yrel %d",
-                                event_.motion.state, event_.motion.x, event_.motion.y, event_.motion.xrel,
-                                event_.motion.yrel);
+                        this->MouseMoveEvent(event_.motion);
                     break;
                 }
-                case SDL_MOUSEBUTTONDOWN : {
+                case SDL_MOUSEBUTTONUP:
+                case SDL_MOUSEBUTTONDOWN: {
                     if (event_.button.windowID == this->GetID())
-                        SDL_Log("mouse button down state %d x %d y %d button %d click %d",
-                                event_.button.state, event_.button.x, event_.button.y, event_.button.button,
-                                event_.button.clicks);
+                        this->MouseButtonEvent(event_.button);
+                    break;
+                }
+                case SDL_MOUSEWHEEL: {
+                    if (event_.wheel.windowID == this->GetID())
+                        this->MouseWheelEvent(event_.wheel);
                     break;
                 }
                 case SDL_WINDOWEVENT: {
@@ -46,12 +68,15 @@ namespace sdlpp {
                     }
                     break;
                 }
+                default:
+                    break;
             }
 
-
-            SDL_RenderClear(renderer_);
-            this->RenderProcess();
-            SDL_RenderPresent(renderer_);
+            if (renderer_) {
+                renderer_->Clear();
+                this->RenderProcess();
+                renderer_->Flush();
+            }
         }
 
         return 0;

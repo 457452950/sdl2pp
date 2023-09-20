@@ -1,25 +1,22 @@
 #include "SDLWindow.h"
 
-#include <memory>
+#include "SDLRenderer.h"
 
 namespace sdlpp {
 
-    std::shared_ptr<SDLWindow>
-    SDLWindow::Create(const std::string &title, SDL_Point pos, SDL_Point size, Uint32 flags = 0) {
-        return std::make_shared<SDLWindow>(
-                SDL_CreateWindow(title.c_str(), pos.x, pos.y, size.x, size.y, flags)
-        );
+    std::shared_ptr<SDLRenderer> SDLWindow::CreateRender(uint32_t flags, int index) {
+        return SDLRenderer::Create(SDL_CreateRenderer(this->Get(), index, flags));
     }
 
-    std::shared_ptr<SDLWindow> SDLWindow::Create(const std::string &title, SDL_Point size, Uint32 flags = 0) {
-        return std::make_shared<SDLWindow>(
+    SDLWindow::SDLWindow(SDL_Point size, std::string_view title, SDL_Point pos, uint32_t flags) {
+        window_ = SDL_CreateWindow(title.data(),
+                                   pos.x, pos.y,
+                                   size.x, size.y,
+                                   flags);
 
-                SDL_CreateWindow(title.c_str(),
-                                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                 size.x, size.y,
-                                 flags)
-
-        );
+        if (!window_) {
+            SDL_Log("SDL_CreateWindow error: %s", SDL_GetError());
+            SDL_assert(window_);
+        }
     }
-
 }

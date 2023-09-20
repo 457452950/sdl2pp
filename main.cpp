@@ -19,6 +19,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+    SDL_LogDebug(0, "hello world");
+
     game::Window window;
 
     SDL_Log("dispaly count : %d", sdlpp::Display::GetInstance()->GetDisplayCount());

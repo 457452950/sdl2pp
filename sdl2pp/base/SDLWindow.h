@@ -9,18 +9,38 @@
 #include <SDL.h>
 #include <SDL_video.h>
 
-
 namespace sdlpp {
+
+    inline auto MakeShared(SDL_Window *ptr) -> std::shared_ptr<SDL_Window> {
+        return {ptr, SDL_DestroyWindow};
+    }
+
+    inline auto MakeUnique(SDL_Window *ptr) -> std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> {
+        return {ptr, SDL_DestroyWindow};
+    }
+
+    class SDLRenderer;
 
     class SDLWindow {
     public:
         using Flags = SDL_WindowFlags;
         using EventID = SDL_WindowEventID;
 
-        static std::shared_ptr<SDLWindow> Create(const std::string &title, SDL_Point pos, SDL_Point size, Uint32 flags);
+        static std::shared_ptr<SDLWindow>
+        Create(SDL_Point size,
+               std::string_view title = "",
+               SDL_Point pos = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
+               uint32_t flags = 0) {
+            return std::shared_ptr<SDLWindow>(new SDLWindow(size, title, pos, flags));
+        };
 
-        static std::shared_ptr<SDLWindow> Create(const std::string &title, SDL_Point size, Uint32 flags);
+        static std::shared_ptr<SDLWindow>
+        Create(SDL_Window *&&ptr) {
+            return std::shared_ptr<SDLWindow>(new SDLWindow(std::move(ptr)));
+        }
 
+        std::shared_ptr<SDLRenderer>
+        CreateRender(uint32_t flags = 0, int index = -1);
 
         int GetDisplayIndex() {
             return SDL_GetWindowDisplayIndex(window_);
@@ -32,9 +52,13 @@ namespace sdlpp {
 
         uint32_t GetFlags() {
             return SDL_GetWindowFlags(window_);
-        };
+        }
 
         SDL_Window *Get() {
+            return window_;
+        }
+
+        const SDL_Window *Get() const {
             return window_;
         }
 
@@ -183,24 +207,6 @@ namespace sdlpp {
             }
         }
 
-
-        explicit SDLWindow(SDL_Window *window) : window_(window) {};
-
-        explicit SDLWindow(SDL_Point size,
-                           std::string_view title = "",
-                           SDL_Point pos = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
-                           uint32_t flags = 0) {
-            window_ = SDL_CreateWindow(title.data(),
-                                       pos.x, pos.y,
-                                       size.x, size.y,
-                                       flags);
-
-            if (!window_) {
-                SDL_Log("SDL_CreateWindow error: %s", SDL_GetError());
-                SDL_assert(window_);
-            }
-        }
-
         virtual ~SDLWindow() {
             if (window_) {
                 SDL_DestroyWindow(window_);
@@ -208,7 +214,26 @@ namespace sdlpp {
             }
         };
 
+        SDLWindow(const SDLWindow &) = delete;
+
+        SDLWindow &operator=(const SDLWindow &) = delete;
+
+        SDLWindow(SDLWindow &&) = default;
+
+        SDLWindow &operator=(SDLWindow &&) = default;
+
+    protected:
+        explicit SDLWindow(SDL_Point size,
+                           std::string_view title = "",
+                           SDL_Point pos = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
+                           uint32_t flags = 0);
+
+        explicit SDLWindow(SDL_Window *&&window) : window_(
+                window) {
+        };
+
     private:
+
         SDL_Window *window_{nullptr};
     };
 }

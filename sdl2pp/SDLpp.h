@@ -14,4 +14,17 @@
 #include "base/SDLWindow.h"
 // class SDLWindow;
 
+#include "base/SDLRenderer.h"
+// class SDLRenderer;
+
+#include "base/SDLTexture.h"
+// class SDLTexture;
+
+#include "base/SDLImage.h"
+
+
+#include "SWindow.h"
+// class SWindow;
+
+
 #endif //SDL2_TEST_SDLPP_H

@@ -61,16 +61,7 @@ namespace sdlpp {
         static SDL *instance_;
 
         static bool sdlInit(uint32_t sdl_flags) {
-            bool ok = SDL_Init(sdl_flags) == 0;
-            if (!ok) {
-                return false;
-            }
-
-            if (sdl_flags & VIDEO) {
-                Display::GetInstance();
-            }
-
-            return true;
+            return SDL_Init(sdl_flags) == 0;
         }
 
 

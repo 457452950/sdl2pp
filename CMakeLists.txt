@@ -53,13 +53,22 @@ add_library(
         sdl2pp/base/SDLEnvironment.h
         sdl2pp/base/SDLEnvironment.cpp
         sdl2pp/base/SDLWindow.h
+        sdl2pp/base/SDLWindow.cpp
+        sdl2pp/base/SDLRenderer.h
+        sdl2pp/base/SDLRenderer.cpp
+        sdl2pp/base/SDLDisplay.h
+        sdl2pp/base/SDLDisplay.cpp
+
+        sdl2pp/SWindow.h
+        sdl2pp/SWindow.cpp
 
         sdl2pp/SDLpp.h
-        sdl2pp/base/SDLDisplay.cpp
-        sdl2pp/base/SDLDisplay.h
-        sdl2pp/base/SDLWindow.cpp
-        sdl2pp/SWindow.cpp
-        sdl2pp/SWindow.h
+        sdl2pp/base/SDLTexture.cpp
+        sdl2pp/base/SDLTexture.h
+        sdl2pp/base/SDLSurface.cpp
+        sdl2pp/base/SDLSurface.h
+        sdl2pp/base/SDLImage.cpp
+        sdl2pp/base/SDLImage.h
 )
 
 target_link_libraries(

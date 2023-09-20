@@ -12,13 +12,13 @@
 
 namespace sdlpp {
 
-    inline SDL_Texture *loadTexture(const std::string &file, SDL_Renderer *ren) {
-        SDL_Texture *texture = IMG_LoadTexture(ren, file.c_str());
-        if (texture == nullptr) {
-            SDL_LogError(0, "LoadTexture. %s %s", file.c_str(), SDL_GetError());
-        }
-        return texture;
-    }
+//    inline SDL_Texture *loadTexture(const std::string &file, SDL_Renderer *ren) {
+//        SDL_Texture *texture = IMG_LoadTexture(ren, file.c_str());
+//        if (texture == nullptr) {
+//            SDL_LogError(0, "LoadTexture. %s %s", file.c_str(), SDL_GetError());
+//        }
+//        return texture;
+//    }
 
     inline void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst,
                               SDL_Rect *clip = nullptr) {
@@ -90,22 +90,29 @@ namespace sdlpp {
         static const SDL_Point DEFAULT_SIZE;
     public:
         SWindow() : SDLWindow(DEFAULT_SIZE) {
-            renderer_ = SDL_CreateRenderer(this->Get(), -1, 0);
-            if (!renderer_) {
-                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateRenderer failed. err: %s \n", SDL_GetError());
-                SDL_assert(renderer_);
-            }
+//            renderer_ = SDL_CreateRenderer(this->Get(), -1, 0);
+//            if (!renderer_) {
+//                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateRenderer failed. err: %s \n", SDL_GetError());
+//                SDL_assert(renderer_);
+//            }
         }
 
         ~SWindow() override {
-            if (renderer_)
-                SDL_DestroyRenderer(renderer_);
         }
 
-        SDL_Renderer *GetRenderer() {
+
+        // renderer
+
+        std::shared_ptr<SDLRenderer> CreateRenderer(uint32_t flags = 0, int index = -1) {
+            renderer_ = SDLWindow::CreateRender(flags, index);
             return renderer_;
         }
 
+        std::shared_ptr<SDLRenderer> GetRenderer() {
+            return renderer_;
+        }
+
+        // event overwrite
 
         enum EventResult : int {
             Ignore,
@@ -121,17 +128,30 @@ namespace sdlpp {
         virtual int KeyEvent(const SDL_KeyboardEvent &event) {
             return Ignore;
         }
-        
+
+        virtual int MouseMoveEvent(const SDL_MouseMotionEvent &event) {
+            return Ignore;
+        }
+
+        virtual int MouseButtonEvent(const SDL_MouseButtonEvent &event) {
+            return Ignore;
+        }
+
+        virtual int MouseWheelEvent(const SDL_MouseWheelEvent &event) {
+            return Ignore;
+        }
+
         virtual void RenderProcess() {}
 
-        void Close();
 
         int Exec();
+
+        void Close();
 
     private:
         std::atomic_bool active_;
         SDL_Event event_{};
-        SDL_Renderer *renderer_{nullptr};
+        std::shared_ptr<SDLRenderer> renderer_{nullptr};
     };
 
 } // sdlpp
