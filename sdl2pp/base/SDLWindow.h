@@ -11,11 +11,11 @@
 
 namespace sdlpp {
 
-    inline auto MakeShared(SDL_Window *ptr) -> std::shared_ptr<SDL_Window> {
+    inline auto MakeShared(SDL_Window *&&ptr) -> std::shared_ptr<SDL_Window> {
         return {ptr, SDL_DestroyWindow};
     }
 
-    inline auto MakeUnique(SDL_Window *ptr) -> std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> {
+    inline auto MakeUnique(SDL_Window *&&ptr) -> std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> {
         return {ptr, SDL_DestroyWindow};
     }
 
@@ -114,7 +114,11 @@ namespace sdlpp {
         // SDL_SetWindowMaximumSize
         // SDL_GetWindowMaximumSize
         // SDL_GetWindowSurface
-        // SDL_UpdateWindowSurface
+
+        bool UpdateSurface() {
+            return SDL_UpdateWindowSurface(window_) == 0;
+        }
+
         // SDL_UpdateWindowSurfaceRects
         // SDL_SetWindowGrab
         // SDL_SetWindowKeyboardGrab
@@ -137,7 +141,9 @@ namespace sdlpp {
         // SDL_GL_GetDrawableSize
         // SDL_GL_SwapWindow
 
-
+        const SDL_PixelFormat *GetPixelFormat() {
+            return SDL_GetWindowSurface(window_)->format;
+        }
 
         void SetBordered(bool bordered) {
             SDL_SetWindowBordered(window_, bordered ? SDL_TRUE : SDL_FALSE);

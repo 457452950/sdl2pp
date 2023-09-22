@@ -2,6 +2,7 @@
 
 #include "SDLWindow.h"
 #include "SDLTexture.h"
+#include "SDLSurface.h"
 
 namespace sdlpp {
 
@@ -18,8 +19,8 @@ namespace sdlpp {
         return Create(SDL_CreateRenderer(window->Get(), index, flags));
     }
 
-    std::shared_ptr<SDLTexture> SDLRenderer::CreateTextureFromSurface(std::shared_ptr<SDL_Surface> surface) {
-        return SDLTexture::Create(SDL_CreateTextureFromSurface(this->renderer_, surface.get()));
+    std::shared_ptr<SDLTexture> SDLRenderer::CreateTextureFromSurface(std::shared_ptr<SDLSurface> surface) {
+        return SDLTexture::Create(SDL_CreateTextureFromSurface(this->renderer_, surface->Get()));
     }
 
     bool SDLRenderer::SetRenderTarget(std::shared_ptr<SDLTexture> texture) {

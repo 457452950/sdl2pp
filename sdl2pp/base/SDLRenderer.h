@@ -33,17 +33,19 @@ namespace sdlpp {
         std::vector<SDL_RendererInfo> renderers_info_;
     };
 
-    inline std::shared_ptr<SDL_Renderer> MakeShared(SDL_Renderer *ptr) {
+    inline std::shared_ptr<SDL_Renderer> MakeShared(SDL_Renderer *&&ptr) {
         return {ptr, SDL_DestroyRenderer};
     }
 
-    inline std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> MakeUnique(SDL_Renderer *ptr) {
+    inline std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> MakeUnique(SDL_Renderer *&&ptr) {
         return {ptr, SDL_DestroyRenderer};
     }
 
     class SDLWindow;
 
     class SDLTexture;
+
+    class SDLSurface;
 
     class SDLRenderer {
     public:
@@ -72,7 +74,7 @@ namespace sdlpp {
             return this->renderer_ != nullptr;
         }
 
-        std::shared_ptr<SDLTexture> CreateTextureFromSurface(std::shared_ptr<SDL_Surface> surface);
+        std::shared_ptr<SDLTexture> CreateTextureFromSurface(std::shared_ptr<SDLSurface> surface);
 
         bool SetRenderTarget(std::shared_ptr<SDLTexture> texture);
         // SDL_GetRenderTarget
@@ -82,7 +84,19 @@ namespace sdlpp {
         // SDL_RenderGetWindow
         // SDL_SetRenderTarget
         // SDL_GetRenderTarget
-        // SDL_RenderSetViewport
+
+        bool SetViewport(const SDL_Rect *rect = nullptr) {
+            return SDL_RenderSetViewport(this->renderer_, rect) == 0;
+        }
+
+        bool SetViewport(const SDL_Rect &rect) {
+            return SetViewport(&rect);
+        }
+
+        void GetViewport(SDL_Rect &rect) const {
+            SDL_RenderGetViewport(this->renderer_, &rect);
+        }
+
         // SDL_RenderGetViewport
         // SDL_RenderSetClipRect
         // SDL_RenderGetClipRect
@@ -194,8 +208,8 @@ namespace sdlpp {
         bool Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect = nullptr,
                     const SDL_Rect *dst_rect = nullptr);
 
-        bool Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect = nullptr,
-                    const SDL_FRect *dst_rect = nullptr);
+        bool Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect,
+                    const SDL_FRect *dst_rect);
 
         bool
         UpdateEx(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect, const SDL_Rect *dst_rect, double angle,

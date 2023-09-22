@@ -20,7 +20,15 @@
 #include "base/SDLTexture.h"
 // class SDLTexture;
 
+#include "base/SDLSurface.h"
+// class SDLSurface;
+
 #include "base/SDLImage.h"
+
+#include "base/SDLTTF.h"
+//class Font;
+
+#include "base/SDLPixels.h"
 
 
 #include "SWindow.h"

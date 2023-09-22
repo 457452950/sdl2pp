@@ -92,7 +92,8 @@ namespace game {
 
 
     private:
-        std::shared_ptr<sdlpp::SDLTexture> image_;
+        std::shared_ptr<sdlpp::SDLTexture> texture_image_;
+        std::shared_ptr<sdlpp::Font> font_;
         float brightness = 1.0f;
         bool boolen = false;
     };

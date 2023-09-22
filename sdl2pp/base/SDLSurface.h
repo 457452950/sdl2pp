@@ -3,6 +3,7 @@
 #define SDL2PP_SDL2PP_BASE_SDLSURFACE_H_
 
 #include <memory>
+#include <tuple>
 
 #include <SDL_surface.h>
 #include <SDL_image.h>
@@ -12,6 +13,11 @@ namespace sdlpp {
     std::shared_ptr<SDL_Surface> MakeShared(SDL_Surface *&&surface);
 
     auto MakeUnique(SDL_Surface *&&surface) -> std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
+
+    class SDLSurface;
+
+    std::shared_ptr<SDLSurface>
+    ConvertSurface(std::shared_ptr<SDLSurface> src, const SDL_PixelFormat &fmt);
 
     class SDLSurface {
     public:
@@ -38,6 +44,10 @@ namespace sdlpp {
             return surface_->w;
         }
 
+        std::tuple<int, int> GetSize() const {
+            return std::make_tuple(surface_->w, surface_->h);
+        }
+
         int GetPitch() const {
             return surface_->pitch;
         }
@@ -53,6 +63,12 @@ namespace sdlpp {
         bool IsValid() const { return surface_ != nullptr; }
 
         std::shared_ptr<SDLSurface> Copy();
+
+        bool
+        BlitCopy(std::shared_ptr<SDLSurface> dst, const SDL_Rect *src_rect = nullptr, SDL_Point dst_point = {0, 0});
+
+        bool
+        BlitScaled(std::shared_ptr<SDLSurface> dst, const SDL_Rect *src_rect = nullptr, SDL_Rect *dst_rect = nullptr);
 
         ~SDLSurface() noexcept {
             if (surface_) {

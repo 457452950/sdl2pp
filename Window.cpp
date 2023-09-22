@@ -29,11 +29,32 @@ namespace game {
         SDL_Log("Renderer max texture width: %d", info.max_texture_width);
         SDL_Log("Renderer max texture height: %d", info.max_texture_height);
 
-        image_ = sdlpp::IMG_LoadTextureFromFile("H:/Resources/cos.jpg", this->GetRenderer());
-        if (image_ == nullptr) {
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "One or more textures failed to load. %s\n", SDL_GetError());
-            SDL_assert(image_);
+        font_ = sdlpp::Font::Open(R"(H:\Resources\ttf\hk4e_zh-cn.ttf)", 64);
+        if (font_ == nullptr) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not load font: %s", SDL_GetError());
+            return;
         }
+
+        auto surface_image = sdlpp::IMG_LoadSurfaceFromFile("H:/Resources/cos.jpg");
+        if (surface_image == nullptr) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not load image: %s", SDL_GetError());
+            return;
+        }
+
+        surface_image = sdlpp::ConvertSurface(surface_image, *this->GetPixelFormat());
+
+        texture_image_ = this->GetRenderer()->CreateTextureFromSurface(surface_image);
+        if (texture_image_ == nullptr) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "One or more textures failed to load. %s\n", SDL_GetError());
+            SDL_assert(texture_image_);
+        }
+
+        surface_image = sdlpp::IMG_LoadSurfaceFromFile("H:/Resources/a.png");
+        if (surface_image == nullptr) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not load image: %s", SDL_GetError());
+            return;
+        }
+
     }
 
     void Window::RenderProcess() {
@@ -42,22 +63,27 @@ namespace game {
         std::string text = fmt::format("{}, {} : {}", s, m_x, m_y);
 
         SDL_Color color = {255, 255, 255, 200};
-        SDL_Texture *txt_image = sdlpp::renderText(text, R"(H:\Resources\ttf\hk4e_zh-cn.ttf)",
-                                                   color, 64, this->GetRenderer()->Get());
+        auto txt_image = font_->RenderText_Solid(text, color);
         if (txt_image == nullptr) {
             SDL_Log("render text error %s", SDL_GetError());
             SDL_assert(txt_image);
             return;
         }
         //Get the texture w/h so we can center it in the screen
-        int iW, iH;
-        SDL_QueryTexture(txt_image, nullptr, nullptr, &iW, &iH);
+        auto [iW, iH] = txt_image->GetSize();
         int x = this->GetWidth() / 2 - iW / 2;
         int y = this->GetHeight() / 2 - iH / 2;
 
-        sdlpp::renderTexture(image_->Get(), this->GetRenderer()->Get(), 0, 0);
-        sdlpp::renderTexture(txt_image, this->GetRenderer()->Get(), x, y);
 
-        SDL_DestroyTexture(txt_image);
+        this->GetRenderer()->SetViewport({100, 100, 300, 300});
+        this->GetRenderer()->Update(texture_image_);
+
+        this->GetRenderer()->SetViewport(nullptr);
+        auto [w, h] = texture_image_->GetSize();
+        SDL_Rect rect = {10, 10, w / 2, h / 2};
+        this->GetRenderer()->Update(texture_image_, nullptr, &rect);
+
+        rect = {x, y, iW, iH};
+        this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
     }
 } // game

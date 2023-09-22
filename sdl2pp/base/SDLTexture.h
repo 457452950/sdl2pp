@@ -3,16 +3,17 @@
 #define SDL2PP_SDL2PP_BASE_SDLTEXTURE_H_
 
 #include <memory>
+#include <tuple>
 
 #include <SDL_render.h>
 
 namespace sdlpp {
 
-    inline std::shared_ptr<SDL_Texture> MakeShared(SDL_Texture *texture) {
+    inline std::shared_ptr<SDL_Texture> MakeShared(SDL_Texture *&&texture) {
         return {texture, SDL_DestroyTexture};
     }
 
-    inline std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> MakeUnique(SDL_Texture *texture) {
+    inline std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> MakeUnique(SDL_Texture *&&texture) {
         return std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>{texture, SDL_DestroyTexture};
     }
 
@@ -26,6 +27,36 @@ namespace sdlpp {
 
         bool Query(uint32_t *format, int *access, int *w, int *h) {
             return SDL_QueryTexture(texture_, format, access, w, h) == 0;
+        }
+
+        // <w, h>
+        std::tuple<int, int> GetSize() {
+            int w, h;
+            if (SDL_QueryTexture(texture_, nullptr, nullptr, &w, &h) == 0)
+                return std::make_tuple(w, h);
+
+            return std::make_tuple(-1, -1);
+        }
+
+        // can be null
+        bool GetSize(int *w, int *h) {
+            return SDL_QueryTexture(texture_, nullptr, nullptr, w, h) == 0;
+        }
+
+        int GetWidth() {
+            int w;
+            if (SDL_QueryTexture(texture_, nullptr, nullptr, &w, nullptr) == 0)
+                return w;
+
+            return -1;
+        }
+
+        int GetHeight() {
+            int h;
+            if (SDL_QueryTexture(texture_, nullptr, nullptr, nullptr, &h) == 0)
+                return h;
+
+            return -1;
         }
 
         // ignore color.a
