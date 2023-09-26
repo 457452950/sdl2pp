@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_SDL2PP_BASE_SDLPIXELS_H_
-#define SDL2PP_SDL2PP_BASE_SDLPIXELS_H_
+#ifndef SDL2PP_BASE_SDLPIXELS_H_
+#define SDL2PP_BASE_SDLPIXELS_H_
 
 #include <memory>
 
@@ -8,10 +8,10 @@
 
 namespace sdlpp {
 
-    std::shared_ptr<SDL_PixelFormat> MakeShared(SDL_PixelFormat *&&pf);
+std::shared_ptr<SDL_PixelFormat> MakeShared(SDL_PixelFormat *&&pf);
 
-    std::unique_ptr<SDL_PixelFormat, decltype(&SDL_FreeFormat)> MakeUnique(SDL_PixelFormat *&&pf);
+std::unique_ptr<SDL_PixelFormat, decltype(&SDL_FreeFormat)> MakeUnique(SDL_PixelFormat *&&pf);
 
-} // sdlpp
+} // namespace sdlpp
 
-#endif //SDL2PP_SDL2PP_BASE_SDLPIXELS_H_
+#endif // SDL2PP_BASE_SDLPIXELS_H_

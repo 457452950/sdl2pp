@@ -68,11 +68,18 @@ add_library(
         sdl2pp/base/SDLPixels.h
         sdl2pp/base/SDLTTF.cpp
         sdl2pp/base/SDLTTF.h
+        sdl2pp/base/Math.cpp
+        sdl2pp/base/Math.h
+
+        sdl2pp/SRenderer.cpp
+        sdl2pp/SRenderer.h
+        sdl2pp/STexture.cpp
+        sdl2pp/STexture.h
+        sdl2pp/SDLpp.h
 
         sdl2pp/SWindow.h
         sdl2pp/SWindow.cpp
 
-        sdl2pp/SDLpp.h
 )
 
 target_link_libraries(

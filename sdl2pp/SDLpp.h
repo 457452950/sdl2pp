@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2_TEST_SDLPP_H
-#define SDL2_TEST_SDLPP_H
+#ifndef SDL2_SDLPP_H
+#define SDL2_SDLPP_H
 
 
 #include <SDL.h>
@@ -26,7 +26,7 @@
 #include "base/SDLImage.h"
 
 #include "base/SDLTTF.h"
-//class Font;
+// class Font;
 
 #include "base/SDLPixels.h"
 
@@ -34,5 +34,7 @@
 #include "SWindow.h"
 // class SWindow;
 
+#include "SRenderer.h"
+#include "STexture.h"
 
-#endif //SDL2_TEST_SDLPP_H
+#endif // SDL2_SDLPP_H

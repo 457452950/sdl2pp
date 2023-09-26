@@ -1,3 +1,3 @@
-#include "SDLTexture.h"
+#include "STexture.h"
 
 namespace sdlpp {} // namespace sdlpp
