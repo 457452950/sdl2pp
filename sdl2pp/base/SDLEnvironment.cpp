@@ -13,6 +13,10 @@ SDL::~SDL() {
     if(ttf_initialized) {
         TTF_Quit();
     }
+
+    if(mix_initialized) {
+        Mix_Quit();
+    }
 };
 
 
@@ -34,4 +38,12 @@ bool SDL::InitImg(int32_t img_flags) {
     img_initialized = true;
     return IMG_Init(img_flags) == img_flags;
 }
+bool SDL::InitMixer(int flags) {
+    assert(flags);
+
+    mix_initialized = true;
+
+    return Mix_Init(flags) == flags;
+}
+
 } // namespace sdlpp

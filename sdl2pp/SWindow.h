@@ -3,6 +3,7 @@
 #define SDL2PP_SDL2PP_SWINDOW_H_
 
 #include <atomic>
+#include <chrono>
 
 #include <SDL_ttf.h>
 #include <SDL_image.h>
@@ -20,11 +21,8 @@ class SWindow : public SDLWindow {
 
 public:
     SWindow() : SDLWindow(DEFAULT_SIZE) {
-        //            renderer_ = SDL_CreateRenderer(this->Get(), -1, 0);
-        //            if (!renderer_) {
-        //                SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateRenderer failed. err: %s \n",
-        //                SDL_GetError()); SDL_assert(renderer_);
-        //            }
+        physic_delay_micrs_ = 1000'000.0 / 60.0;
+        SDL_Log("%f p delay", physic_delay_micrs_);
     }
 
     ~SWindow() override {}
@@ -58,17 +56,25 @@ public:
 
     virtual int MouseWheelEvent(const SDL_MouseWheelEvent &event) { return Ignore; }
 
-    virtual void RenderProcess(SDL_FPoint view_pos, double view_angle) {}
+    virtual void RenderProcess(PointF view_pos, double view_angle) {}
 
-    SDL_FPoint GetViewPos() const { return view_pos_; }
+    virtual void Tick(double tick_ms) {}
 
-    void ViewMoveTo(const SDL_FPoint &pos) { view_pos_ = pos; }
+    PointF GetViewPos() const { return view_pos_; }
 
-    void ViewMove(const SDL_FPoint &delta) {
-        view_pos_.x += delta.x;
-        view_pos_.y += delta.y;
+    void ViewMoveTo(const PointF &pos) { view_pos_ = pos; }
+
+    void ViewMove(const PointF &delta) { this->view_pos_ += delta; }
+
+    void SetFps(int fps) {
+        if(fps == -1) {
+            frame_delay_mics_ = 0;
+        } else {
+            frame_delay_mics_ = (1000'000 / fps);
+        }
     }
 
+    void SetPhysicPerS(uint32_t physic_per_s) { physic_delay_micrs_ = (1000'000.0 / double(physic_per_s)); }
 
     int Exec();
 
@@ -78,7 +84,12 @@ private:
     std::atomic_bool           active_;
     SDL_Event                  event_{};
     std::shared_ptr<SRenderer> renderer_{nullptr};
-    SDL_FPoint                 view_pos_{0, 0};
+    PointF                     view_pos_{0, 0};
+
+    std::chrono::microseconds current_time_{0};
+    uint32_t                  frame_delay_mics_{0};
+    std::chrono::microseconds current_physic_time_{0};
+    double                    physic_delay_micrs_{0};
 };
 
 } // namespace sdlpp

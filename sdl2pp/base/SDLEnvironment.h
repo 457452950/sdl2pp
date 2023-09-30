@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 #include "SDLDisplay.h"
 
@@ -34,7 +35,15 @@ public:
         WEBP = IMG_INIT_WEBP,
         JXL  = IMG_INIT_JXL,
         AVIF = IMG_INIT_AVIF,
-        ALL  = (IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP | IMG_INIT_JXL | IMG_INIT_AVIF),
+    };
+
+    enum INIT_MIX_FLAGS : int32_t {
+        FLAC = MIX_INIT_FLAC,
+        MOD  = MIX_INIT_MOD,
+        MP3  = MIX_INIT_MP3,
+        OGG  = MIX_INIT_OGG,
+        MID  = MIX_INIT_MID,
+        OPUS = MIX_INIT_OPUS,
     };
 
     // threat safety
@@ -50,6 +59,8 @@ public:
         return TTF_Init() == 0;
     }
 
+    bool InitMixer(int flags);
+
     ~SDL();
 
 private:
@@ -63,6 +74,7 @@ private:
 
     bool img_initialized = false;
     bool ttf_initialized = false;
+    bool mix_initialized = false;
 };
 } // namespace sdlpp
 

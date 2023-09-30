@@ -18,6 +18,28 @@ int main(int argc, char *argv[]) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to init SDL_ttf %s", SDL_GetError());
         return 1;
     }
+    ok = sdlpp::SDL::GetInstance()->InitMixer(sdlpp::SDL::OGG);
+    if(!ok) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to init SDL_mixer %s", SDL_GetError());
+    }
+
+    auto &drivers = sdlpp::AudioDrivers::GetInstance()->GetDrivers();
+    for(auto &it : drivers) {
+        SDL_Log("driver : %s", it.c_str());
+    }
+
+    SDL_Log("current driver : %s", sdlpp::AudioDrivers::GetCurrentAudioDriver().c_str());
+
+    sdlpp::SDLMixer::GetInstance()->OpenAudio();
+
+    for(auto info : sdlpp::SDLMixer::GetInstance()->GetChunkDecoders()) {
+        SDL_Log("chunk decoder : %s", info.c_str());
+    }
+
+    for(auto info : sdlpp::SDLMixer::GetInstance()->GetMusicDecoders()) {
+        SDL_Log("music decoder : %s", info.c_str());
+    }
+
 
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
     SDL_LogDebug(0, "hello world");

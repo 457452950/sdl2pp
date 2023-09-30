@@ -79,6 +79,18 @@ add_library(
 
         sdl2pp/SWindow.h
         sdl2pp/SWindow.cpp
+        sdl2pp/base/SDLMixer.cpp
+        sdl2pp/base/SDLMixer.h
+        sdl2pp/base/SDLAudio.cpp
+        sdl2pp/base/SDLAudio.h
+        sdl2pp/SAnimation.cpp
+        sdl2pp/SAnimation.h
+        sdl2pp/Renderable.cpp
+        sdl2pp/Renderable.h
+        sdl2pp/base/Point.cpp
+        sdl2pp/base/Point.h
+        sdl2pp/base/Scale.cpp
+        sdl2pp/base/Scale.h
 
 )
 

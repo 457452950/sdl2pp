@@ -7,6 +7,7 @@
 
 #include <SDL_render.h>
 
+#include "Point.h"
 
 namespace sdlpp {
 
@@ -134,15 +135,19 @@ public:
 
     bool Clear() { return SDL_RenderClear(renderer_) == 0; }
 
-    bool DrawPoint(const SDL_Point &point) { return SDL_RenderDrawPoint(renderer_, point.x, point.y) == 0; }
+    bool DrawPoint(const PointI &point) { return SDL_RenderDrawPoint(renderer_, point.x, point.y) == 0; }
 
-    bool DrawPoints(const SDL_Point *points, int count) { return SDL_RenderDrawPoints(renderer_, points, count) == 0; }
+    bool DrawPoints(const std::vector<PointI> &points) {
+        return SDL_RenderDrawPoints(renderer_, points.data(), points.size()) == 0;
+    }
 
-    bool DrawLine(const SDL_Point &start, const SDL_Point &end) {
+    bool DrawLine(const PointI &start, const PointI &end) {
         return SDL_RenderDrawLine(renderer_, start.x, start.y, end.x, end.y) == 0;
     }
 
-    bool DrawLines(const SDL_Point *points, int count) { return SDL_RenderDrawLines(renderer_, points, count) == 0; }
+    bool DrawLines(const std::vector<PointI> &points) {
+        return SDL_RenderDrawLines(renderer_, points.data(), points.size()) == 0;
+    }
 
     bool DrawRect(const SDL_Rect &rect) { return SDL_RenderDrawRect(renderer_, &rect) == 0; }
 
@@ -162,28 +167,30 @@ public:
                 const SDL_Rect             *src_rect,
                 const SDL_Rect             *dst_rect,
                 double                      angle,
-                SDL_Point                   center,
+                const PointI               &center,
                 Flip                        flip);
 
     bool Update(std::shared_ptr<SDLTexture> texture,
                 const SDL_Rect             *src_rect,
                 const SDL_FRect            *dst_rect,
                 double                      angle,
-                SDL_FPoint                  center,
+                const PointF               &center,
                 Flip                        flip);
 
 
-    bool DrawPoint(const SDL_FPoint &point) { return SDL_RenderDrawPointF(renderer_, point.x, point.y) == 0; }
+    bool DrawPoint(const PointF &point) { return SDL_RenderDrawPointF(renderer_, point.x, point.y) == 0; }
 
-    bool DrawPoints(const SDL_FPoint *points, int count) {
-        return SDL_RenderDrawPointsF(renderer_, points, count) == 0;
+    bool DrawPoints(const std::vector<PointF> &points) {
+        return SDL_RenderDrawPointsF(renderer_, points.data(), points.size()) == 0;
     }
 
-    bool DrawLine(const SDL_FPoint &start, const SDL_FPoint &end) {
+    bool DrawLine(const PointF &start, const PointF &end) {
         return SDL_RenderDrawLineF(renderer_, start.x, start.y, end.x, end.y) == 0;
     }
 
-    bool DrawLines(const SDL_FPoint *points, int count) { return SDL_RenderDrawLinesF(renderer_, points, count) == 0; }
+    bool DrawLines(const std::vector<PointF> &points) {
+        return SDL_RenderDrawLinesF(renderer_, points.data(), points.size()) == 0;
+    }
 
     bool DrawRect(const SDL_FRect &rect) { return SDL_RenderDrawRectF(renderer_, &rect) == 0; }
 

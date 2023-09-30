@@ -43,6 +43,36 @@ public:
         case SDLK_s: {
             break;
         }
+        case SDLK_1: {
+            sdlpp::MixChannelManager::GetInstance()->Play(-1, chunk1, 0);
+            break;
+        }
+        case SDLK_2: {
+            sdlpp::MixChannelManager::GetInstance()->Play(-1, chunk2, 0);
+            break;
+        }
+        case SDLK_3: {
+            sdlpp::MixChannelManager::GetInstance()->Play(-1, chunk3, 0);
+            break;
+        }
+        case SDLK_4: {
+            sdlpp::MixChannelManager::GetInstance()->Play(-1, chunk4, 0);
+            break;
+        }
+        case SDLK_9: {
+            if(!sdlpp::MixMusicManager::GetInstance()->IsPlaying()) {
+                sdlpp::MixMusicManager::GetInstance()->Play(music, 0);
+            } else if(sdlpp::MixMusicManager::GetInstance()->Paused()) {
+                sdlpp::MixMusicManager::GetInstance()->Resume();
+            } else {
+                sdlpp::MixMusicManager::GetInstance()->Pause();
+            }
+            break;
+        }
+        case SDLK_0: {
+            sdlpp::MixMusicManager::GetInstance()->Halt();
+            break;
+        }
         default:
             SDL_Log("key = %d %s", event.keysym.sym, SDL_GetKeyName(event.keysym.sym));
             break;
@@ -84,7 +114,9 @@ public:
         return SWindow::MouseWheelEvent(event);
     }
 
-    void RenderProcess(SDL_FPoint view_pos, double view_angle) override;
+    void RenderProcess(sdlpp::PointF view_pos, double view_angle) override;
+
+    void Tick(double tick_ms) override;
 
 
 private:
@@ -106,6 +138,15 @@ private:
     double angle_{0};
 
     std::shared_ptr<sdlpp::Font> font_;
+
+    std::shared_ptr<sdlpp::MixMusic> music;
+
+    std::shared_ptr<sdlpp::MixChunk> chunk1;
+    std::shared_ptr<sdlpp::MixChunk> chunk2;
+    std::shared_ptr<sdlpp::MixChunk> chunk3;
+    std::shared_ptr<sdlpp::MixChunk> chunk4;
+
+    sdlpp::SAnimation animation;
 };
 
 } // namespace game

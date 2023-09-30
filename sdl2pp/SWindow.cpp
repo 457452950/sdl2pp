@@ -1,5 +1,7 @@
 #include "SWindow.h"
 
+#include <thread>
+
 #include <fmt/format.h>
 
 #include "base/SDLRenderer.h"
@@ -9,7 +11,11 @@ namespace sdlpp {
 const SDL_Point SWindow::DEFAULT_SIZE = {640, 480};
 
 int SWindow::Exec() {
+    using namespace std::chrono;
+
     active_.store(true);
+
+    current_physic_time_ = current_time_ = duration_cast<microseconds>(system_clock::now().time_since_epoch());
 
     while(active_) {
         SDL_PollEvent(&event_);
@@ -72,11 +78,36 @@ int SWindow::Exec() {
             break;
         }
 
+        uint64_t pass_time =
+                (duration_cast<microseconds>(system_clock::now().time_since_epoch()) - current_physic_time_).count();
+        if((double)pass_time >= physic_delay_micrs_) {
+            this->Tick((double)pass_time / 1000.0);
+            current_physic_time_ += microseconds(pass_time);
+        }
+
         if(renderer_) {
             renderer_->Clear();
             this->RenderProcess({-view_pos_.x, -view_pos_.y}, 0.0f);
             renderer_->Flush();
         }
+
+
+        if(frame_delay_mics_ > 0)
+            while(true) {
+                auto current = duration_cast<microseconds>(system_clock::now().time_since_epoch());
+
+                pass_time = (current - current_physic_time_).count();
+                if((double)pass_time >= physic_delay_micrs_) {
+                    this->Tick((double)pass_time / 1000.0);
+                    current_physic_time_ += microseconds(pass_time);
+                }
+                
+                current = duration_cast<microseconds>(system_clock::now().time_since_epoch());
+                auto d  = (current - current_time_).count();
+                if((d >= frame_delay_mics_))
+                    break;
+            }
+        current_time_ = duration_cast<microseconds>(system_clock::now().time_since_epoch());
     }
 
     return 0;

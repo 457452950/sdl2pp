@@ -82,9 +82,49 @@ Window::Window() {
     texture_image2_->SetRotationCenter({50, 50});
     texture_image2_->SetScale({100.0f / (double)texture_image2_->GetTexture()->GetWidth(),
                                100.0f / (double)texture_image2_->GetTexture()->GetHeight()});
+
+    music = sdlpp::MixMusic::Load("H:/Code/CLion/sdl2pp/demo/beat.wav");
+    if(!music->Valid()) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "One or more music failed to load. %s", SDL_GetError());
+        SDL_assert(music->Valid());
+    }
+
+    chunk1 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/scratch.wav");
+    if(!chunk1->Valid()) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "load chunk fail, %s", SDL_GetError());
+        SDL_assert(chunk1->Valid());
+    }
+    chunk2 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/high.wav");
+    if(!chunk2->Valid()) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "load chunk fail, %s", SDL_GetError());
+        SDL_assert(chunk2->Valid());
+    }
+    chunk3 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/medium.wav");
+    if(!chunk3->Valid()) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "load chunk fail, %s", SDL_GetError());
+        SDL_assert(chunk3->Valid());
+    }
+    chunk4 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/low.wav");
+    if(!chunk4->Valid()) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "load chunk fail, %s", SDL_GetError());
+        SDL_assert(chunk4->Valid());
+    }
+
+    auto man_surface = sdlpp::IMG_LoadSurfaceFromFile(R"(H:\Code\CLion\sdl2pp\demo\foo.png)");
+    man_surface->SetColorKey(true, {0, 255, 255});
+
+    auto man_texture = render->CreateTextureFromSurface(man_surface);
+    animation.AddFrame(man_texture, {0, 0, 64, 205});
+    animation.AddFrame(man_texture, {64, 0, 64, 205});
+    animation.AddFrame(man_texture, {128, 0, 64, 205});
+    animation.AddFrame(man_texture, {192, 0, 64, 205});
+
+    animation.MoveTo({100, 100});
+
+    this->SetFps(720);
 }
 
-void Window::RenderProcess(SDL_FPoint view_pos, double view_angle) {
+void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     int         m_x, m_y;
     auto        s    = SDL_GetMouseState(&m_x, &m_y);
     std::string text = fmt::format("{}, {} : {}", s, m_x, m_y);
@@ -109,6 +149,20 @@ void Window::RenderProcess(SDL_FPoint view_pos, double view_angle) {
 
     SDL_Rect rect = {x, y, iW, iH};
     this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
+
+    animation.Render(renderer, view_pos, view_angle, {1, 1});
+}
+void Window::Tick(double_t tick_ms) {
+    double pfs = (1000.0) / (tick_ms);
+    SDL_Log("ms %f  pfs %f", tick_ms, pfs);
+
+    static int animation_tick = 0;
+    animation_tick++;
+    if(animation_tick == 10) {
+        SDL_Log("animation tick");
+        this->animation.Update();
+        animation_tick = 0;
+    }
 }
 
 } // namespace game
