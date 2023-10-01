@@ -50,6 +50,8 @@
 
 #include "base/SDLPixels.h"
 
+#include "base/Time.h"
+// class Timer;
 
 #include "SWindow.h"
 // class SWindow;

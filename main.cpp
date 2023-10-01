@@ -1,6 +1,9 @@
-﻿#include "sdl2pp/SDLpp.h"
+﻿#include <fmt/ostream.h>
+
+#include "sdl2pp/SDLpp.h"
 
 #include "Window.h"
+
 
 int main(int argc, char *argv[]) {
     auto ok = sdlpp::SDL::Init(sdlpp::SDL::EVERY_THING);
@@ -40,9 +43,18 @@ int main(int argc, char *argv[]) {
         SDL_Log("music decoder : %s", info.c_str());
     }
 
+    SDL_Log("SDL_GetPerformanceFrequency %lld", SDL_GetPerformanceFrequency());
+    SDL_Log("SDL_GetPerformanceCounter %lld", SDL_GetPerformanceCounter());
 
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
     SDL_LogDebug(0, "hello world");
+
+    SDL_Log("thread 1 id %ld %u", fmt::streamed(std::this_thread::get_id()), sdlpp::GetTick_ms());
+    sdlpp::Timer timer;
+    using namespace sdlpp;
+    timer.Start([]() { SDL_Log("thread 2 id %ld %u", fmt::streamed(std::this_thread::get_id()), sdlpp::GetTick_ms()); },
+                2s,
+                1);
 
     game::Window window;
 

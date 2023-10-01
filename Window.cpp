@@ -121,7 +121,8 @@ Window::Window() {
 
     animation.MoveTo({100, 100});
 
-    this->SetFps(720);
+    this->SetFps(1000);
+    //    this->SetPhysicPerS(30);
 }
 
 void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {

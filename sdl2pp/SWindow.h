@@ -11,6 +11,7 @@
 #include "base/SDLWindow.h"
 #include "SRenderer.h"
 #include "STexture.h"
+#include "base/Time.h"
 
 
 namespace sdlpp {
@@ -20,10 +21,7 @@ class SWindow : public SDLWindow {
     static const SDL_Point DEFAULT_SIZE;
 
 public:
-    SWindow() : SDLWindow(DEFAULT_SIZE) {
-        physic_delay_micrs_ = 1000'000.0 / 60.0;
-        SDL_Log("%f p delay", physic_delay_micrs_);
-    }
+    SWindow() : SDLWindow(DEFAULT_SIZE) { this->SetPhysicPerS(60); }
 
     ~SWindow() override {}
 
@@ -70,11 +68,16 @@ public:
         if(fps == -1) {
             frame_delay_mics_ = 0;
         } else {
-            frame_delay_mics_ = (1000'000 / fps);
+            frame_delay_mics_ = (sdlpp::GetPerformanceFrequency() / fps);
         }
     }
 
-    void SetPhysicPerS(uint32_t physic_per_s) { physic_delay_micrs_ = (1000'000.0 / double(physic_per_s)); }
+    void SetPhysicPerS(uint32_t physic_per_s) {
+        physic_delay_micrs_ = ((double)sdlpp::GetPerformanceFrequency() / double(physic_per_s));
+        SDL_Log("physic_delay_micrs_: %f", physic_delay_micrs_);
+    }
+
+    void CheckPhysicFrame();
 
     int Exec();
 
@@ -86,10 +89,10 @@ private:
     std::shared_ptr<SRenderer> renderer_{nullptr};
     PointF                     view_pos_{0, 0};
 
-    std::chrono::microseconds current_time_{0};
-    uint32_t                  frame_delay_mics_{0};
-    std::chrono::microseconds current_physic_time_{0};
-    double                    physic_delay_micrs_{0};
+    uint64_t current_time_{0};
+    uint32_t frame_delay_mics_{0};
+    uint64_t current_physic_time_{0};
+    double   physic_delay_micrs_{0};
 };
 
 } // namespace sdlpp

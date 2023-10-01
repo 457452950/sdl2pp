@@ -11,11 +11,16 @@ namespace sdlpp {
 const SDL_Point SWindow::DEFAULT_SIZE = {640, 480};
 
 int SWindow::Exec() {
-    using namespace std::chrono;
-
     active_.store(true);
 
-    current_physic_time_ = current_time_ = duration_cast<microseconds>(system_clock::now().time_since_epoch());
+    // first render
+    if(renderer_) {
+        renderer_->Clear();
+        this->RenderProcess({-view_pos_.x, -view_pos_.y}, 0.0f);
+        renderer_->Flush();
+    }
+
+    current_physic_time_ = current_time_ = sdlpp::GetPerformanceCounter();
 
     while(active_) {
         SDL_PollEvent(&event_);
@@ -78,11 +83,22 @@ int SWindow::Exec() {
             break;
         }
 
-        uint64_t pass_time =
-                (duration_cast<microseconds>(system_clock::now().time_since_epoch()) - current_physic_time_).count();
-        if((double)pass_time >= physic_delay_micrs_) {
-            this->Tick((double)pass_time / 1000.0);
-            current_physic_time_ += microseconds(pass_time);
+        if(!active_) {
+            break;
+        }
+
+        if(frame_delay_mics_ > 0) {
+            while(true) {
+                CheckPhysicFrame();
+
+                auto pass = sdlpp::GetPerformanceCounter() - current_time_;
+                if((pass >= frame_delay_mics_)) {
+                    current_time_ += pass;
+                    break;
+                }
+            }
+        } else {
+            CheckPhysicFrame();
         }
 
         if(renderer_) {
@@ -90,24 +106,6 @@ int SWindow::Exec() {
             this->RenderProcess({-view_pos_.x, -view_pos_.y}, 0.0f);
             renderer_->Flush();
         }
-
-
-        if(frame_delay_mics_ > 0)
-            while(true) {
-                auto current = duration_cast<microseconds>(system_clock::now().time_since_epoch());
-
-                pass_time = (current - current_physic_time_).count();
-                if((double)pass_time >= physic_delay_micrs_) {
-                    this->Tick((double)pass_time / 1000.0);
-                    current_physic_time_ += microseconds(pass_time);
-                }
-                
-                current = duration_cast<microseconds>(system_clock::now().time_since_epoch());
-                auto d  = (current - current_time_).count();
-                if((d >= frame_delay_mics_))
-                    break;
-            }
-        current_time_ = duration_cast<microseconds>(system_clock::now().time_since_epoch());
     }
 
     return 0;
@@ -122,6 +120,13 @@ void SWindow::DefaultWindowEvent(const SDL_WindowEvent &event) {
         this->Close();
         break;
     }
+    }
+}
+void SWindow::CheckPhysicFrame() {
+    auto pass_time = (sdlpp::GetPerformanceCounter() - current_physic_time_);
+    if((double)pass_time >= physic_delay_micrs_) {
+        this->Tick((double)pass_time / (double)sdlpp::GetPerformanceFrequency() * 1000.0);
+        current_physic_time_ += pass_time;
     }
 }
 
