@@ -1,7 +1,5 @@
 #include "Window.h"
 
-#include "sdl2pp/SDLpp.h"
-
 namespace game {
 
 Window::Window() {

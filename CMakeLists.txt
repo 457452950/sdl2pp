@@ -41,15 +41,16 @@ include_directories(
         ${SDL2_TTF_INCLUDE_DIRS}
         ${SDL2_MIXER_INCLUDE_DIRS}
         ${FMT_INCLUDE_DIRS}
+        "./"
 )
 
 
 set(ENGINE_NAME "sdl2pp")
-set(GAME_NAME "game")
 
 add_library(
         ${ENGINE_NAME}
 
+        sdl2pp/base/SDLLog.h
         sdl2pp/base/SDLEnvironment.h
         sdl2pp/base/SDLEnvironment.cpp
         sdl2pp/base/SDLWindow.h
@@ -106,16 +107,4 @@ target_link_libraries(
 )
 
 
-add_executable(
-        ${GAME_NAME}
-        main.cpp
-        Window.cpp
-        Window.h
-)
-
-target_link_libraries(
-        ${GAME_NAME}
-        PRIVATE
-        ${ENGINE_NAME}
-)
-
+add_subdirectory(game)

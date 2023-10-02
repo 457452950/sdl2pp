@@ -2,8 +2,6 @@
 
 #include "Window.h"
 
-#include "sdl2pp/base/SDLLog.h"
-
 int main(int argc, char *argv[]) {
     // init system
     auto ok = sdlpp::SDL::Init(sdlpp::SDL::EVERY_THING);

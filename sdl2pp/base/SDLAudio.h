@@ -8,6 +8,8 @@
 #include <SDL_log.h>
 #include <SDL_audio.h>
 
+#include "SDLLog.h"
+
 namespace sdlpp {
 
 class AudioDrivers {
