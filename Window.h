@@ -16,7 +16,10 @@ public:
     ~Window() override {}
 
     int KeyEvent(const SDL_KeyboardEvent &event) override {
-        SDL_Log("scan key = %d %s", event.keysym.scancode, SDL_GetScancodeName(event.keysym.scancode));
+        LOG_VER(log::APP,
+                "scan key = {} {}",
+                static_cast<int>(event.keysym.scancode),
+                SDL_GetScancodeName(event.keysym.scancode));
 
         if(event.state != SDL_RELEASED) {
             return SWindow::KeyEvent(event);
@@ -74,7 +77,7 @@ public:
             break;
         }
         default:
-            SDL_Log("key = %d %s", event.keysym.sym, SDL_GetKeyName(event.keysym.sym));
+            LOG_DBG(log::APP, "key = {} {}", event.keysym.sym, SDL_GetKeyName(event.keysym.sym));
             break;
         }
         return SWindow::KeyEvent(event);
@@ -83,18 +86,22 @@ public:
     int WindowEvent(const SDL_WindowEvent &event) override {
         switch(event.event) {
         case SDL_WINDOWEVENT_RESIZED: {
-            SDL_Log("resize %d %d ", event.data1, event.data2);
+            LOG_DBG(log::APP, "resize {} {} ", event.data1, event.data2);
+
+            auto [out_w, out_h] = this->GetRenderer()->GetOutputSize();
+            LOG_DBG(log::APP, "output size: {}, {}", out_w, out_h);
             break;
         }
         case SDL_WINDOWEVENT_CLOSE: {
-            SDL_LogDebug(0, "SDL_WINDOW EVENT close but no close");
+            LOG_DBG(log::APP, "SDL_WINDOW EVENT close but no close");
         }
         }
         return SWindow::WindowEvent(event);
     }
 
     int MouseButtonEvent(const SDL_MouseButtonEvent &event) override {
-        SDL_Log("mouse button state %d x %d y %d button %d click %d",
+        LOG_DBG(log::APP,
+                "mouse button state {} x {} y {} button {} click {}",
                 event.state,
                 event.x,
                 event.y,
@@ -104,13 +111,23 @@ public:
     }
 
     int MouseMoveEvent(const SDL_MouseMotionEvent &event) override {
-        //            SDL_Log("mouse motion state %d x %d y %d  xrel %d yrel %d",
-        //                    event.state, event.x, event.y, event.xrel, event.yrel);
+        LOG_VER(log::APP,
+                "mouse motion state {} x {} y {}  xrel {} yrel {}",
+                event.state,
+                event.x,
+                event.y,
+                event.xrel,
+                event.yrel);
         return SWindow::MouseMoveEvent(event);
     }
 
     int MouseWheelEvent(const SDL_MouseWheelEvent &event) override {
-        SDL_Log("mouse wheel state %d x %d y %d direction %d", event.windowID, event.x, event.y, event.direction);
+        LOG_DBG(log::APP,
+                "mouse wheel state {} x {} y {} direction {}",
+                event.windowID,
+                event.x,
+                event.y,
+                event.direction);
         return SWindow::MouseWheelEvent(event);
     }
 

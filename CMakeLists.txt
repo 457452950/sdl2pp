@@ -91,7 +91,7 @@ add_library(
         sdl2pp/SAnimation.h
         sdl2pp/Renderable.cpp
         sdl2pp/Renderable.h
-        
+
         sdl2pp/SDLpp.h
 )
 

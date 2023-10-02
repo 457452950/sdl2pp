@@ -40,7 +40,7 @@ private:
 
         auto c = SDL_GetNumAudioDevices(1);
         for(int i = 0; i < c; ++i) {
-            SDL_Log("Audio device %d: %s", i, SDL_GetAudioDeviceName(i, 1));
+            LOG_INF(log::LIB, "Audio device {}: {}", i, SDL_GetAudioDeviceName(i, 1));
         }
     }
 

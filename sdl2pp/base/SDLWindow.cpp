@@ -1,6 +1,7 @@
 #include "SDLWindow.h"
 
 #include "SDLRenderer.h"
+#include "SDLLog.h"
 
 namespace sdlpp {
 
@@ -12,7 +13,7 @@ SDLWindow::SDLWindow(SDL_Point size, std::string_view title, SDL_Point pos, uint
     window_ = SDL_CreateWindow(title.data(), pos.x, pos.y, size.x, size.y, flags);
 
     if(!window_) {
-        SDL_Log("SDL_CreateWindow error: %s", SDL_GetError());
+        LOG_ERR(log::LIB, "SDL_CreateWindow error: {}", SDL_GetError());
         SDL_assert(window_);
     }
 }

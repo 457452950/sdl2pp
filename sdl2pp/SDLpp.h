@@ -2,6 +2,7 @@
 #ifndef SDL2_SDLPP_H
 #define SDL2_SDLPP_H
 
+#include "base/SDLLog.h"
 
 #include <SDL.h>
 

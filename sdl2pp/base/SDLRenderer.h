@@ -89,8 +89,9 @@ public:
 
     std::tuple<int, int> GetOutputSize() const {
         int w, h;
-        SDL_GetRendererOutputSize(renderer_, &w, &h);
-        return {w, h};
+        if(SDL_GetRendererOutputSize(renderer_, &w, &h) == 0)
+            return {w, h};
+        return {0, 0};
     }
 
     bool IsRendererTargetSupported() { return SDL_RenderTargetSupported(renderer_) == SDL_TRUE; }

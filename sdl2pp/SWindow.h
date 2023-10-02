@@ -9,9 +9,10 @@
 #include <SDL_image.h>
 
 #include "base/SDLWindow.h"
+#include "base/Time.h"
+#include "base/SDLLog.h"
 #include "SRenderer.h"
 #include "STexture.h"
-#include "base/Time.h"
 
 
 namespace sdlpp {
@@ -74,7 +75,7 @@ public:
 
     void SetPhysicPerS(uint32_t physic_per_s) {
         physic_delay_micrs_ = ((double)sdlpp::GetPerformanceFrequency() / double(physic_per_s));
-        SDL_Log("physic_delay_micrs_: %f", physic_delay_micrs_);
+        LOG_DBG(log::LIB, "physic_delay_micrs_: {}", physic_delay_micrs_);
     }
 
     void CheckPhysicFrame();

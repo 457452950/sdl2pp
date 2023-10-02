@@ -27,23 +27,23 @@ int SWindow::Exec() {
 
         switch(static_cast<SDL_EventType>(event_.type)) {
         case SDL_QUIT: {
-            SDL_LogDebug(0, "SDL_QUIT");
+            LOG_INF(log::LIB, "SDL_QUIT");
             break;
         }
         case SDL_DISPLAYEVENT: {
             auto &ev = event_.display;
             switch(static_cast<SDL_DisplayEventID>(ev.event)) {
             case SDL_DISPLAYEVENT_NONE:
-                SDL_LogDebug(0, "display event: none index %d", ev.display);
+                LOG_INF(log::LIB, "display event: none index {}", ev.display);
                 break;
             case SDL_DISPLAYEVENT_ORIENTATION:
-                SDL_LogDebug(0, "display event: orientation %d change to %d", ev.display, ev.data1);
+                LOG_INF(log::LIB, "display event: orientation {} change to {}", ev.display, ev.data1);
                 break;
             case SDL_DISPLAYEVENT_CONNECTED:
-                SDL_LogDebug(0, "display event: connected %d", ev.display);
+                LOG_INF(log::LIB, "display event: connected {}", ev.display);
                 break;
             case SDL_DISPLAYEVENT_DISCONNECTED:
-                SDL_LogDebug(0, "display event: disconnected %d", ev.display);
+                LOG_INF(log::LIB, "display event: disconnected {}", ev.display);
                 break;
             }
             break;
@@ -116,7 +116,7 @@ void SWindow::Close() { this->active_.store(false); }
 void SWindow::DefaultWindowEvent(const SDL_WindowEvent &event) {
     switch(event.event) {
     case SDL_WINDOWEVENT_CLOSE: {
-        SDL_LogDebug(0, "SDL_WINDOW EVENT close");
+        LOG_INF(log::LIB, "SDL_WINDOW EVENT close.");
         this->Close();
         break;
     }
