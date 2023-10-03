@@ -123,6 +123,10 @@ void SWindow::DefaultWindowEvent(const SDL_WindowEvent &event) {
     }
 }
 void SWindow::CheckPhysicFrame() {
+    if(physic_delay_micrs_ == 0) {
+        return;
+    }
+
     auto pass_time = (sdlpp::GetPerformanceCounter() - current_physic_time_);
     if((double)pass_time >= physic_delay_micrs_) {
         this->Tick((double)pass_time / (double)sdlpp::GetPerformanceFrequency() * 1000.0);

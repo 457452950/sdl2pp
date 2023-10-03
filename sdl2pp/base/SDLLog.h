@@ -11,6 +11,7 @@
 #include <ctime>
 
 #include <SDL_log.h>
+#include <SDL_assert.h>
 
 #include <fmt/format.h>
 #include <fmt/ostream.h>
@@ -41,6 +42,8 @@ static std::string_view getLogCategoryName(log::Category category) {
         return "Library";
         break;
     }
+    SDL_assert(false);
+    return "";
 }
 
 static std::string MakeHead(log::Category tag, std::string_view file_name, int line_no, const char *func_name) {

@@ -8,6 +8,7 @@
 
 #include <SDL.h>
 #include <SDL_video.h>
+#include "SDLSurface.h"
 
 namespace sdlpp {
 
@@ -84,6 +85,8 @@ public:
     // SDL_GetWindowDisplayMode
     // SDL_GetWindowFromID
     // SDL_SetWindowIcon
+    void SetIcon(std::shared_ptr<SDLSurface> surface) { SDL_SetWindowIcon(this->window_, surface->Get()); }
+
     // SDL_GetWindowBordersSize
     // SDL_GetWindowSizeInPixels
     // SDL_SetWindowMinimumSize

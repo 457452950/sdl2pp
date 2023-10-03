@@ -74,6 +74,11 @@ public:
     }
 
     void SetPhysicPerS(uint32_t physic_per_s) {
+        if(physic_per_s == 0) {
+            physic_delay_micrs_ = 0;
+            return;
+        }
+
         physic_delay_micrs_ = ((double)sdlpp::GetPerformanceFrequency() / double(physic_per_s));
         LOG_DBG(log::LIB, "physic_delay_micrs_: {}", physic_delay_micrs_);
     }
