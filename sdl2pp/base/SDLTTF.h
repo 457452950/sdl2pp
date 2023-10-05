@@ -14,7 +14,9 @@ namespace sdlpp {
 
 class Font {
 public:
-    static std::shared_ptr<Font> Create(TTF_Font *&&font) { return std::shared_ptr<Font>(new Font(std::move(font))); }
+    static std::shared_ptr<Font> Create(TTF_Font *&&font, int point_size) {
+        return std::shared_ptr<Font>(new Font(std::move(font), point_size));
+    }
 
     static std::shared_ptr<Font> Open(std::string_view path, int point_size);
 
@@ -25,9 +27,11 @@ public:
     static std::shared_ptr<Font>
     Open(std::string_view path, int point_size, long index, unsigned int hdpi, unsigned int vdpi);
 
+    int GetFontSize() const { return point_size_; }
+
     bool SetFontSize(int point_size) { return TTF_SetFontSize(font_, point_size) == 0; }
 
-    bool SetFointSizeDPI(int point_size, unsigned int hdpi, unsigned int vdpi) {
+    bool SetFontSizeDPI(int point_size, unsigned int hdpi, unsigned int vdpi) {
         return TTF_SetFontSizeDPI(font_, point_size, hdpi, vdpi) == 0;
     }
 
@@ -281,14 +285,16 @@ public:
     ~Font() {
         if(font_) {
             TTF_CloseFont(font_);
-            font_ = nullptr;
+            font_       = nullptr;
+            point_size_ = 0;
         }
     }
 
 private:
-    explicit Font(TTF_Font *&&font) : font_{font} {}
+    explicit Font(TTF_Font *&&font, int point_size) : font_{font}, point_size_(point_size) {}
 
     TTF_Font *font_{nullptr};
+    int       point_size_{0};
 };
 
 } // namespace sdlpp

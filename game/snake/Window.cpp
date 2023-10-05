@@ -1,26 +1,44 @@
 #include "Window.h"
 
 #include "tools/Resource.h"
-
-namespace game {
+#include "ui/UI.h"
 
 Window::Window() {
     this->SetTitle("Snake");
 
-    // init ttf font
-    font_ = sdlpp::Font::Open(R"(H:\Resources\ttf\hk4e_zh-cn.ttf)", 64);
-    if(font_ == nullptr) {
-        LOG_ERR(log::APP, "Could not load font: {}", SDL_GetError());
-        return;
-    }
-
     // set icon
-    auto icon = Resource::LoadFile("snake.jpg");
+    auto icon = snake::Resource::GetInstance()->GetImage("snake.jpg");
     this->SetIcon(icon);
 
     this->SetPhysicPerS(0);
+
+    auto render = this->CreateRenderer();
+
+    ui::UI::GetInstance()->Init(this);
+
+    this->SetResizeable(true);
 }
 
-void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {}
+void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
+    ui::UI::GetInstance()->Render(this->GetRenderer());
+}
 
-} // namespace game
+Window::~Window() { ui::UI::GetInstance()->Clear(); }
+
+int Window::WindowEvent(const SDL_WindowEvent &event) {
+    switch(event.event) {
+    case SDL_WINDOWEVENT_RESIZED: {
+        LOG_DBG(log::APP, "resize {} {} ", event.data1, event.data2);
+
+        auto [out_w, out_h] = this->GetRenderer()->GetOutputSize();
+        LOG_DBG(log::APP, "output size: {}, {}", out_w, out_h);
+
+        ui::UI::GetInstance()->Resize(event.data1, event.data2);
+        break;
+    }
+    case SDL_WINDOWEVENT_CLOSE: {
+        LOG_DBG(log::APP, "SDL_WINDOW EVENT close but no close");
+    }
+    }
+    return SWindow::WindowEvent(event);
+}

@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 #elif defined()
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 #endif
-    game::Window window;
+    Window window;
 
     return window.Exec();
 }

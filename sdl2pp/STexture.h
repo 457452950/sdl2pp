@@ -29,9 +29,13 @@ public:
 
     std::shared_ptr<SDLTexture> GetTexture() const { return texture_; }
 
+    bool is_debug{false};
 
-    void Render(std::shared_ptr<SRenderer> renderer, PointF base_pos, double base_angle, Scale scale) override {
-        if(!enable_) {
+    void Render(std::shared_ptr<SRenderer> renderer,
+                PointF                     base_pos   = {0, 0},
+                double                     base_angle = 0,
+                Scale                      scale      = {1.0, 1.0}) override {
+        if(!enable_ || !texture_) {
             return;
         }
 
@@ -48,6 +52,9 @@ public:
                            static_cast<float>(static_cast<double>(texture_rect_.h) * real_scale.h)};
 
         renderer->Update(texture_, &texture_rect_, &dst_size, base_angle + angle_, center_, flip_);
+
+        if(is_debug)
+            renderer->DrawRect(dst_size);
     }
 
 private:
