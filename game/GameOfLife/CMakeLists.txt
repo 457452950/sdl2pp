@@ -10,6 +10,8 @@ add_executable(
         main.cpp
         Window.cpp
         Window.h
+        GOLMap.cpp
+        GOLMap.h
 )
 
 target_link_libraries(

@@ -6,8 +6,9 @@
 
 #include "sdl2pp/SDLpp.h"
 #include "sdl2pp/STexture.h"
+#include "GOLMap.h"
 
-namespace game {
+namespace gol {
 
 class Window : public sdlpp::SWindow {
 public:
@@ -29,10 +30,10 @@ public:
 
     void Tick(double tick_ms) override;
 
-
 private:
+    gol::GOLMap map_;
 };
 
-} // namespace game
+} // namespace gol
 
 #endif // SDL2PP_GAME_WINDOW_H_
