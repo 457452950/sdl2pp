@@ -16,7 +16,27 @@ public:
 
     ~Window() override {}
 
-    int KeyEvent(const SDL_KeyboardEvent &event) override { return SWindow::KeyEvent(event); }
+    bool LoadFile(std::string file);
+
+    bool LoadCellsFile(std::string file);
+
+
+    int KeyEvent(const SDL_KeyboardEvent &event) override {
+
+        if(event.type == SDL_KEYUP) {
+            if(event.state == SDL_RELEASED) {
+
+                switch(event.keysym.sym) {
+                case SDLK_s:
+                    //                    map_.Update();
+                default:
+                    break;
+                }
+            }
+        }
+
+        return SWindow::KeyEvent(event);
+    }
 
     int WindowEvent(const SDL_WindowEvent &event) override { return SWindow::WindowEvent(event); }
 

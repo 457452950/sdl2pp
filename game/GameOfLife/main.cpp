@@ -1,4 +1,6 @@
-﻿#include "sdl2pp/SDLpp.h"
+﻿#include <iostream>
+
+#include "sdl2pp/SDLpp.h"
 
 #include "Window.h"
 
@@ -34,6 +36,11 @@ int main(int argc, char *argv[]) {
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 #endif
     gol::Window window;
+
+    if(argc == 2)
+        if(!window.LoadFile(argv[1])) {
+            return 2;
+        }
 
     return window.Exec();
 }
