@@ -3,3 +3,4 @@ project(game)
 
 add_subdirectory(example)
 add_subdirectory(snake)
+add_subdirectory(GameOfLife)
