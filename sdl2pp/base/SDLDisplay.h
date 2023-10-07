@@ -63,7 +63,7 @@ public:
         return instance_;
     }
 
-    int GetDisplayCount() const { return display_infos_.size(); }
+    size_t GetDisplayCount() const { return display_infos_.size(); }
 
     const std::vector<DisplayInfo> &GetDisplayInfos() const { return display_infos_; }
 

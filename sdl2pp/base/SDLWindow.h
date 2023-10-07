@@ -151,7 +151,7 @@ public:
 
     bool SetFocus() { return SDL_SetWindowInputFocus(window_) == 0; }
 
-    static bool IsScreenSaverEnabled() { return SDL_IsScreenSaverEnabled(); };
+    static bool IsScreenSaverEnabled() { return SDL_IsScreenSaverEnabled() == SDL_TRUE; };
 
     static void SetScreenSaverEnabled(bool enabled) {
         if(enabled) {

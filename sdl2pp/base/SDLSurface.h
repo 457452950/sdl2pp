@@ -58,7 +58,7 @@ public:
      */
     bool SetColorKey(bool is_set, SDL_Color color) {
         auto color_key = SDL_MapRGB(surface_->format, color.r, color.g, color.b);
-        return SDL_SetColorKey(surface_, is_set ? SDL_TRUE : SDL_FALSE, color_key);
+        return SDL_SetColorKey(surface_, is_set ? SDL_TRUE : SDL_FALSE, color_key) == 0;
     }
 
     ~SDLSurface() noexcept {

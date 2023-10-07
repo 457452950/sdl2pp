@@ -3,6 +3,9 @@ project(GOL)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O1  -Wall")
+
+
 set(ENGINE_NAME "sdl2pp")
 
 add_executable(

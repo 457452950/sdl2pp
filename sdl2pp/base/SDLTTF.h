@@ -112,11 +112,11 @@ public:
     }
 
     bool GetSizeUTF8(std::string_view text, int &width, int &height) {
-        return TTF_SizeUTF8(font_, text.data(), &width, &height);
+        return TTF_SizeUTF8(font_, text.data(), &width, &height) == 0;
     }
 
     bool GetSizeUNICODE(std::u16string_view text, int &width, int &height) {
-        return TTF_SizeUNICODE(font_, (const uint16_t *)text.data(), &width, &height);
+        return TTF_SizeUNICODE(font_, (const uint16_t *)text.data(), &width, &height) == 0;
     }
 
     bool MeasureText(std::string_view text, int measure_w, int &extent, int &count) {
@@ -124,11 +124,11 @@ public:
     }
 
     bool MeasureUTF8(std::string_view text, int measure_w, int &extent, int &count) {
-        return TTF_MeasureUTF8(font_, text.data(), measure_w, &extent, &count);
+        return TTF_MeasureUTF8(font_, text.data(), measure_w, &extent, &count) == 0;
     }
 
     bool MeasureUNICODE(std::u16string_view text, int measure_w, int &extent, int &count) {
-        return TTF_MeasureUNICODE(font_, (const uint16_t *)text.data(), measure_w, &extent, &count);
+        return TTF_MeasureUNICODE(font_, (const uint16_t *)text.data(), measure_w, &extent, &count) == 0;
     }
 
     std::shared_ptr<SDLSurface> RenderText_Solid(std::string_view text, const SDL_Color &color) {

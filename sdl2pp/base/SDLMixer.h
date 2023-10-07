@@ -111,11 +111,11 @@ public:
 
     bool SetPanning(int left, int right) { return Mix_SetPanning(id_, left, right) != 0; }
 
-    bool SetPosition(int16_t angle, uint8_t distance) { return Mix_SetPosition(id_, angle, distance); }
+    bool SetPosition(int16_t angle, uint8_t distance) { return Mix_SetPosition(id_, angle, distance) != 0; }
 
-    bool SetDistance(uint8_t distance) { return Mix_SetDistance(id_, distance); }
+    bool SetDistance(uint8_t distance) { return Mix_SetDistance(id_, distance) != 0; }
 
-    bool SetReverseStereo(bool flip) { return Mix_SetReverseStereo(id_, flip ? 1 : 0); }
+    bool SetReverseStereo(bool flip) { return Mix_SetReverseStereo(id_, flip ? 1 : 0) != 0; }
 
     /**
      *
@@ -242,7 +242,7 @@ public:
 
     MixChannel GetChannel(int channel_id) { return channels_[channel_id]; }
 
-    std::function<int()> channel_finished_cb;
+    std::function<void(int)> channel_finished_cb;
 
     static MixChannelManager *GetInstance() {
         static MixChannelManager instance_;
@@ -257,7 +257,7 @@ private:
     static void channel_Finished_callback(int channel) {
         auto this_ = GetInstance();
         if(this_->channel_finished_cb) {
-            this_->channel_finished_cb();
+            this_->channel_finished_cb(channel);
         }
     }
 

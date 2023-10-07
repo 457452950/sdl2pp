@@ -69,7 +69,7 @@ public:
         if(fps == -1) {
             frame_delay_mics_ = 0;
         } else {
-            frame_delay_mics_ = (sdlpp::GetPerformanceFrequency() / fps);
+            frame_delay_mics_ = (sdlpp::GetPerformanceFrequency() / (uint64_t)fps);
         }
     }
 
