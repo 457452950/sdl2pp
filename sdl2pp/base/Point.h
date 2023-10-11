@@ -7,8 +7,8 @@
 namespace sdlpp {
 
 struct PointI : public SDL_Point {
-    PointI() : SDL_Point({0, 0}) {}
-    PointI(int _x, int _y) : SDL_Point({_x, _y}) {}
+    PointI() : SDL_Point{0, 0} {}
+    PointI(int _x, int _y) : SDL_Point{_x, _y} {}
 
     PointI(const PointI &p) = default;
     PointI(PointI &&p)      = default;
@@ -51,8 +51,8 @@ struct PointF : public SDL_FPoint {
     PointF &operator=(const PointF &p) = default;
     PointF &operator=(PointF &&p)      = default;
 
-    bool operator==(const PointF &p) const { return this->x == p.x && this->y == p.y; }
-    bool operator!=(const PointF &p) const { return this->x != p.x || this->y != p.y; }
+    bool operator==(const PointF &p) const { return Compare(this->x, p.x) == 0 && Compare(this->y, p.y) == 0; }
+    bool operator!=(const PointF &p) const { return Compare(this->x, p.x) != 0 || Compare(this->y, p.y) != 0; }
 
     PointF operator+(const PointF &p) const { return {this->x + p.x, this->y + p.y}; }
     PointF operator-(const PointF &p) const { return {this->x - p.x, this->y - p.y}; }

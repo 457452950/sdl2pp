@@ -59,11 +59,9 @@ public:
 
     virtual void Tick(double tick_ms) {}
 
-    PointF GetViewPos() const { return view_pos_; }
-
-    void ViewMoveTo(const PointF &pos) { view_pos_ = pos; }
-
-    void ViewMove(const PointF &delta) { this->view_pos_ += delta; }
+    PointF GetCameraViewPos() const { return view_pos_; }
+    void   CameraViewMoveTo(const PointF &pos) { view_pos_ = pos; }
+    void   CameraViewMove(const PointF &delta) { this->view_pos_ += delta; }
 
     void SetFps(int fps) {
         if(fps == -1) {

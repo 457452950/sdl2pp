@@ -51,6 +51,14 @@ add_library(
         ${ENGINE_NAME}
 
         sdl2pp/base/SDLLog.h
+        sdl2pp/base/Math.cpp
+        sdl2pp/base/Math.h
+        sdl2pp/base/Point.cpp
+        sdl2pp/base/Point.h
+        sdl2pp/base/Rect.cpp
+        sdl2pp/base/Rect.h
+        sdl2pp/base/Scale.cpp
+        sdl2pp/base/Scale.h
         sdl2pp/base/SDLEnvironment.h
         sdl2pp/base/SDLEnvironment.cpp
         sdl2pp/base/SDLWindow.h
@@ -69,12 +77,6 @@ add_library(
         sdl2pp/base/SDLPixels.h
         sdl2pp/base/SDLTTF.cpp
         sdl2pp/base/SDLTTF.h
-        sdl2pp/base/Math.cpp
-        sdl2pp/base/Math.h
-        sdl2pp/base/Point.cpp
-        sdl2pp/base/Point.h
-        sdl2pp/base/Scale.cpp
-        sdl2pp/base/Scale.h
         sdl2pp/base/Time.cpp
         sdl2pp/base/Time.h
         sdl2pp/base/SDLMixer.cpp

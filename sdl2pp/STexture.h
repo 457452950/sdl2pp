@@ -2,8 +2,6 @@
 #ifndef SDL2PP_STEXTURE_H_
 #define SDL2PP_STEXTURE_H_
 
-#include <cmath>
-
 #include <SDL_log.h>
 
 #include "base/Math.h"
@@ -40,7 +38,7 @@ public:
         }
 
         auto angle_a = std::atan2f(position_.y, position_.x);
-        auto angle_b = base_angle / 180 * PI_H;
+        auto angle_b = base_angle / 180 * M_PI;
 
         auto r = std::sqrt(position_.x * position_.x + position_.y * position_.y);
 

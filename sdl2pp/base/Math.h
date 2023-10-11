@@ -2,19 +2,24 @@
 #ifndef SDL2PP_BASE_MATH_H_
 #define SDL2PP_BASE_MATH_H_
 
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif
 #include <cmath>
+#include <cfloat>
 
 #include <SDL_stdinc.h>
 
 namespace sdlpp {
 
-#define PI_L (3.1415926f)
-#define PI_H (3.1415926535897932384626f)
-
-#define MIN_COMPARE_DOUBLE (0.0001f)
-
-// compare two floats
-inline int Compare(float a, float b) { return std::fabs(a - b) < MIN_COMPARE_DOUBLE ? 0 : (a - b > 0.0f ? 1 : -1); }
+/**
+ * compare two floats
+ * @param a
+ * @param b
+ * @return
+ */
+inline int Compare(float a, float b) { return std::fabs(a - b) < FLT_EPSILON ? 0 : (a > b ? 1 : -1); }
+inline int Compare(double a, double b) { return std::fabs(a - b) < DBL_EPSILON ? 0 : (a > b ? 1 : -1); }
 
 
 } // namespace sdlpp
