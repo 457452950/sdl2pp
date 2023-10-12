@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#include "Math.h"
-#include "Point.h"
+#include "sdl2pp/common/Math.h"
+#include "sdl2pp/common/Point.h"
 
 namespace sdlpp {
 

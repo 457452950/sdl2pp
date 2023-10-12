@@ -8,7 +8,7 @@
 #include <SDL_render.h>
 
 #include "Point.h"
-#include "Rect.h"
+#include "shape/Rect.h"
 
 namespace sdlpp {
 

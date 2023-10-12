@@ -3,7 +3,7 @@
 #define SDL2PP_RENDERABLE_H_
 
 #include "common/Point.h"
-#include "common/Rect.h"
+#include "common/shape/Rect.h"
 #include "common/Scale.h"
 
 #include "SRenderer.h"

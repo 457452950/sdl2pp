@@ -15,7 +15,7 @@
 // struct PointI;
 // struct PointF;
 
-#include "common/Rect.h"
+#include "common/shape/Rect.h"
 
 #include "common/Scale.h"
 // struct Scale;

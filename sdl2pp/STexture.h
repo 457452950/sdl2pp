@@ -5,7 +5,7 @@
 #include <SDL_log.h>
 
 #include "common/Math.h"
-#include "common/Rect.h"
+#include "common/shape/Rect.h"
 #include "common/SDLTexture.h"
 
 #include "SRenderer.h"

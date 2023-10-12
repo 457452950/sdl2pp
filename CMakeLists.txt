@@ -83,6 +83,9 @@ add_library(
         sdl2pp/common/SDLMixer.h
         sdl2pp/common/SDLAudio.cpp
         sdl2pp/common/SDLAudio.h
+        
+        sdl2pp/common/shape/Rect.cpp
+        sdl2pp/common/shape/Rect.h
 
         sdl2pp/SRenderer.cpp
         sdl2pp/SRenderer.h

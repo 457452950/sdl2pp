@@ -7,7 +7,7 @@
 
 #include <SDL_video.h>
 
-#include "Rect.h"
+#include "shape/Rect.h"
 
 namespace sdlpp {
 
