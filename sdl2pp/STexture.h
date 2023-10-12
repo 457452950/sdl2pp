@@ -4,9 +4,9 @@
 
 #include <SDL_log.h>
 
-#include "base/Math.h"
-#include "base/Rect.h"
-#include "base/SDLTexture.h"
+#include "common/Math.h"
+#include "common/Rect.h"
+#include "common/SDLTexture.h"
 
 #include "SRenderer.h"
 #include "Renderable.h"

@@ -2,48 +2,48 @@
 #ifndef SDL2_SDLPP_H
 #define SDL2_SDLPP_H
 
-#include "base/SDLLog.h"
-
 #include <SDL.h>
 
-#include "base/SDLEnvironment.h"
+#include "common/SDLLog.h"
+
+#include "common/SDLEnvironment.h"
 // class SDL;
 
-#include "base/Math.h"
+#include "common/Math.h"
 
-#include "base/Point.h"
+#include "common/Point.h"
 // struct PointI;
 // struct PointF;
 
-#include "base/Rect.h"
+#include "common/Rect.h"
 
-#include "base/Scale.h"
+#include "common/Scale.h"
 // struct Scale;
 
-#include "base/SDLDisplay.h"
+#include "common/SDLDisplay.h"
 // class Display;
 
-#include "base/SDLWindow.h"
+#include "common/SDLWindow.h"
 // class SDLWindow;
 
-#include "base/SDLRenderer.h"
+#include "common/SDLRenderer.h"
 // class SDLRenderer;
 
-#include "base/SDLTexture.h"
+#include "common/SDLTexture.h"
 // class SDLTexture;
 
-#include "base/SDLSurface.h"
+#include "common/SDLSurface.h"
 // class SDLSurface;
 
-#include "base/SDLImage.h"
+#include "common/SDLImage.h"
 
-#include "base/SDLTTF.h"
+#include "common/SDLTTF.h"
 // class Font;
 
-#include "base/SDLAudio.h"
+#include "common/SDLAudio.h"
 // class AudioDrivers
 
-#include "base/SDLMixer.h"
+#include "common/SDLMixer.h"
 // class SDLMixer;
 // class MixChunk;
 // class MixChannel;
@@ -51,9 +51,9 @@
 // class MixMusic;
 // class MixMusicManager;
 
-#include "base/SDLPixels.h"
+#include "common/SDLPixels.h"
 
-#include "base/Time.h"
+#include "common/Time.h"
 // class Timer;
 
 #include "SWindow.h"

@@ -2,7 +2,7 @@
 #ifndef SDL2PP_SRENDERER_H_
 #define SDL2PP_SRENDERER_H_
 
-#include "base/SDLRenderer.h"
+#include "common/SDLRenderer.h"
 
 namespace sdlpp {
 

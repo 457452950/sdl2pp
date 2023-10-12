@@ -8,9 +8,9 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 
-#include "base/SDLWindow.h"
-#include "base/Time.h"
-#include "base/SDLLog.h"
+#include "common/SDLWindow.h"
+#include "common/Time.h"
+#include "common/SDLLog.h"
 #include "SRenderer.h"
 #include "STexture.h"
 
