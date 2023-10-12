@@ -2,8 +2,6 @@
 #ifndef SDL2PP_GAME_WINDOW_H_
 #define SDL2PP_GAME_WINDOW_H_
 
-// #include <fmt/format.h>
-
 #include "sdl2pp/SDLpp.h"
 #include "sdl2pp/STexture.h"
 #include "GOLMap.h"

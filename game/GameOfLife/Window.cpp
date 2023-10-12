@@ -30,7 +30,7 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     for(int h = 1; h < (data.size() - 1); ++h) {
         for(int w = 1; w < (data[h].size() - 1); ++w) {
             if(data[h][w])
-                render->DrawFillRect(SDL_FRect{pos.x + (w * 10), pos.y + (h * 10), 9, 9});
+                render->DrawFillRect(sdlpp::RectF{pos.x + (w * 10), pos.y + (h * 10), 9, 9});
         }
     }
 
