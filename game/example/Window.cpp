@@ -91,10 +91,10 @@ Window::Window() {
     man_surface->SetColorKey(true, {0, 255, 255});
 
     auto man_texture = render->CreateTextureFromSurface(man_surface);
-    animation.AddFrame(man_texture, {0, 0, 64, 205});
-    animation.AddFrame(man_texture, {64, 0, 64, 205});
-    animation.AddFrame(man_texture, {128, 0, 64, 205});
-    animation.AddFrame(man_texture, {192, 0, 64, 205});
+    animation.AddFrame(man_texture, sdlpp::RectI{0, 0, 64, 205});
+    animation.AddFrame(man_texture, sdlpp::RectI{64, 0, 64, 205});
+    animation.AddFrame(man_texture, sdlpp::RectI{128, 0, 64, 205});
+    animation.AddFrame(man_texture, sdlpp::RectI{192, 0, 64, 205});
 
     animation.MoveTo({100, 100});
 
@@ -127,7 +127,7 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
 
     texture_image2_->Render(renderer, {80, 80}, 0, {1, 1});
 
-    sdlpp::RectI rect = {x, y, iW, iH};
+    sdlpp::RectI rect = sdlpp::RectI{x, y, iW, iH};
     this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
 
     animation.Render(renderer, view_pos, view_angle, {1, 1});
