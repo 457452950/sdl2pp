@@ -4,6 +4,8 @@
 
 #include <SDL_rect.h>
 
+#include "Math.h"
+
 namespace sdlpp {
 
 struct PointI : public SDL_Point {

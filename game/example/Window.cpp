@@ -87,6 +87,7 @@ Window::Window() {
     }
 
     auto man_surface = sdlpp::IMG_LoadSurfaceFromFile(R"(H:\Code\CLion\sdl2pp\demo\foo.png)");
+    man_surface      = sdlpp::ConvertSurface(man_surface, *this->GetPixelFormat());
     man_surface->SetColorKey(true, {0, 255, 255});
 
     auto man_texture = render->CreateTextureFromSurface(man_surface);
@@ -97,7 +98,7 @@ Window::Window() {
 
     animation.MoveTo({100, 100});
 
-    this->SetFps(1000);
+    //    this->SetFps(1000);
     //    this->SetPhysicPerS(30);
 
     //    this->SetSize({1200, 800});
@@ -131,7 +132,7 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
 
     animation.Render(renderer, view_pos, view_angle, {1, 1});
 
-    this->SetResizeable(true);
+    //    this->SetResizeable(true);
 }
 
 void Window::Tick(double_t tick_ms) {

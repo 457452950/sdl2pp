@@ -16,7 +16,11 @@ auto MakeUnique(SDL_Surface *&&surface) -> std::unique_ptr<SDL_Surface, decltype
 
 class SDLSurface;
 
+
+// Copy an existing surface to a new surface of the specified format.
 std::shared_ptr<SDLSurface> ConvertSurface(std::shared_ptr<SDLSurface> src, const SDL_PixelFormat &fmt);
+// Copy an existing surface to a new surface of the specified format.
+std::shared_ptr<SDLSurface> ConvertSurface(std::shared_ptr<SDLSurface> src, uint32_t pixel_format_enum);
 
 class SDLSurface {
 public:

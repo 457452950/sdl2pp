@@ -119,7 +119,9 @@ public:
     // SDL_GL_GetDrawableSize
     // SDL_GL_SwapWindow
 
-    const SDL_PixelFormat *GetPixelFormat() { return SDL_GetWindowSurface(window_)->format; }
+    const SDL_PixelFormat *GetPixelFormat() const { return SDL_GetWindowSurface(window_)->format; }
+    SDL_PixelFormat       *GetPixelFormat() { return SDL_GetWindowSurface(window_)->format; }
+    const Uint32           GetPixelFormatEnum() const { return SDL_GetWindowPixelFormat(window_); }
 
     void SetBordered(bool bordered) { SDL_SetWindowBordered(window_, bordered ? SDL_TRUE : SDL_FALSE); }
 
