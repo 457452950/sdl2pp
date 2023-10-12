@@ -25,9 +25,9 @@ public:
     using Flags   = SDL_WindowFlags;
     using EventID = SDL_WindowEventID;
 
-    static std::shared_ptr<SDLWindow> Create(SDL_Point        size,
+    static std::shared_ptr<SDLWindow> Create(PointI           size,
                                              std::string_view title = "",
-                                             SDL_Point        pos = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
+                                             PointI           pos = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
                                              uint32_t         flags = 0) {
         return std::shared_ptr<SDLWindow>(new SDLWindow(size, title, pos, flags));
     };
@@ -52,13 +52,13 @@ public:
 
     void SetTitle(std::string_view title) { SDL_SetWindowTitle(window_, title.data()); }
 
-    SDL_Point GetPosition() {
-        SDL_Point pos;
+    PointI GetPosition() {
+        PointI pos;
         SDL_GetWindowPosition(window_, &pos.x, &pos.y);
         return pos;
     }
 
-    void SetPosition(SDL_Point pos) { SDL_SetWindowPosition(window_, pos.x, pos.y); }
+    void SetPosition(PointI pos) { SDL_SetWindowPosition(window_, pos.x, pos.y); }
 
     int GetWidth() const {
         int w;
@@ -78,7 +78,7 @@ public:
         return {w, h};
     }
 
-    void SetSize(SDL_Point size) { SDL_SetWindowSize(window_, size.x, size.y); }
+    void SetSize(PointI size) { SDL_SetWindowSize(window_, size.x, size.y); }
 
     // future
     // SDL_SetWindowDisplayMode
@@ -179,9 +179,9 @@ public:
     SDLWindow &operator=(SDLWindow &&) = default;
 
 protected:
-    explicit SDLWindow(SDL_Point        size,
+    explicit SDLWindow(PointI           size,
                        std::string_view title = "",
-                       SDL_Point        pos   = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
+                       PointI           pos   = {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED},
                        uint32_t         flags = 0);
 
     explicit SDLWindow(SDL_Window *&&window) : window_(window){};

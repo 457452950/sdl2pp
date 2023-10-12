@@ -7,6 +7,8 @@
 
 #include <SDL_video.h>
 
+#include "Rect.h"
+
 namespace sdlpp {
 
 class DisplayInfo {
@@ -37,16 +39,16 @@ public:
 
     const std::vector<SDL_DisplayMode> &GetSupportedModes() const { return supported_modes_; }
 
-    const SDL_Rect &GetTotalBounds() const { return total_bounds_; }
+    const RectI &GetTotalBounds() const { return total_bounds_; }
 
-    const SDL_Rect &GetUsableBounds() const { return usable_bounds_; }
+    const RectI &GetUsableBounds() const { return usable_bounds_; }
 
 private:
     int                          index_{};
     std::string                  name_{};
     SDL_DisplayMode              mode_{};
-    SDL_Rect                     total_bounds_{};
-    SDL_Rect                     usable_bounds_{};
+    RectI                        total_bounds_{};
+    RectI                        usable_bounds_{};
     std::vector<SDL_DisplayMode> supported_modes_{};
 };
 

@@ -15,6 +15,8 @@
 // struct PointI;
 // struct PointF;
 
+#include "base/Rect.h"
+
 #include "base/Scale.h"
 // struct Scale;
 

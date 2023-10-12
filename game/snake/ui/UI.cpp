@@ -38,7 +38,8 @@ void UI::Render(std::shared_ptr<sdlpp::SRenderer> renderer) {
 
 void UI::render(std::shared_ptr<sdlpp::SRenderer> renderer) {
     // draw outline rect
-    renderer->DrawRect(SDL_Rect{distance_, distance_, render_view_.w - 2 * distance_, render_view_.h - 2 * distance_});
+    renderer->DrawRect(
+            sdlpp::RectI{distance_, distance_, render_view_.w - 2 * distance_, render_view_.h - 2 * distance_});
 
     // render title
     this->title_->Render(renderer);
@@ -101,7 +102,7 @@ bool UI::InitHelpInfo(std::shared_ptr<sdlpp::SRenderer> renderer) {
 }
 
 void UI::Resize(int new_w, int new_h) {
-    this->render_view_ = {new_w - 200, 0, 200, new_h};
+    this->render_view_ = sdlpp::RectI{new_w - 200, 0, 200, new_h};
 
     // move title to w_center
     auto w_center  = 200 / 2;

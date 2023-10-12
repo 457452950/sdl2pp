@@ -9,12 +9,6 @@
 
 namespace sdlpp {
 
-struct LineI {
-    PointI start;
-    PointI end;
-};
-
-
 struct RectI : public SDL_Rect {
 public:
     explicit RectI(int _x = 0, int _y = 0, int _w = 0, int _h = 0) : SDL_Rect{_x, _y, _w, _h} {}
@@ -65,6 +59,8 @@ public:
         SDL_UnionRect(this, &other, &result);
         return result;
     }
+
+    PointI Center() const { return {this->x + this->w / 2, this->y + this->h / 2}; }
 
     static RectI EnclosePoints(std::vector<PointI> points, const RectI *range = nullptr) {
         if(points.empty()) {

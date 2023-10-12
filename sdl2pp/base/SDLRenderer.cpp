@@ -27,17 +27,17 @@ bool SDLRenderer::SetRenderTarget(std::shared_ptr<SDLTexture> texture) {
     return SDL_SetRenderTarget(this->renderer_, texture->Get()) == 0;
 }
 
-bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect, const SDL_Rect *dst_rect) {
+bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture, const RectI *src_rect, const RectI *dst_rect) {
     return SDL_RenderCopy(renderer_, texture->Get(), src_rect, dst_rect) == 0;
 }
 
-bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect, const SDL_FRect *dst_rect) {
+bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture, const RectI *src_rect, const RectF *dst_rect) {
     return SDL_RenderCopyF(renderer_, texture->Get(), src_rect, dst_rect) == 0;
 }
 
 bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture,
-                         const SDL_Rect             *src_rect,
-                         const SDL_Rect             *dst_rect,
+                         const RectI                *src_rect,
+                         const RectI                *dst_rect,
                          double                      angle,
                          const PointI               &center,
                          Flip                        flip) {
@@ -45,8 +45,8 @@ bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture,
 }
 
 bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture,
-                         const SDL_Rect             *src_rect,
-                         const SDL_FRect            *dst_rect,
+                         const RectI                *src_rect,
+                         const RectF                *dst_rect,
                          double                      angle,
                          const PointF               &center,
                          Flip                        flip) {

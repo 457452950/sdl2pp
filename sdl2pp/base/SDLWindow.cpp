@@ -9,7 +9,7 @@ std::shared_ptr<SDLRenderer> SDLWindow::CreateRender(uint32_t flags, int index) 
     return SDLRenderer::Create(SDL_CreateRenderer(this->Get(), index, flags));
 }
 
-SDLWindow::SDLWindow(SDL_Point size, std::string_view title, SDL_Point pos, uint32_t flags) {
+SDLWindow::SDLWindow(PointI size, std::string_view title, PointI pos, uint32_t flags) {
     window_ = SDL_CreateWindow(title.data(), pos.x, pos.y, size.x, size.y, flags);
 
     if(!window_) {

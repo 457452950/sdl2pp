@@ -8,6 +8,9 @@
 #include <SDL_surface.h>
 #include <SDL_image.h>
 
+#include "Point.h"
+#include "Rect.h"
+
 namespace sdlpp {
 
 std::shared_ptr<SDL_Surface> MakeShared(SDL_Surface *&&surface);
@@ -50,9 +53,17 @@ public:
 
     std::shared_ptr<SDLSurface> Copy();
 
-    bool BlitCopy(std::shared_ptr<SDLSurface> dst, const SDL_Rect *src_rect = nullptr, SDL_Point dst_point = {0, 0});
+    bool BlitCopy(std::shared_ptr<SDLSurface> dst, const RectI *src_rect = nullptr, const PointI &dst_point = {0, 0});
 
-    bool BlitScaled(std::shared_ptr<SDLSurface> dst, const SDL_Rect *src_rect = nullptr, SDL_Rect *dst_rect = nullptr);
+    /**
+     * Use this function to perform a scaled surface copy to a destination surface.
+     * @param dst      the SDL_Surface structure that is the blit target
+     * @param src_rect the SDL_Rect structure representing the rectangle to be copied,or NULL to copy the entire surface
+     * @param dst_rect the SDL_Rect structure representing the rectangle that is copied into, or NULL to copy into the
+     *                  entire surface
+     * @return
+     */
+    bool BlitScaled(std::shared_ptr<SDLSurface> dst, const RectI *src_rect = nullptr, RectI *dst_rect = nullptr);
 
     /**
      * 设置指定颜色透明，多次调用覆盖，不叠加

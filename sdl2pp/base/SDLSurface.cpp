@@ -27,12 +27,12 @@ std::shared_ptr<SDLSurface> SDLSurface::Create(SDL_Surface *&&surface) {
     return std::shared_ptr<SDLSurface>(new SDLSurface(std::move(surface)));
 }
 
-bool SDLSurface::BlitCopy(std::shared_ptr<SDLSurface> dst, const SDL_Rect *src_rect, SDL_Point dst_point) {
+bool SDLSurface::BlitCopy(std::shared_ptr<SDLSurface> dst, const RectI *src_rect, const PointI &dst_point) {
     SDL_Rect dist_rect = {dst_point.x, dst_point.y, 0, 0};
     return SDL_BlitSurface(surface_, src_rect, dst->Get(), &dist_rect) == 0;
 }
 
-bool SDLSurface::BlitScaled(std::shared_ptr<SDLSurface> dst, const SDL_Rect *src_rect, SDL_Rect *dst_rect) {
+bool SDLSurface::BlitScaled(std::shared_ptr<SDLSurface> dst, const RectI *src_rect, RectI *dst_rect) {
     return SDL_BlitScaled(surface_, src_rect, dst->Get(), dst_rect) == 0;
 }
 

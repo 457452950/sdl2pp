@@ -8,6 +8,7 @@
 #include <SDL_render.h>
 
 #include "Point.h"
+#include "Rect.h"
 
 namespace sdlpp {
 
@@ -72,11 +73,11 @@ public:
     // SDL_SetRenderTarget
     // SDL_GetRenderTarget
 
-    bool SetViewport(const SDL_Rect *rect = nullptr) { return SDL_RenderSetViewport(this->renderer_, rect) == 0; }
+    bool SetViewport(const RectI *rect = nullptr) { return SDL_RenderSetViewport(this->renderer_, rect) == 0; }
 
-    bool SetViewport(const SDL_Rect &rect) { return SetViewport(&rect); }
+    bool SetViewport(const RectI &rect) { return SetViewport(&rect); }
 
-    void GetViewport(SDL_Rect &rect) const { SDL_RenderGetViewport(this->renderer_, &rect); }
+    void GetViewport(RectI &rect) const { SDL_RenderGetViewport(this->renderer_, &rect); }
 
     // SDL_RenderGetViewport
     // SDL_RenderSetClipRect
@@ -87,6 +88,7 @@ public:
 
     bool GetRendererInfo(SDL_RendererInfo *info) const { return SDL_GetRendererInfo(renderer_, info) == 0; }
 
+    // w, h
     std::tuple<int, int> GetOutputSize() const {
         int w, h;
         if(SDL_GetRendererOutputSize(renderer_, &w, &h) == 0)
@@ -96,6 +98,7 @@ public:
 
     bool IsRendererTargetSupported() { return SDL_RenderTargetSupported(renderer_) == SDL_TRUE; }
 
+    // w, h
     std::tuple<int, int> GetLogicalSize() const {
         int w, h;
         SDL_RenderGetLogicalSize(renderer_, &w, &h);
@@ -150,30 +153,29 @@ public:
         return SDL_RenderDrawLines(renderer_, points.data(), points.size()) == 0;
     }
 
-    bool DrawRect(const SDL_Rect &rect) { return SDL_RenderDrawRect(renderer_, &rect) == 0; }
+    bool DrawRect(const RectI &rect) { return SDL_RenderDrawRect(renderer_, &rect) == 0; }
 
-    bool DrawRects(const SDL_Rect *rects, int count) { return SDL_RenderDrawRects(renderer_, rects, count) == 0; }
+    bool DrawRects(const RectI *rects, int count) { return SDL_RenderDrawRects(renderer_, rects, count) == 0; }
 
-    bool FillRect(const SDL_Rect &rect) { return SDL_RenderFillRect(renderer_, &rect) == 0; }
+    bool FillRect(const RectI &rect) { return SDL_RenderFillRect(renderer_, &rect) == 0; }
 
-    bool FillRects(const SDL_Rect *rects, int count) { return SDL_RenderFillRects(renderer_, rects, count) == 0; }
+    bool FillRects(const RectI *rects, int count) { return SDL_RenderFillRects(renderer_, rects, count) == 0; }
 
 
-    bool
-    Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect = nullptr, const SDL_Rect *dst_rect = nullptr);
+    bool Update(std::shared_ptr<SDLTexture> texture, const RectI *src_rect = nullptr, const RectI *dst_rect = nullptr);
 
-    bool Update(std::shared_ptr<SDLTexture> texture, const SDL_Rect *src_rect, const SDL_FRect *dst_rect);
+    bool Update(std::shared_ptr<SDLTexture> texture, const RectI *src_rect, const RectF *dst_rect);
 
     bool Update(std::shared_ptr<SDLTexture> texture,
-                const SDL_Rect             *src_rect,
-                const SDL_Rect             *dst_rect,
+                const RectI                *src_rect,
+                const RectI                *dst_rect,
                 double                      angle,
                 const PointI               &center,
                 Flip                        flip);
 
     bool Update(std::shared_ptr<SDLTexture> texture,
-                const SDL_Rect             *src_rect,
-                const SDL_FRect            *dst_rect,
+                const RectI                *src_rect,
+                const RectF                *dst_rect,
                 double                      angle,
                 const PointF               &center,
                 Flip                        flip);
@@ -193,13 +195,13 @@ public:
         return SDL_RenderDrawLinesF(renderer_, points.data(), points.size()) == 0;
     }
 
-    bool DrawRect(const SDL_FRect &rect) { return SDL_RenderDrawRectF(renderer_, &rect) == 0; }
+    bool DrawRect(const RectF &rect) { return SDL_RenderDrawRectF(renderer_, &rect) == 0; }
 
-    bool DrawRects(const SDL_FRect *rects, int count) { return SDL_RenderDrawRectsF(renderer_, rects, count) == 0; }
+    bool DrawRects(const RectF *rects, int count) { return SDL_RenderDrawRectsF(renderer_, rects, count) == 0; }
 
-    bool DrawFillRect(const SDL_FRect &rect) { return SDL_RenderFillRectF(renderer_, &rect) == 0; }
+    bool DrawFillRect(const RectF &rect) { return SDL_RenderFillRectF(renderer_, &rect) == 0; }
 
-    bool DrawFillRects(const SDL_FRect *rects, int count) { return SDL_RenderFillRectsF(renderer_, rects, count) == 0; }
+    bool DrawFillRects(const RectF *rects, int count) { return SDL_RenderFillRectsF(renderer_, rects, count) == 0; }
 
     // SDL_RenderGeometry
     // SDL_RenderGeometryRaw

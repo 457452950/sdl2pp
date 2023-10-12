@@ -127,7 +127,7 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
 
     texture_image2_->Render(renderer, {80, 80}, 0, {1, 1});
 
-    SDL_Rect rect = {x, y, iW, iH};
+    sdlpp::RectI rect = {x, y, iW, iH};
     this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
 
     animation.Render(renderer, view_pos, view_angle, {1, 1});

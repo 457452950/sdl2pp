@@ -19,7 +19,7 @@ namespace sdlpp {
 
 
 class SWindow : public SDLWindow {
-    static const SDL_Point DEFAULT_SIZE;
+    static const PointI DEFAULT_SIZE;
 
 public:
     SWindow() : SDLWindow(DEFAULT_SIZE) { this->SetPhysicPerS(60); }

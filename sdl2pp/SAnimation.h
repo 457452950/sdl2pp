@@ -16,7 +16,7 @@ public:
     ~SAnimation() = default;
 
     void AddFrame(std::shared_ptr<SDLTexture> texture) { this->textures_vec_.emplace_back(texture, nullptr); }
-    void AddFrame(std::shared_ptr<SDLTexture> texture, const SDL_Rect &rect) {
+    void AddFrame(std::shared_ptr<SDLTexture> texture, const RectI &rect) {
         this->textures_vec_.emplace_back(texture, &rect);
     }
     void AddFrame(const STexture &texture) { this->textures_vec_.push_back(texture); }

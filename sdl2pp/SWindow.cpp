@@ -8,7 +8,7 @@
 
 namespace sdlpp {
 
-const SDL_Point SWindow::DEFAULT_SIZE = {640, 480};
+const PointI SWindow::DEFAULT_SIZE = {640, 480};
 
 int SWindow::Exec() {
     active_.store(true);

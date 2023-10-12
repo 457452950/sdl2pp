@@ -5,6 +5,7 @@
 #include <SDL_log.h>
 
 #include "base/Math.h"
+#include "base/Rect.h"
 #include "base/SDLTexture.h"
 
 #include "SRenderer.h"
@@ -15,7 +16,7 @@ namespace sdlpp {
 
 class STexture : public Renderable {
 public:
-    explicit STexture(std::shared_ptr<SDLTexture> texture, const SDL_Rect *texture_rect = nullptr) : texture_(texture) {
+    explicit STexture(std::shared_ptr<SDLTexture> texture, const RectI *texture_rect = nullptr) : texture_(texture) {
         if(texture_rect == nullptr) {
             texture_->Query(nullptr, nullptr, &texture_rect_.w, &texture_rect_.h);
         } else {
@@ -44,10 +45,10 @@ public:
 
         Scale real_scale = this->scale_ * scale;
 
-        SDL_FRect dst_size{static_cast<float>(base_pos.x + std::cos(angle_a + angle_b) * r),
-                           static_cast<float>(base_pos.y + std::sin(angle_a + angle_b) * r),
-                           static_cast<float>(static_cast<double>(texture_rect_.w) * real_scale.w),
-                           static_cast<float>(static_cast<double>(texture_rect_.h) * real_scale.h)};
+        RectF dst_size{static_cast<float>(base_pos.x + std::cos(angle_a + angle_b) * r),
+                       static_cast<float>(base_pos.y + std::sin(angle_a + angle_b) * r),
+                       static_cast<float>(static_cast<double>(texture_rect_.w) * real_scale.w),
+                       static_cast<float>(static_cast<double>(texture_rect_.h) * real_scale.h)};
 
         renderer->Update(texture_, &texture_rect_, &dst_size, base_angle + angle_, center_, flip_);
 
@@ -58,7 +59,7 @@ public:
 private:
     std::shared_ptr<SDLTexture> texture_;
 
-    SDL_Rect texture_rect_{};
+    RectI texture_rect_{};
 };
 
 } // namespace sdlpp

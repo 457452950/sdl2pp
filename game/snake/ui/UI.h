@@ -41,8 +41,8 @@ private:
 private:
     UI() = default;
 
-    SDL_Rect render_view_{};
-    int      distance_ = 12;
+    sdlpp::RectI render_view_{};
+    int          distance_ = 12;
 
     std::shared_ptr<sdlpp::STexture>              title_;
     std::vector<std::shared_ptr<sdlpp::STexture>> help_info_;
