@@ -50,39 +50,39 @@ set(ENGINE_NAME "sdl2pp")
 add_library(
         ${ENGINE_NAME}
 
-        sdl2pp/base/SDLLog.h
-        sdl2pp/base/Math.cpp
-        sdl2pp/base/Math.h
-        sdl2pp/base/Point.cpp
-        sdl2pp/base/Point.h
-        sdl2pp/base/Rect.cpp
-        sdl2pp/base/Rect.h
-        sdl2pp/base/Scale.cpp
-        sdl2pp/base/Scale.h
-        sdl2pp/base/SDLEnvironment.h
-        sdl2pp/base/SDLEnvironment.cpp
-        sdl2pp/base/SDLWindow.h
-        sdl2pp/base/SDLWindow.cpp
-        sdl2pp/base/SDLRenderer.h
-        sdl2pp/base/SDLRenderer.cpp
-        sdl2pp/base/SDLDisplay.h
-        sdl2pp/base/SDLDisplay.cpp
-        sdl2pp/base/SDLTexture.cpp
-        sdl2pp/base/SDLTexture.h
-        sdl2pp/base/SDLSurface.cpp
-        sdl2pp/base/SDLSurface.h
-        sdl2pp/base/SDLImage.cpp
-        sdl2pp/base/SDLImage.h
-        sdl2pp/base/SDLPixels.cpp
-        sdl2pp/base/SDLPixels.h
-        sdl2pp/base/SDLTTF.cpp
-        sdl2pp/base/SDLTTF.h
-        sdl2pp/base/Time.cpp
-        sdl2pp/base/Time.h
-        sdl2pp/base/SDLMixer.cpp
-        sdl2pp/base/SDLMixer.h
-        sdl2pp/base/SDLAudio.cpp
-        sdl2pp/base/SDLAudio.h
+        sdl2pp/common/SDLLog.h
+        sdl2pp/common/Math.cpp
+        sdl2pp/common/Math.h
+        sdl2pp/common/Point.cpp
+        sdl2pp/common/Point.h
+        sdl2pp/common/Rect.cpp
+        sdl2pp/common/Rect.h
+        sdl2pp/common/Scale.cpp
+        sdl2pp/common/Scale.h
+        sdl2pp/common/SDLEnvironment.h
+        sdl2pp/common/SDLEnvironment.cpp
+        sdl2pp/common/SDLWindow.h
+        sdl2pp/common/SDLWindow.cpp
+        sdl2pp/common/SDLRenderer.h
+        sdl2pp/common/SDLRenderer.cpp
+        sdl2pp/common/SDLDisplay.h
+        sdl2pp/common/SDLDisplay.cpp
+        sdl2pp/common/SDLTexture.cpp
+        sdl2pp/common/SDLTexture.h
+        sdl2pp/common/SDLSurface.cpp
+        sdl2pp/common/SDLSurface.h
+        sdl2pp/common/SDLImage.cpp
+        sdl2pp/common/SDLImage.h
+        sdl2pp/common/SDLPixels.cpp
+        sdl2pp/common/SDLPixels.h
+        sdl2pp/common/SDLTTF.cpp
+        sdl2pp/common/SDLTTF.h
+        sdl2pp/common/Time.cpp
+        sdl2pp/common/Time.h
+        sdl2pp/common/SDLMixer.cpp
+        sdl2pp/common/SDLMixer.h
+        sdl2pp/common/SDLAudio.cpp
+        sdl2pp/common/SDLAudio.h
 
         sdl2pp/SRenderer.cpp
         sdl2pp/SRenderer.h
