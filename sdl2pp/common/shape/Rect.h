@@ -11,7 +11,8 @@ namespace sdlpp {
 
 struct RectI : public SDL_Rect {
 public:
-    explicit RectI(int _x = 0, int _y = 0, int _w = 0, int _h = 0) : SDL_Rect{_x, _y, _w, _h} {}
+    explicit RectI() : SDL_Rect{} {}
+    RectI(int _x, int _y, int _w, int _h) : SDL_Rect{_x, _y, _w, _h} {}
     ~RectI() = default;
 
     RectI(const RectI &)            = default;
@@ -20,15 +21,15 @@ public:
     RectI &operator=(RectI &&)      = default;
 
     // a point is in the rect or on the edge of the rectangle
-    bool InOrOn(const PointI &point) {
+    bool InOrOn(const PointI &point) const {
         return point.x >= x && point.x <= (x + w) && point.y >= y && point.y <= (y + h);
     }
 
     // a point is in the rect but not on the edge of the rectangle
-    bool In(const PointI &point) { return point.x > x && point.x < (x + w) && point.y > y && point.y < (y + h); }
+    bool In(const PointI &point) const { return point.x > x && point.x < (x + w) && point.y > y && point.y < (y + h); }
 
     // a point is on the edge of the rectangle
-    bool OnTheEdge(const PointI &point) { return InOrOn(point) && !In(point); }
+    bool OnTheEdge(const PointI &point) const { return InOrOn(point) && !In(point); }
 
     bool Empty() const { return w <= 0 || h <= 0; }
 

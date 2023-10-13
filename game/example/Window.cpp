@@ -2,6 +2,11 @@
 
 namespace game {
 
+sdlpp::PointD a{233, 324};
+sdlpp::PointD b{433, 124};
+sdlpp::PointD c{133, 321};
+sdlpp::Circle cir{};
+
 Window::Window() {
     auto render = this->CreateRenderer();
 
@@ -102,6 +107,15 @@ Window::Window() {
     //    this->SetPhysicPerS(30);
 
     //    this->SetSize({1200, 800});
+
+    cir = sdlpp::Circle::EnclosePoints({a, b, c});
+
+    LOG_INF(log::APP,
+            "{} {} {} {} ",
+            cir.r,
+            sdlpp::Distance(a, cir.center),
+            sdlpp::Distance(b, cir.center),
+            sdlpp::Distance(c, cir.center));
 }
 
 void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
@@ -131,6 +145,12 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
 
     animation.Render(renderer, view_pos, view_angle, {1, 1});
+
+    renderer->SetDrawColor({255, 255, 255});
+
+    renderer->DrawLine(sdlpp::PointF(a), sdlpp::PointF(cir.center));
+    renderer->DrawLine(sdlpp::PointF(b), sdlpp::PointF(cir.center));
+    renderer->DrawLine(sdlpp::PointF(c), sdlpp::PointF(cir.center));
 
     //    this->SetResizeable(true);
 }

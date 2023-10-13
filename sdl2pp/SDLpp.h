@@ -17,6 +17,8 @@
 
 #include "common/shape/Rect.h"
 
+#include "common/shape/Circle.h"
+
 #include "common/Scale.h"
 // struct Scale;
 

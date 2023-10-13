@@ -35,5 +35,15 @@ int main(int argc, char *argv[]) {
 #endif
     game::Window window;
 
+    sdlpp::PointI a1{0, 0};
+    sdlpp::PointF a2{6, 7};
+    sdlpp::PointD a3{6, 7};
+
+    sdlpp::PointI a4{90, 47};
+
+    LOG_INF(log::APP, "distance {}", sdlpp::Distance(a1, a3));
+    LOG_INF(log::APP, "distance {}", sdlpp::Distance(a1, a2));
+    LOG_INF(log::APP, "distance {}", sdlpp::Distance(a1, a4));
+
     return window.Exec();
 }

@@ -55,8 +55,6 @@ add_library(
         sdl2pp/common/Math.h
         sdl2pp/common/Point.cpp
         sdl2pp/common/Point.h
-        sdl2pp/common/Rect.cpp
-        sdl2pp/common/Rect.h
         sdl2pp/common/Scale.cpp
         sdl2pp/common/Scale.h
         sdl2pp/common/SDLEnvironment.h
@@ -83,9 +81,11 @@ add_library(
         sdl2pp/common/SDLMixer.h
         sdl2pp/common/SDLAudio.cpp
         sdl2pp/common/SDLAudio.h
-        
+
         sdl2pp/common/shape/Rect.cpp
         sdl2pp/common/shape/Rect.h
+        sdl2pp/common/shape/Circle.cpp
+        sdl2pp/common/shape/Circle.h
 
         sdl2pp/SRenderer.cpp
         sdl2pp/SRenderer.h
