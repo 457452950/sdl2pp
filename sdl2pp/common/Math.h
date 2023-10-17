@@ -21,6 +21,17 @@ namespace sdlpp {
 inline int Compare(float a, float b) { return std::fabs(a - b) < FLT_EPSILON ? 0 : (a > b ? 1 : -1); }
 inline int Compare(double a, double b) { return std::fabs(a - b) < DBL_EPSILON ? 0 : (a > b ? 1 : -1); }
 
+inline double Atan(double y, double x) {
+#ifdef WIN32
+    return std::atan2f(y, x);
+#elif defined(__LINUX__)
+    if(position_.x != 0) {
+        return std::atan(position_.y / position_.x);
+    } else {
+        return M_PI / 2;
+    }
+#endif
+}
 
 } // namespace sdlpp
 

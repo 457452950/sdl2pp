@@ -38,7 +38,7 @@ public:
             return;
         }
 
-        auto angle_a = std::atan2f(position_.y, position_.x);
+        auto angle_a = Atan(position_.y, position_.x);
         auto angle_b = base_angle / 180 * M_PI;
 
         auto r = std::sqrt(position_.x * position_.x + position_.y * position_.y);
