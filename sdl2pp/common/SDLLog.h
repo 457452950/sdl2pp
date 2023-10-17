@@ -5,7 +5,6 @@
 #ifdef WIN32
 #include <Windows.h>
 #endif
-#include <varargs.h>
 #include <thread>
 #include <chrono>
 #include <ctime>

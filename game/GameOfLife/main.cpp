@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     // set log level1
 #ifdef _DEBUG
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
-#elif defined()
+#else
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 #endif
     gol::Window window;
