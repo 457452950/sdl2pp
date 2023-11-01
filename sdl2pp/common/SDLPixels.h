@@ -18,9 +18,9 @@ ColorData MapRGB(const SDL_PixelFormat *pf, SDL_Color color);
 
 ColorData MapRGBA(const SDL_PixelFormat *pf, SDL_Color color);
 
-SDL_Color GetRGB(ColorData pixel, const SDL_PixelFormat *pf, SDL_Color color);
+SDL_Color GetRGB(ColorData pixel, const SDL_PixelFormat *pf);
 
-SDL_Color GetRGBA(ColorData pixel, const SDL_PixelFormat *pf, SDL_Color color);
+SDL_Color GetRGBA(ColorData pixel, const SDL_PixelFormat *pf);
 
 } // namespace sdlpp
 

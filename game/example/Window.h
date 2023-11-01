@@ -139,6 +139,8 @@ private:
     std::shared_ptr<sdlpp::STexture> texture_man_;
     std::shared_ptr<sdlpp::STexture> texture_image_;
     std::shared_ptr<sdlpp::STexture> texture_image2_;
+    std::shared_ptr<sdlpp::STexture> texture_image3_;
+    std::shared_ptr<sdlpp::STexture> texture_image4_;
 
     uint16_t mix = 255;
 

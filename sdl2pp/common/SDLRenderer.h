@@ -43,11 +43,13 @@ class SDLTexture;
 
 class SDLSurface;
 
+// H 水平  V 垂直
+using Flip = SDL_RendererFlip;
+
 class SDLRenderer {
 public:
     using Flags     = SDL_RendererFlags;
     using ScaleMode = SDL_ScaleMode;
-    using Flip      = SDL_RendererFlip;
     using BlendMode = SDL_BlendMode;
 
     static std::shared_ptr<SDLRenderer> Create(SDL_Renderer *&&renderer) {

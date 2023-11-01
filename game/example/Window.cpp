@@ -16,22 +16,44 @@ Window::Window() {
         return;
     }
 
-    auto surface_image = sdlpp::IMG_LoadSurfaceFromFile("H:/Resources/cos.jpg");
+    auto surface_image = sdlpp::IMG_LoadSurfaceFromFile("H:/Resources/image/mario.png");
     if(surface_image == nullptr) {
         LOG_ERR(log::APP, "Could not load image: {}", SDL_GetError());
         return;
     }
 
     surface_image = sdlpp::ConvertSurface(surface_image, *this->GetPixelFormat());
+    auto t2       = surface_image->Flip(sdlpp::Flip ::SDL_FLIP_HORIZONTAL);
+    auto t3       = surface_image->Flip(sdlpp::Flip ::SDL_FLIP_VERTICAL);
+    auto t4       = surface_image->Flip(sdlpp::Flip ::SDL_FLIP_VERTICAL | sdlpp::Flip::SDL_FLIP_HORIZONTAL);
 
     auto texture = this->GetRenderer()->CreateTextureFromSurface(surface_image);
     if(texture == nullptr) {
         LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
         SDL_assert(texture);
     }
+    texture_image_ = std::make_shared<sdlpp::STexture>(texture);
 
-    texture_image_  = std::make_shared<sdlpp::STexture>(texture);
+    texture = this->GetRenderer()->CreateTextureFromSurface(t2);
+    if(texture == nullptr) {
+        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
+        SDL_assert(texture);
+    }
     texture_image2_ = std::make_shared<sdlpp::STexture>(texture);
+
+    texture = this->GetRenderer()->CreateTextureFromSurface(t3);
+    if(texture == nullptr) {
+        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
+        SDL_assert(texture);
+    }
+    texture_image3_ = std::make_shared<sdlpp::STexture>(texture);
+
+    texture = this->GetRenderer()->CreateTextureFromSurface(t4);
+    if(texture == nullptr) {
+        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
+        SDL_assert(texture);
+    }
+    texture_image4_ = std::make_shared<sdlpp::STexture>(texture);
 
     auto surface_image2 = sdlpp::IMG_LoadSurfaceFromFile("H:/Resources/stand.png");
     if(surface_image2 == nullptr) {
@@ -55,14 +77,18 @@ Window::Window() {
 
     //    this->ViewMoveTo({40, 0});
 
-    texture_image_->SetScale({this->GetWidth() / (double)texture_image_->GetTexture()->GetWidth(),
-                              this->GetHeight() / (double)texture_image_->GetTexture()->GetHeight()});
+    texture_image_->SetScale({this->GetWidth() / (double)texture_image_->GetTexture()->GetWidth() / 2,
+                              this->GetHeight() / (double)texture_image_->GetTexture()->GetHeight() / 2});
+    texture_image2_->SetScale({this->GetWidth() / (double)texture_image_->GetTexture()->GetWidth() / 2,
+                               this->GetHeight() / (double)texture_image_->GetTexture()->GetHeight() / 2});
+    texture_image3_->SetScale({this->GetWidth() / (double)texture_image_->GetTexture()->GetWidth() / 2,
+                               this->GetHeight() / (double)texture_image_->GetTexture()->GetHeight() / 2});
+    texture_image4_->SetScale({this->GetWidth() / (double)texture_image_->GetTexture()->GetWidth() / 2,
+                               this->GetHeight() / (double)texture_image_->GetTexture()->GetHeight() / 2});
 
-    texture_image2_->MoveTo({80, 80});
-    texture_image2_->SetRotation(45);
-    texture_image2_->SetRotationCenter({50, 50});
-    texture_image2_->SetScale({100.0f / (double)texture_image2_->GetTexture()->GetWidth(),
-                               100.0f / (double)texture_image2_->GetTexture()->GetHeight()});
+    texture_image2_->MoveTo({static_cast<float>(this->GetWidth() / 2), 0});
+    texture_image3_->MoveTo({0, static_cast<float>(this->GetHeight() / 2)});
+    texture_image4_->MoveTo({static_cast<float>(this->GetWidth() / 2), static_cast<float>(this->GetHeight() / 2)});
 
     music = sdlpp::MixMusic::Load("H:/Code/CLion/sdl2pp/demo/beat.wav");
     if(!music->Valid()) {
@@ -123,7 +149,7 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     auto        s    = SDL_GetMouseState(&m_x, &m_y);
     std::string text = fmt::format("{}, {} : {}", s, m_x, m_y);
 
-    SDL_Color color     = {255, 255, 255, 200};
+    SDL_Color color     = {170, 170, 30, 0};
     auto      txt_image = font_->RenderText_Solid(text, color);
     if(txt_image == nullptr) {
         LOG_ERR(log::APP, "render text error {}", SDL_GetError());
@@ -137,10 +163,6 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
 
     auto renderer = this->GetRenderer();
 
-    texture_image_->Render(renderer, view_pos, view_angle, {1, 1});
-
-    texture_image2_->Render(renderer, {80, 80}, 0, {1, 1});
-
     sdlpp::RectI rect = sdlpp::RectI{x, y, iW, iH};
     this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
 
@@ -151,6 +173,11 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     renderer->DrawLine(sdlpp::PointF(a), sdlpp::PointF(cir.center));
     renderer->DrawLine(sdlpp::PointF(b), sdlpp::PointF(cir.center));
     renderer->DrawLine(sdlpp::PointF(c), sdlpp::PointF(cir.center));
+
+    texture_image_->Render(renderer, view_pos, view_angle, {1, 1});
+    texture_image2_->Render(renderer, view_pos, view_angle, {1, 1});
+    texture_image3_->Render(renderer, view_pos, view_angle, {1, 1});
+    texture_image4_->Render(renderer, view_pos, view_angle, {1, 1});
 
     //    this->SetResizeable(true);
 }

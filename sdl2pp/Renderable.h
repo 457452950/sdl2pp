@@ -38,7 +38,7 @@ public:
     PointF GetRotationCenter() const { return center_; }
 
     // 翻转
-    void Flip(SDLRenderer::Flip flip) { flip_ = flip; }
+    void Flip(Flip flip) { flip_ = flip; }
 
     virtual void Render(std::shared_ptr<SRenderer> renderer, PointF base_pos, double base_angle, Scale scale) = 0;
 
@@ -46,11 +46,11 @@ public:
 protected:
     bool enable_{true};
 
-    PointF            position_{0, 0};
-    double            angle_{0}; // 角度制
-    Scale             scale_;
-    PointF            center_{0, 0};
-    SDLRenderer::Flip flip_{SDLRenderer::Flip::SDL_FLIP_NONE};
+    PointF      position_{0, 0};
+    double      angle_{0}; // 角度制
+    Scale       scale_;
+    PointF      center_{0, 0};
+    sdlpp::Flip flip_{Flip::SDL_FLIP_NONE};
 };
 
 } // namespace sdlpp
