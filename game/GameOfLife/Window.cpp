@@ -20,7 +20,7 @@ Window::Window() {
     map_.AddCell(15, 14);
 }
 
-void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
+void Window::RenderProcess() {
     auto          render = this->GetRenderer();
     sdlpp::PointF pos{0, 0};
 

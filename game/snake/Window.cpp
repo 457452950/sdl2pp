@@ -19,9 +19,7 @@ Window::Window() {
     this->SetResizeable(true);
 }
 
-void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
-    ui::UI::GetInstance()->Render(this->GetRenderer());
-}
+void Window::RenderProcess() { ui::UI::GetInstance()->Render(this->GetRenderer()); }
 
 Window::~Window() { ui::UI::GetInstance()->Clear(); }
 

@@ -14,11 +14,7 @@ int SWindow::Exec() {
     active_.store(true);
 
     // first render
-    if(renderer_) {
-        renderer_->Clear();
-        this->RenderProcess({-view_pos_.x, -view_pos_.y}, 0.0f);
-        renderer_->Flush();
-    }
+    this->RenderProcess();
 
     current_physic_time_ = current_time_ = sdlpp::GetPerformanceCounter();
 
@@ -101,11 +97,7 @@ int SWindow::Exec() {
             CheckPhysicFrame();
         }
 
-        if(renderer_) {
-            renderer_->Clear();
-            this->RenderProcess({-view_pos_.x, -view_pos_.y}, 0.0f);
-            renderer_->Flush();
-        }
+        this->RenderProcess();
     }
 
     return 0;

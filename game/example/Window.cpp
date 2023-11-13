@@ -144,7 +144,9 @@ Window::Window() {
             sdlpp::Distance(c, cir.center));
 }
 
-void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
+void Window::RenderProcess() {
+    this->GetRenderer()->Clear();
+
     int         m_x, m_y;
     auto        s    = SDL_GetMouseState(&m_x, &m_y);
     std::string text = fmt::format("{}, {} : {}", s, m_x, m_y);
@@ -166,7 +168,7 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     sdlpp::RectI rect = sdlpp::RectI{x, y, iW, iH};
     this->GetRenderer()->Update(this->GetRenderer()->CreateTextureFromSurface(txt_image), nullptr, &rect);
 
-    animation.Render(renderer, view_pos, view_angle, {1, 1});
+    animation.Render(renderer, {}, 0, {1, 1});
 
     renderer->SetDrawColor({255, 255, 255});
 
@@ -174,12 +176,13 @@ void Window::RenderProcess(sdlpp::PointF view_pos, double view_angle) {
     renderer->DrawLine(sdlpp::PointF(b), sdlpp::PointF(cir.center));
     renderer->DrawLine(sdlpp::PointF(c), sdlpp::PointF(cir.center));
 
-    texture_image_->Render(renderer, view_pos, view_angle, {1, 1});
-    texture_image2_->Render(renderer, view_pos, view_angle, {1, 1});
-    texture_image3_->Render(renderer, view_pos, view_angle, {1, 1});
-    texture_image4_->Render(renderer, view_pos, view_angle, {1, 1});
+    texture_image_->Render(renderer, {}, 0, {1, 1});
+    texture_image2_->Render(renderer, {}, 0, {1, 1});
+    texture_image3_->Render(renderer, {}, 0, {1, 1});
+    texture_image4_->Render(renderer, {}, 0, {1, 1});
 
     //    this->SetResizeable(true);
+    this->GetRenderer()->Flush();
 }
 
 void Window::Tick(double_t tick_ms) {

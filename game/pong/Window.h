@@ -25,7 +25,7 @@ public:
 
     int MouseWheelEvent(const SDL_MouseWheelEvent &event) override { return SWindow::MouseWheelEvent(event); }
 
-    void RenderProcess(sdlpp::PointF view_pos, double view_angle) override;
+    void RenderProcess() override;
 
     void Tick(double tick_ms) override;
 

@@ -20,6 +20,18 @@
     {
       "name": "fmt",
       "version>=": "10.0.0"
+    },
+    {
+      "name": "opengl"
+    },
+    {
+      "name": "glfw3"
+    },
+    {
+      "name": "eigen3"
+    },
+    {
+      "name": "glm"
     }
   ],
   "builtin-baseline": "57fee154cc4068542740b4b5775343d9fd83413e",

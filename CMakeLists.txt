@@ -32,8 +32,11 @@ else ()
     message(FATAL_ERROR "SDL2_mixer not found")
 endif ()
 
+find_package(Eigen3 CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-
+find_package(glfw3 CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(OpenGL REQUIRED COMPONENTS OpenGL) # v3.10
 
 include_directories(
         ${SDL2_INCLUDE_DIRS}
@@ -42,13 +45,17 @@ include_directories(
         ${SDL2_MIXER_INCLUDE_DIRS}
         ${FMT_INCLUDE_DIRS}
         "./"
+        "thirdparty/glad/include"
 )
 
+set(GLAD_SOURCE "thirdparty/glad/src/glad.c")
 
-set(ENGINE_NAME "sdl2pp")
+set(ENGINE_NAME ${PROJECT_NAME})
 
 add_library(
         ${ENGINE_NAME}
+
+        ${GLAD_SOURCE}
 
         sdl2pp/common/SDLLog.h
         sdl2pp/common/Math.cpp
@@ -109,7 +116,12 @@ target_link_libraries(
         $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
         $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
         fmt::fmt
+        Eigen3::Eigen
+        glfw
+        glm::glm
+        ${OPENGL_LIBRARIES}
 )
 
-
 add_subdirectory(game)
+
+add_subdirectory(demo)

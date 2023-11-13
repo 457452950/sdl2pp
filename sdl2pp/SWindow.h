@@ -22,7 +22,11 @@ class SWindow : public SDLWindow {
     static const PointI DEFAULT_SIZE;
 
 public:
-    SWindow() : SDLWindow(DEFAULT_SIZE) { this->SetPhysicPerS(60); }
+    SWindow() : SWindow(0) {}
+    explicit SWindow(uint32_t flag) :
+        SDLWindow(DEFAULT_SIZE, "", {SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED}, flag) {
+        this->SetPhysicPerS(60);
+    }
 
     ~SWindow() override {}
 
@@ -55,13 +59,9 @@ public:
 
     virtual int MouseWheelEvent(const SDL_MouseWheelEvent &event) { return Ignore; }
 
-    virtual void RenderProcess(PointF view_pos, double view_angle) {}
+    virtual void RenderProcess() {}
 
     virtual void Tick(double tick_ms) {}
-
-    PointF GetCameraViewPos() const { return view_pos_; }
-    void   CameraViewMoveTo(const PointF &pos) { view_pos_ = pos; }
-    void   CameraViewMove(const PointF &delta) { this->view_pos_ += delta; }
 
     void SetFps(int fps) {
         if(fps == -1) {
@@ -91,7 +91,6 @@ private:
     std::atomic_bool           active_;
     SDL_Event                  event_{};
     std::shared_ptr<SRenderer> renderer_{nullptr};
-    PointF                     view_pos_{0, 0};
 
     uint64_t current_time_{0};
     uint32_t frame_delay_mics_{0};
