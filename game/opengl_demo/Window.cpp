@@ -5,10 +5,6 @@
 namespace game {
 
 std::once_flag glad_init_flag;
-typedef void(APIENTRY *PFNWGLEXTSWAPCONTROLPROC)(int);
-typedef int (*PFNWGLEXTGETSWAPINTERVALPROC)(void);
-PFNWGLEXTSWAPCONTROLPROC     wglSwapIntervalEXT    = nullptr;
-PFNWGLEXTGETSWAPINTERVALPROC wglGetSwapIntervalEXT = nullptr;
 
 Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
     this->SetPhysicPerS(0);
@@ -30,19 +26,10 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
             return;
         }
     });
-    char *extensions = (char *)glGetString(GL_EXTENSIONS);
-
-    wglSwapIntervalEXT    = (PFNWGLEXTSWAPCONTROLPROC)wglGetProcAddress("wglSwapIntervalEXT");
-    wglGetSwapIntervalEXT = (PFNWGLEXTGETSWAPINTERVALPROC)wglGetProcAddress("wglGetSwapIntervalEXT");
-
-    if(wglGetSwapIntervalEXT()) {
-        fmt::print("is vsync .");
-        wglSwapIntervalEXT(0);
-    }
 
     glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 
-    static float vertices[] = {
+    float vertices[] = {
             -0.5f,
             -0.5f,
             0.0f, // left

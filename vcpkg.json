@@ -25,7 +25,7 @@
       "name": "opengl"
     },
     {
-      "name": "glfw3"
+      "name": "imgui"
     },
     {
       "name": "eigen3"

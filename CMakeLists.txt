@@ -34,7 +34,7 @@ endif ()
 
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED COMPONENTS OpenGL) # v3.10
 
@@ -117,11 +117,9 @@ target_link_libraries(
         $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
         fmt::fmt
         Eigen3::Eigen
-        glfw
+        imgui::imgui
         glm::glm
         ${OPENGL_LIBRARIES}
 )
 
 add_subdirectory(game)
-
-add_subdirectory(demo)

@@ -3,7 +3,6 @@
 #define SDL2PP_GAME_WINDOW_H_
 
 #include "glad/glad.h"
-#include "SDL_opengl.h"
 
 #include "sdl2pp/SDLpp.h"
 #include "sdl2pp/STexture.h"

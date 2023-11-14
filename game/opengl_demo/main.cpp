@@ -37,7 +37,25 @@ int main(int argc, char *argv[]) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    
+
+    SDL_GL_SetAttribute(SDL_GLattr::SDL_GL_DOUBLEBUFFER, 1);
+
+    switch(SDL_GL_GetSwapInterval()) {
+    case 1: {
+        LOG_INF(log::APP, "1 {}", SDL_GetError());
+        break;
+    }
+    case 0: {
+        LOG_INF(log::APP, "0 {}", SDL_GetError());
+        break;
+    }
+    case -1: {
+        LOG_INF(log::APP, "-1 {}", SDL_GetError());
+        break;
+    }
+    }
+    SDL_GL_SetSwapInterval(0);
+
     game::Window window;
 
     return window.Exec();
