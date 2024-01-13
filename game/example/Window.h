@@ -131,6 +131,7 @@ public:
     }
 
     void RenderProcess() override;
+    void RenderFlush() override;
 
     void Tick(double tick_ms) override;
 

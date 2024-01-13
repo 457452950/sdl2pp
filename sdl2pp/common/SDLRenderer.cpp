@@ -27,6 +27,8 @@ bool SDLRenderer::SetRenderTarget(std::shared_ptr<SDLTexture> texture) {
     return SDL_SetRenderTarget(this->renderer_, texture->Get()) == 0;
 }
 
+bool SDLRenderer::SetRenderTarget(SDL_Texture *texture) { return SDL_SetRenderTarget(this->renderer_, texture) == 0; }
+
 bool SDLRenderer::Update(std::shared_ptr<SDLTexture> texture, const RectI *src_rect, const RectI *dst_rect) {
     return SDL_RenderCopy(renderer_, texture->Get(), src_rect, dst_rect) == 0;
 }

@@ -13,7 +13,7 @@ class Window : public sdlpp::SWindow {
 public:
     Window();
 
-    ~Window() override {}
+    ~Window() override;
 
     int KeyEvent(const SDL_KeyboardEvent &event) override { return SWindow::KeyEvent(event); }
 
@@ -25,12 +25,14 @@ public:
 
     int MouseWheelEvent(const SDL_MouseWheelEvent &event) override { return SWindow::MouseWheelEvent(event); }
 
+    void RenderClear() override;
     void RenderProcess() override;
+    void RenderFlush() override;
 
     void Tick(double tick_ms) override;
 
-
 private:
+    SDL_GLContext gl_context_{nullptr};
 };
 
 } // namespace game

@@ -2,6 +2,7 @@
 
 #include "tools/Resource.h"
 #include "ui/UI.h"
+#include "snake/Game.h"
 
 Window::Window() {
     this->SetTitle("Snake");
@@ -14,12 +15,21 @@ Window::Window() {
 
     auto render = this->CreateRenderer();
 
-    ui::UI::GetInstance()->Init(this);
-
     this->SetResizeable(true);
+    this->SetFps(120);
+
+    // init sub
+    ui::UI::GetInstance()->Init(this);
+    auto game = snake::Game::Instance();
+    game->Init(this);
+    game->Reset(10, 15);
+    game->Start(snake::SnakeGame::StartConf{{3, 3}});
 }
 
-void Window::RenderProcess() { ui::UI::GetInstance()->Render(this->GetRenderer()); }
+void Window::RenderProcess() {
+    ui::UI::GetInstance()->Render(this->GetRenderer());
+    snake::Game::Instance()->Render(this->GetRenderer());
+}
 
 Window::~Window() { ui::UI::GetInstance()->Clear(); }
 
@@ -40,3 +50,5 @@ int Window::WindowEvent(const SDL_WindowEvent &event) {
     }
     return SWindow::WindowEvent(event);
 }
+
+void Window::RenderFlush() { this->GetRenderer()->Flush(); }

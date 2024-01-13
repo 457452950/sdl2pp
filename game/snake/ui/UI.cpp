@@ -27,13 +27,16 @@ void UI::Clear() {
 }
 
 void UI::Render(std::shared_ptr<sdlpp::SRenderer> renderer) {
+    auto cxt_Color      = renderer->GetDrawColor();
+    auto cxt_renderView = renderer->GetViewport();
+
     renderer->SetDrawColor({255, 255, 255});
-    //    renderer->SetViewport(render_view_);
+    renderer->SetViewport(this->render_view_);
 
     this->render(renderer);
 
-    renderer->SetViewport();
-    renderer->SetDrawColor({0, 0, 0});
+    renderer->SetViewport(cxt_renderView);
+    renderer->SetDrawColor(cxt_Color);
 }
 
 void UI::render(std::shared_ptr<sdlpp::SRenderer> renderer) {
@@ -48,7 +51,6 @@ void UI::render(std::shared_ptr<sdlpp::SRenderer> renderer) {
     for(auto &it : help_info_) {
         it->Render(renderer);
     }
-    //    help_info_[0]->Render(renderer);
 }
 
 bool UI::InitTitle(std::shared_ptr<sdlpp::SRenderer> renderer) {

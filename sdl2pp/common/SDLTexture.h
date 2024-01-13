@@ -85,8 +85,11 @@ public:
     void *GetUserData() { return SDL_GetTextureUserData(texture_); }
 
     // SDL_UpdateTexture
+    //    void UpdateTexture(const RectI *rect) { SDL_UpdateTexture(this->texture_, rect, ) }
+
     // SDL_UpdateYUVTexture
     // SDL_UpdateNVTexture
+
     // SDL_LockTexture
     // SDL_LockTextureToSurface
     // SDL_UnlockTexture
@@ -96,8 +99,7 @@ public:
         return std::shared_ptr<SDLTexture>(new SDLTexture(std::move(texture)));
     }
 
-    SDL_Texture *Get() { return texture_; }
-
+    SDL_Texture       *Get() { return texture_; }
     const SDL_Texture *Get() const { return texture_; }
 
     bool IsValid() { return texture_ != nullptr; }
@@ -108,16 +110,14 @@ public:
         }
     }
 
-    SDLTexture(const SDLTexture &other) = delete;
-
+    SDLTexture(const SDLTexture &other)            = delete;
     SDLTexture &operator=(const SDLTexture &other) = delete;
 
-    SDLTexture(SDLTexture &&other) = default;
-
+    SDLTexture(SDLTexture &&other)            = default;
     SDLTexture &operator=(SDLTexture &&other) = default;
 
 private:
-    SDLTexture(SDL_Texture *&&texture) : texture_(texture) {}
+    explicit SDLTexture(SDL_Texture *&&texture) : texture_(texture) {}
 
     SDL_Texture *texture_;
 };

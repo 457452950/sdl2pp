@@ -30,7 +30,6 @@ public:
 
     ~SWindow() override {}
 
-
     // renderer
 
     std::shared_ptr<SRenderer> CreateRenderer(uint32_t flags = 0, int index = -1) {
@@ -40,12 +39,38 @@ public:
 
     std::shared_ptr<SRenderer> GetRenderer() { return renderer_; }
 
-    // event overwrite
+    // set fps
+    void SetFps(int fps) {
+        if(fps == -1) {
+            frame_delay_mics_ = 0;
+        } else {
+            frame_delay_mics_ = (sdlpp::GetPerformanceFrequency() / (uint64_t)fps);
+        }
+    }
+    // set pps
+    void SetPhysicPerS(uint32_t physic_per_s) {
+        if(physic_per_s == 0) {
+            physic_delay_micrs_ = 0;
+            return;
+        }
 
+        physic_delay_micrs_ = ((double)sdlpp::GetPerformanceFrequency() / double(physic_per_s));
+        LOG_DBG(log::LIB, "physic_delay_micrs_: {}", physic_delay_micrs_);
+    }
+
+    int Exec();
+
+    void Close();
+
+protected:
+    // event overwrite
+#pragma region event overwrite
     enum EventResult : int {
         Ignore,
         Continue,
     };
+
+    void eventHandle(const SDL_Event &event);
 
     virtual int WindowEvent(const SDL_WindowEvent &event) { return Continue; }
 
@@ -58,34 +83,24 @@ public:
     virtual int MouseButtonEvent(const SDL_MouseButtonEvent &event) { return Ignore; }
 
     virtual int MouseWheelEvent(const SDL_MouseWheelEvent &event) { return Ignore; }
+#pragma endregion
 
+    // render process
+#pragma region render process
+    void render() {
+        this->RenderClear();
+        this->RenderProcess();
+        this->RenderFlush();
+    }
+
+    virtual void RenderClear() {}
     virtual void RenderProcess() {}
+    virtual void RenderFlush() {}
+#pragma endregion
 
     virtual void Tick(double tick_ms) {}
 
-    void SetFps(int fps) {
-        if(fps == -1) {
-            frame_delay_mics_ = 0;
-        } else {
-            frame_delay_mics_ = (sdlpp::GetPerformanceFrequency() / (uint64_t)fps);
-        }
-    }
-
-    void SetPhysicPerS(uint32_t physic_per_s) {
-        if(physic_per_s == 0) {
-            physic_delay_micrs_ = 0;
-            return;
-        }
-
-        physic_delay_micrs_ = ((double)sdlpp::GetPerformanceFrequency() / double(physic_per_s));
-        LOG_DBG(log::LIB, "physic_delay_micrs_: {}", physic_delay_micrs_);
-    }
-
     void CheckPhysicFrame();
-
-    int Exec();
-
-    void Close();
 
 private:
     std::atomic_bool           active_;

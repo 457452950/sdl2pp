@@ -61,10 +61,9 @@ public:
     int MouseWheelEvent(const SDL_MouseWheelEvent &event) override { return SWindow::MouseWheelEvent(event); }
 
     void RenderProcess() override;
-
+    void RenderFlush() override;
 
 private:
-    std::shared_ptr<sdlpp::Font> font_;
 };
 
 #endif // SDL2PP_GAME_WINDOW_H_

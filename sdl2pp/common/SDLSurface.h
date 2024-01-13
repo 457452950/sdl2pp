@@ -91,6 +91,15 @@ public:
         return true;
     }
 
+    bool MustLock() { return SDL_MUSTLOCK(this->surface_); }
+    bool Lock() { return SDL_LockSurface(this->surface_) == 0; }
+    void Unlock() { SDL_UnlockSurface(this->surface_); }
+
+    std::shared_ptr<SDLRenderer> CreateSoftwareRenderer() {
+        return SDLRenderer::Create(SDL_CreateSoftwareRenderer(this->surface_));
+    }
+
+    // 翻转
     std::shared_ptr<SDLSurface> Flip(int flip_flags) { // 指向将要翻转的表面的指针
         std::shared_ptr<SDLSurface> flipped;
 
@@ -114,8 +123,8 @@ public:
                                                   surface_->format->Amask));
         }
 
-        if(SDL_MUSTLOCK(this->surface_)) {
-            SDL_LockSurface(this->surface_);
+        if(this->MustLock()) {
+            this->Lock();
         }
         for(int x = 0, rx = this->surface_->w - 1; x < this->surface_->w; x++, rx--) {
             // 遍历行
@@ -139,8 +148,8 @@ public:
             }
         }
 
-        if(SDL_MUSTLOCK(this->surface_)) {
-            SDL_UnlockSurface(this->surface_);
+        if(this->MustLock()) {
+            this->Unlock();
         }
 
         if(this->HasColorKey()) {

@@ -67,19 +67,24 @@ public:
     std::shared_ptr<SDLTexture> CreateTextureFromSurface(std::shared_ptr<SDLSurface> surface);
 
     bool SetRenderTarget(std::shared_ptr<SDLTexture> texture);
-    // SDL_GetRenderTarget
+    bool SetRenderTarget(SDL_Texture *texture);
 
+    SDL_Texture *GetRenderTarget() { return SDL_GetRenderTarget(this->renderer_); }
 
-    // SDL_CreateSoftwareRenderer
-    // SDL_RenderGetWindow
-    // SDL_SetRenderTarget
-    // SDL_GetRenderTarget
+    //     SDL_CreateSoftwareRenderer
+
+    SDL_Window *GetWindow() { return SDL_RenderGetWindow(this->renderer_); }
 
     bool SetViewport(const RectI *rect = nullptr) { return SDL_RenderSetViewport(this->renderer_, rect) == 0; }
 
     bool SetViewport(const RectI &rect) { return SetViewport(&rect); }
 
-    void GetViewport(RectI &rect) const { SDL_RenderGetViewport(this->renderer_, &rect); }
+    void  GetViewport(RectI &rect) const { SDL_RenderGetViewport(this->renderer_, &rect); }
+    RectI GetViewport() const {
+        RectI res;
+        SDL_RenderGetViewport(this->renderer_, &res);
+        return res;
+    }
 
     // SDL_RenderGetViewport
     // SDL_RenderSetClipRect

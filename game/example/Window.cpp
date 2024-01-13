@@ -182,7 +182,6 @@ void Window::RenderProcess() {
     texture_image4_->Render(renderer, {}, 0, {1, 1});
 
     //    this->SetResizeable(true);
-    this->GetRenderer()->Flush();
 }
 
 void Window::Tick(double_t tick_ms) {
@@ -196,5 +195,7 @@ void Window::Tick(double_t tick_ms) {
         animation_tick = 0;
     }
 }
+
+void Window::RenderFlush() { this->GetRenderer()->Flush(); }
 
 } // namespace game
