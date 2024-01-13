@@ -9,6 +9,8 @@
 #include <SDL_timer.h>
 #include <SDL_assert.h>
 
+#include "sdl2pp/utils/Assert.h"
+
 #define TIME_USE_CHRONO
 // #define TIME_USE_SDL
 
@@ -51,7 +53,10 @@ public:
     using TimeoutCallback = std::function<void()>;
 
     bool Start(TimeoutCallback cb, milliseconds interval_ms, uint32_t times) {
-        SDL_assert(id_ == 0);
+        if(id_ != 0) {
+            LOG_ERR(log::LIB, "timer is running");
+            return false;
+        }
 
         timeout_times_ = times;
         call_back_     = std::move(cb);

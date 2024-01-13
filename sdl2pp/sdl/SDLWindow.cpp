@@ -11,10 +11,7 @@ std::shared_ptr<SDLRenderer> SDLWindow::CreateRender(uint32_t flags, int index) 
 
 SDLWindow::SDLWindow(PointI size, std::string_view title, PointI pos, uint32_t flags) {
     window_ = SDL_CreateWindow(title.data(), pos.x, pos.y, size.x, size.y, flags);
-
-    if(!window_) {
-        LOG_ERR(log::LIB, "SDL_CreateWindow error: {}", SDL_GetError());
-        SDL_assert(window_);
-    }
+    Assert(window_, "SDL_CreateWindow error: {}", SDL_GetError());
 }
+
 } // namespace sdlpp

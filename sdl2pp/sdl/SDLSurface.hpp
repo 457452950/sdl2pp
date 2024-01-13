@@ -143,7 +143,7 @@ public:
                     }
                 } break;
                 default:
-                    SDL_assert(false);
+                    std::abort();
                 }
             }
         }

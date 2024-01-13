@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "sdl2pp/utils/Assert.h"
 
 namespace game {
 
@@ -28,31 +29,19 @@ Window::Window() {
     auto t4       = surface_image->Flip(sdlpp::Flip ::SDL_FLIP_VERTICAL | sdlpp::Flip::SDL_FLIP_HORIZONTAL);
 
     auto texture = this->GetRenderer()->CreateTextureFromSurface(surface_image);
-    if(texture == nullptr) {
-        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
-        SDL_assert(texture);
-    }
+    Assert(texture, "One or more textures failed to load. {}", SDL_GetError());
     texture_image_ = std::make_shared<sdlpp::STexture>(texture);
 
     texture = this->GetRenderer()->CreateTextureFromSurface(t2);
-    if(texture == nullptr) {
-        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
-        SDL_assert(texture);
-    }
+    Assert(texture, "One or more textures failed to load. {}", SDL_GetError());
     texture_image2_ = std::make_shared<sdlpp::STexture>(texture);
 
     texture = this->GetRenderer()->CreateTextureFromSurface(t3);
-    if(texture == nullptr) {
-        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
-        SDL_assert(texture);
-    }
+    Assert(texture, "One or more textures failed to load. {}", SDL_GetError());
     texture_image3_ = std::make_shared<sdlpp::STexture>(texture);
 
     texture = this->GetRenderer()->CreateTextureFromSurface(t4);
-    if(texture == nullptr) {
-        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
-        SDL_assert(texture);
-    }
+    Assert(texture, "One or more textures failed to load. {}", SDL_GetError());
     texture_image4_ = std::make_shared<sdlpp::STexture>(texture);
 
     auto surface_image2 = sdlpp::IMG_LoadSurfaceFromFile("H:/Resources/stand.png");
@@ -66,10 +55,7 @@ Window::Window() {
     //        surface_image2->SetColorKey(true, {255, 255, 255});
 
     texture = this->GetRenderer()->CreateTextureFromSurface(surface_image2);
-    if(texture == nullptr) {
-        LOG_ERR(log::APP, "One or more textures failed to load. {}", SDL_GetError());
-        SDL_assert(texture);
-    }
+    Assert(texture, "One or more textures failed to load. {}", SDL_GetError());
     texture_man_ = std::make_shared<sdlpp::STexture>(texture);
 
     texture_man_->GetTexture()->SetBlendMode(values[index]);
@@ -91,31 +77,19 @@ Window::Window() {
     texture_image4_->MoveTo({static_cast<float>(this->GetWidth() / 2), static_cast<float>(this->GetHeight() / 2)});
 
     music = sdlpp::MixMusic::Load("H:/Code/CLion/sdl2pp/demo/beat.wav");
-    if(!music->Valid()) {
-        LOG_ERR(log::APP, "One or more music failed to load. {}", SDL_GetError());
-        SDL_assert(music->Valid());
-    }
+    Assert(music->Valid(), "One or more music failed to load. {}", SDL_GetError());
 
     chunk1 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/scratch.wav");
-    if(!chunk1->Valid()) {
-        LOG_ERR(log::APP, "load chunk fail, {}", SDL_GetError());
-        SDL_assert(chunk1->Valid());
-    }
+    Assert(chunk1->Valid(), "load chunk fail, {}", SDL_GetError());
+
     chunk2 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/high.wav");
-    if(!chunk2->Valid()) {
-        LOG_ERR(log::APP, "load chunk fail, {}", SDL_GetError());
-        SDL_assert(chunk2->Valid());
-    }
+    Assert(chunk2->Valid(), "load chunk fail, {}", SDL_GetError());
+
     chunk3 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/medium.wav");
-    if(!chunk3->Valid()) {
-        LOG_ERR(log::APP, "load chunk fail, {}", SDL_GetError());
-        SDL_assert(chunk3->Valid());
-    }
+    Assert(chunk3->Valid(), "load chunk fail, {}", SDL_GetError());
+
     chunk4 = sdlpp::MixChunk::LoadWAV("H:/Code/CLion/sdl2pp/demo/low.wav");
-    if(!chunk4->Valid()) {
-        LOG_ERR(log::APP, "load chunk fail, {}", SDL_GetError());
-        SDL_assert(chunk4->Valid());
-    }
+    Assert(chunk4->Valid(), "load chunk fail, {}", SDL_GetError());
 
     auto man_surface = sdlpp::IMG_LoadSurfaceFromFile(R"(H:\Code\CLion\sdl2pp\demo\foo.png)");
     man_surface      = sdlpp::ConvertSurface(man_surface, *this->GetPixelFormat());
@@ -153,11 +127,8 @@ void Window::RenderProcess() {
 
     SDL_Color color     = {170, 170, 30, 0};
     auto      txt_image = font_->RenderText_Solid(text, color);
-    if(txt_image == nullptr) {
-        LOG_ERR(log::APP, "render text error {}", SDL_GetError());
-        SDL_assert(txt_image);
-        return;
-    }
+    Assert(txt_image, "render text error {}", SDL_GetError());
+
     // Get the texture w/h so we can center it in the screen
     auto [iW, iH] = txt_image->GetSize();
     int x         = this->GetWidth() / 2 - iW / 2;
