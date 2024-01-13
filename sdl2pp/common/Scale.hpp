@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_SDL2PP_BASE_SCALE_H_
-#define SDL2PP_SDL2PP_BASE_SCALE_H_
+#ifndef SDL2PP_SDL2PP_COMMON_SCALE_HPP_
+#define SDL2PP_SDL2PP_COMMON_SCALE_HPP_
 
 namespace sdlpp {
 
@@ -50,4 +50,4 @@ struct Scale {
 
 } // namespace sdlpp
 
-#endif // SDL2PP_SDL2PP_BASE_SCALE_H_
+#endif // SDL2PP_SDL2PP_COMMON_SCALE_HPP_

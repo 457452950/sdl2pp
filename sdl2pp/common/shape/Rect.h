@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "sdl2pp/common/Math.h"
-#include "sdl2pp/common/Point.h"
+#include "sdl2pp/common/Point.hpp"
 
 namespace sdlpp {
 

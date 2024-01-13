@@ -2,7 +2,7 @@
 #ifndef SDL2PP_SANIMATION_H_
 #define SDL2PP_SANIMATION_H_
 
-#include "common/Point.h"
+#include "common/Point.hpp"
 
 #include "STexture.h"
 #include "Renderable.h"

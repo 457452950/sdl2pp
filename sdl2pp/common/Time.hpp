@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_BASE_TIME_H_
-#define SDL2PP_BASE_TIME_H_
+#ifndef SDL2PP_SDL2PP_COMMON_TIME_HPP_
+#define SDL2PP_SDL2PP_COMMON_TIME_HPP_
 
 #include <chrono>
 #include <functional>
@@ -64,6 +64,7 @@ public:
     void Stop() {
         if(id_ != 0) {
             SDL_RemoveTimer(id_);
+            id_ = 0;
         }
     }
 
@@ -91,4 +92,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_TIME_H_
+#endif // SDL2PP_SDL2PP_COMMON_TIME_HPP_

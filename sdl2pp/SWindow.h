@@ -9,7 +9,7 @@
 #include <SDL_image.h>
 
 #include "sdl2pp/sdl/SDLWindow.h"
-#include "common/Time.h"
+#include "common/Time.hpp"
 #include "sdl2pp/common/SDLLog.h"
 #include "SRenderer.h"
 #include "STexture.h"

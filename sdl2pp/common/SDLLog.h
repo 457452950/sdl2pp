@@ -41,7 +41,7 @@ static std::string_view getLogCategoryName(log::Category category) {
         return "Library";
         break;
     }
-    SDL_assert(false);
+    std::abort();
     return "";
 }
 

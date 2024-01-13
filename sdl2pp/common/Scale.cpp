@@ -1,3 +1,3 @@
-#include "Scale.h"
+#include "Scale.hpp"
 
 namespace sdlpp {} // namespace sdlpp

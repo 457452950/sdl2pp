@@ -11,7 +11,7 @@
 #include "SDLRenderer.h"
 #include "sdl2pp/common/SDLLog.h"
 #include "SDLPixels.h"
-#include "sdl2pp/common/Point.h"
+#include "sdl2pp/common/Point.hpp"
 #include "sdl2pp/common/shape/Rect.h"
 
 namespace sdlpp {

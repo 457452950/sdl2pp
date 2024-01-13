@@ -5,7 +5,7 @@
 #include <array>
 #include <vector>
 
-#include "sdl2pp/common/Point.h"
+#include "sdl2pp/common/Point.hpp"
 
 namespace sdlpp {
 

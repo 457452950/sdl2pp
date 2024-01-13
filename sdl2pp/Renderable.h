@@ -2,9 +2,9 @@
 #ifndef SDL2PP_RENDERABLE_H_
 #define SDL2PP_RENDERABLE_H_
 
-#include "common/Point.h"
+#include "common/Point.hpp"
 #include "common/shape/Rect.h"
-#include "common/Scale.h"
+#include "common/Scale.hpp"
 
 #include "SRenderer.h"
 

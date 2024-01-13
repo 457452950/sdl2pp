@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_SDL2PP_BASE_POINT_H_
-#define SDL2PP_SDL2PP_BASE_POINT_H_
+#ifndef SDL2PP_SDL2PP_COMMON_POINT_HPP_
+#define SDL2PP_SDL2PP_COMMON_POINT_HPP_
 
 #include <SDL_rect.h>
 
@@ -138,4 +138,4 @@ T MidPoint(const T &point1, const V &point2) {
 
 } // namespace sdlpp
 
-#endif // SDL2PP_SDL2PP_BASE_POINT_H_
+#endif // SDL2PP_SDL2PP_COMMON_POINT_HPP_

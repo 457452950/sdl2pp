@@ -1,3 +1,3 @@
-#include "Time.h"
+#include "Time.hpp"
 
 namespace sdlpp {} // namespace sdlpp

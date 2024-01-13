@@ -11,7 +11,7 @@
 
 #include "common/Math.h"
 
-#include "common/Point.h"
+#include "common/Point.hpp"
 // struct PointI;
 // struct PointF;
 
@@ -19,7 +19,7 @@
 
 #include "common/shape/Circle.h"
 
-#include "common/Scale.h"
+#include "common/Scale.hpp"
 // struct Scale;
 
 #include "sdl2pp/sdl/SDLDisplay.h"
@@ -55,7 +55,7 @@
 
 #include "sdl2pp/sdl/SDLPixels.h"
 
-#include "common/Time.h"
+#include "common/Time.hpp"
 // class Timer;
 
 #include "SWindow.h"
