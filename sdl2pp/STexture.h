@@ -6,7 +6,7 @@
 
 #include "common/Math.h"
 #include "common/shape/Rect.h"
-#include "common/SDLTexture.h"
+#include "sdl2pp/sdl/SDLTexture.h"
 
 #include "SRenderer.h"
 #include "Renderable.h"

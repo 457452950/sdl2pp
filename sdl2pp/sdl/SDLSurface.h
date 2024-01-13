@@ -9,10 +9,10 @@
 #include <SDL_image.h>
 
 #include "SDLRenderer.h"
-#include "SDLLog.h"
+#include "sdl2pp/common/SDLLog.h"
 #include "SDLPixels.h"
-#include "Point.h"
-#include "shape/Rect.h"
+#include "sdl2pp/common/Point.h"
+#include "sdl2pp/common/shape/Rect.h"
 
 namespace sdlpp {
 

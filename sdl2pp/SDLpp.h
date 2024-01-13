@@ -4,9 +4,9 @@
 
 #include <SDL.h>
 
-#include "common/SDLLog.h"
+#include "sdl2pp/common/SDLLog.h"
 
-#include "common/SDLEnvironment.h"
+#include "sdl2pp/sdl/SDLEnvironment.h"
 // class SDL;
 
 #include "common/Math.h"
@@ -22,30 +22,30 @@
 #include "common/Scale.h"
 // struct Scale;
 
-#include "common/SDLDisplay.h"
+#include "sdl2pp/sdl/SDLDisplay.h"
 // class Display;
 
-#include "common/SDLWindow.h"
+#include "sdl2pp/sdl/SDLWindow.h"
 // class SDLWindow;
 
-#include "common/SDLRenderer.h"
+#include "sdl2pp/sdl/SDLRenderer.h"
 // class SDLRenderer;
 
-#include "common/SDLTexture.h"
+#include "sdl2pp/sdl/SDLTexture.h"
 // class SDLTexture;
 
-#include "common/SDLSurface.h"
+#include "sdl2pp/sdl/SDLSurface.h"
 // class SDLSurface;
 
-#include "common/SDLImage.h"
+#include "sdl2pp/sdl/SDLImage.h"
 
-#include "common/SDLTTF.h"
+#include "sdl2pp/sdl/SDLTTF.h"
 // class Font;
 
-#include "common/SDLAudio.h"
+#include "sdl2pp/sdl/SDLAudio.h"
 // class AudioDrivers
 
-#include "common/SDLMixer.h"
+#include "sdl2pp/sdl/SDLMixer.h"
 // class SDLMixer;
 // class MixChunk;
 // class MixChannel;
@@ -53,7 +53,7 @@
 // class MixMusic;
 // class MixMusicManager;
 
-#include "common/SDLPixels.h"
+#include "sdl2pp/sdl/SDLPixels.h"
 
 #include "common/Time.h"
 // class Timer;

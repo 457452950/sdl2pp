@@ -8,7 +8,7 @@
 #include <SDL_log.h>
 #include <SDL_audio.h>
 
-#include "SDLLog.h"
+#include "sdl2pp/common/SDLLog.h"
 
 namespace sdlpp {
 

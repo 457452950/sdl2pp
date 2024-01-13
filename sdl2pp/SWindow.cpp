@@ -4,7 +4,7 @@
 
 #include <fmt/format.h>
 
-#include "common/SDLRenderer.h"
+#include "sdl2pp/sdl/SDLRenderer.h"
 
 namespace sdlpp {
 
