@@ -1,13 +1,13 @@
 #pragma once
-#ifndef SDL2PP_BASE_SDLTTF_H_
-#define SDL2PP_BASE_SDLTTF_H_
+#ifndef SDL2PP_SDL2PP_SDL_SDLTTF_H_
+#define SDL2PP_SDL2PP_SDL_SDLTTF_H_
 
 #include <string_view>
 
 #include <SDL_ttf.h>
 
-#include "SDLSurface.h"
-#include "SDLTexture.h"
+#include "SDLSurface.hpp"
+#include "SDLTexture.hpp"
 
 namespace sdlpp {
 
@@ -299,4 +299,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_SDLTTF_H_
+#endif // SDL2PP_SDL2PP_SDL_SDLTTF_H_

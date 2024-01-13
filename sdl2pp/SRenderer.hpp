@@ -1,8 +1,8 @@
 #pragma once
-#ifndef SDL2PP_SRENDERER_H_
-#define SDL2PP_SRENDERER_H_
+#ifndef SDL2PP_SDL2PP_SRENDERER_HPP_
+#define SDL2PP_SDL2PP_SRENDERER_HPP_
 
-#include "sdl2pp/sdl/SDLRenderer.h"
+#include "sdl2pp/sdl/SDLRenderer.hpp"
 
 namespace sdlpp {
 
@@ -22,4 +22,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_SRENDERER_H_
+#endif // SDL2PP_SDL2PP_SRENDERER_HPP_

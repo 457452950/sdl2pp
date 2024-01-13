@@ -5,7 +5,7 @@
 // #include <fmt/format.h>
 
 #include "sdl2pp/SDLpp.h"
-#include "sdl2pp/STexture.h"
+#include "sdl2pp/STexture.hpp"
 
 namespace game {
 

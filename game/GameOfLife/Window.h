@@ -3,7 +3,7 @@
 #define SDL2PP_GAME_WINDOW_H_
 
 #include "sdl2pp/SDLpp.h"
-#include "sdl2pp/STexture.h"
+#include "sdl2pp/STexture.hpp"
 #include "GOLMap.h"
 
 namespace gol {

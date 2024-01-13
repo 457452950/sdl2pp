@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2_BASE_SDLWINDOW_H
-#define SDL2_BASE_SDLWINDOW_H
+#ifndef SDL2PP_SDL2PP_SDL_SDLWINDOW_H
+#define SDL2PP_SDL2PP_SDL_SDLWINDOW_H
 
 #include <memory>
 #include <string>
@@ -8,7 +8,7 @@
 
 #include <SDL.h>
 #include <SDL_video.h>
-#include "SDLSurface.h"
+#include "SDLSurface.hpp"
 
 namespace sdlpp {
 
@@ -191,4 +191,4 @@ private:
 };
 } // namespace sdlpp
 
-#endif // SDL2_BASE_SDLWINDOW_H
+#endif // SDL2PP_SDL2PP_SDL_SDLWINDOW_H

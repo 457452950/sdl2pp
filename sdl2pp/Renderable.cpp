@@ -1,3 +1,3 @@
-#include "Renderable.h"
+#include "Renderable.hpp"
 
 namespace sdlpp {} // namespace sdlpp

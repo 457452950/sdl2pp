@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SDL2PP_SDL2PP_UTILS_ASSERT_H_
 #define SDL2PP_SDL2PP_UTILS_ASSERT_H_
 

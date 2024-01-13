@@ -1,6 +1,6 @@
 #include "SDLWindow.h"
 
-#include "SDLRenderer.h"
+#include "SDLRenderer.hpp"
 #include "sdl2pp/common/SDLLog.h"
 
 namespace sdlpp {

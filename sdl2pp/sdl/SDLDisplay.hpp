@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2_BASE_DISPLAY_H
-#define SDL2_BASE_DISPLAY_H
+#ifndef SDL2_SDL2PP_SDL_DISPLAY_H_
+#define SDL2_SDL2PP_SDL_DISPLAY_H_
 
 #include <vector>
 #include <string>
@@ -75,4 +75,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2_BASE_DISPLAY_H
+#endif // SDL2_SDL2PP_SDL_DISPLAY_H_

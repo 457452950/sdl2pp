@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_SDL2PP_SWINDOW_H_
-#define SDL2PP_SDL2PP_SWINDOW_H_
+#ifndef SDL2PP_SDL2PP_SWINDOW_HPP_
+#define SDL2PP_SDL2PP_SWINDOW_HPP_
 
 #include <atomic>
 #include <chrono>
@@ -11,8 +11,8 @@
 #include "sdl2pp/sdl/SDLWindow.h"
 #include "common/Time.hpp"
 #include "sdl2pp/common/SDLLog.h"
-#include "SRenderer.h"
-#include "STexture.h"
+#include "SRenderer.hpp"
+#include "STexture.hpp"
 
 
 namespace sdlpp {
@@ -115,4 +115,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_SDL2PP_SWINDOW_H_
+#endif // SDL2PP_SDL2PP_SWINDOW_HPP_

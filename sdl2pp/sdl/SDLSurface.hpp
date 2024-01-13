@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_BASE_SDLSURFACE_H_
-#define SDL2PP_BASE_SDLSURFACE_H_
+#ifndef SDL2PP_SDL2PP_SDL_SDLSURFACE_HPP_
+#define SDL2PP_SDL2PP_SDL_SDLSURFACE_HPP_
 
 #include <memory>
 #include <tuple>
@@ -8,7 +8,7 @@
 #include <SDL_surface.h>
 #include <SDL_image.h>
 
-#include "SDLRenderer.h"
+#include "SDLRenderer.hpp"
 #include "sdl2pp/common/SDLLog.h"
 #include "SDLPixels.h"
 #include "sdl2pp/common/Point.hpp"
@@ -208,4 +208,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_SDLSURFACE_H_
+#endif // SDL2PP_SDL2PP_SDL_SDLSURFACE_HPP_

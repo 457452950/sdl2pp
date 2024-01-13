@@ -1,12 +1,12 @@
 #pragma once
-#ifndef SDL2PP_RENDERABLE_H_
-#define SDL2PP_RENDERABLE_H_
+#ifndef SDL2PP_SDL2PP_RENDERABLE_HPP_
+#define SDL2PP_SDL2PP_RENDERABLE_HPP_
 
 #include "common/Point.hpp"
 #include "common/shape/Rect.h"
 #include "common/Scale.hpp"
 
-#include "SRenderer.h"
+#include "SRenderer.hpp"
 
 namespace sdlpp {
 
@@ -55,4 +55,4 @@ protected:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_RENDERABLE_H_
+#endif // SDL2PP_SDL2PP_RENDERABLE_HPP_

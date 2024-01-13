@@ -1,8 +1,8 @@
-#include "SDLRenderer.h"
+#include "SDLRenderer.hpp"
 
 #include "SDLWindow.h"
-#include "SDLTexture.h"
-#include "SDLSurface.h"
+#include "SDLTexture.hpp"
+#include "SDLSurface.hpp"
 
 namespace sdlpp {
 

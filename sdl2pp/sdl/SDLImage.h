@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_BASE_SDLIMAGE_H_
-#define SDL2PP_BASE_SDLIMAGE_H_
+#ifndef SDL2PP_SDL2PP_SDL_SDLIMAGE_H_
+#define SDL2PP_SDL2PP_SDL_SDLIMAGE_H_
 
 #include <memory>
 #include <string_view>
@@ -23,4 +23,4 @@ std::shared_ptr<SDLTexture> IMG_LoadTextureFromFile(std::string_view path, std::
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_SDLIMAGE_H_
+#endif // SDL2PP_SDL2PP_SDL_SDLIMAGE_H_

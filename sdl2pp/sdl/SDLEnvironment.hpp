@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2_BASE_SDLENVIRONMENT_H
-#define SDL2_BASE_SDLENVIRONMENT_H
+#ifndef SDL2PP_SDL2PP_SDL_SDLENVIRONMENT_HPP_
+#define SDL2PP_SDL2PP_SDL_SDLENVIRONMENT_HPP_
 
 #include <mutex>
 #include <cassert>
@@ -10,7 +10,7 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#include "SDLDisplay.h"
+#include "SDLDisplay.hpp"
 
 namespace sdlpp {
 
@@ -78,4 +78,4 @@ private:
 };
 } // namespace sdlpp
 
-#endif // SDL2_BASE_SDLENVIRONMENT_H
+#endif // SDL2PP_SDL2PP_SDL_SDLENVIRONMENT_HPP_

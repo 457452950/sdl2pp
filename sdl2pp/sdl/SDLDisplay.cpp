@@ -1,4 +1,4 @@
-#include "SDLDisplay.h"
+#include "SDLDisplay.hpp"
 
 sdlpp::Display::Display() {
     auto count = SDL_GetNumVideoDisplays();

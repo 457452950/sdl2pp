@@ -1,10 +1,10 @@
-#include "SWindow.h"
+#include "SWindow.hpp"
 
 #include <thread>
 
 #include <fmt/format.h>
 
-#include "sdl2pp/sdl/SDLRenderer.h"
+#include "sdl2pp/sdl/SDLRenderer.hpp"
 
 namespace sdlpp {
 

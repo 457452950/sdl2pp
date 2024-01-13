@@ -6,7 +6,7 @@
 
 #include "sdl2pp/common/SDLLog.h"
 
-#include "sdl2pp/sdl/SDLEnvironment.h"
+#include "sdl2pp/sdl/SDLEnvironment.hpp"
 // class SDL;
 
 #include "common/Math.h"
@@ -22,19 +22,19 @@
 #include "common/Scale.hpp"
 // struct Scale;
 
-#include "sdl2pp/sdl/SDLDisplay.h"
+#include "sdl2pp/sdl/SDLDisplay.hpp"
 // class Display;
 
 #include "sdl2pp/sdl/SDLWindow.h"
 // class SDLWindow;
 
-#include "sdl2pp/sdl/SDLRenderer.h"
+#include "sdl2pp/sdl/SDLRenderer.hpp"
 // class SDLRenderer;
 
-#include "sdl2pp/sdl/SDLTexture.h"
+#include "sdl2pp/sdl/SDLTexture.hpp"
 // class SDLTexture;
 
-#include "sdl2pp/sdl/SDLSurface.h"
+#include "sdl2pp/sdl/SDLSurface.hpp"
 // class SDLSurface;
 
 #include "sdl2pp/sdl/SDLImage.h"
@@ -42,10 +42,10 @@
 #include "sdl2pp/sdl/SDLTTF.h"
 // class Font;
 
-#include "sdl2pp/sdl/SDLAudio.h"
+#include "sdl2pp/sdl/SDLAudio.hpp"
 // class AudioDrivers
 
-#include "sdl2pp/sdl/SDLMixer.h"
+#include "sdl2pp/sdl/SDLMixer.hpp"
 // class SDLMixer;
 // class MixChunk;
 // class MixChannel;
@@ -58,19 +58,19 @@
 #include "common/Time.hpp"
 // class Timer;
 
-#include "SWindow.h"
+#include "SWindow.hpp"
 // class SWindow;
 
-#include "Renderable.h"
+#include "Renderable.hpp"
 // class Renderable;
 
-#include "SRenderer.h"
+#include "SRenderer.hpp"
 // class SRenderer;
 
-#include "STexture.h"
+#include "STexture.hpp"
 // class STexture;
 
-#include "SAnimation.h"
+#include "SAnimation.hpp"
 // class SAnimation;
 
 #endif // SDL2_SDLPP_H

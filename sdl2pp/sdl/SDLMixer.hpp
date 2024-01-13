@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_BASE_SDLMIXER_H_
-#define SDL2PP_BASE_SDLMIXER_H_
+#ifndef SDL2PP_SDL2PP_SDL_SDLMIXER_HPP_
+#define SDL2PP_SDL2PP_SDL_SDLMIXER_HPP_
 
 #include <vector>
 #include <memory>
@@ -411,4 +411,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_SDLMIXER_H_
+#endif // SDL2PP_SDL2PP_SDL_SDLMIXER_HPP_

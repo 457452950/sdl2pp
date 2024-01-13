@@ -1,4 +1,4 @@
-#include "SDLEnvironment.h"
+#include "SDLEnvironment.hpp"
 
 namespace sdlpp {
 inline SDL       *SDL::instance_ = nullptr;

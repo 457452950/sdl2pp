@@ -1,4 +1,4 @@
-#include "SDLSurface.h"
+#include "SDLSurface.hpp"
 
 #include <SDL.h>
 

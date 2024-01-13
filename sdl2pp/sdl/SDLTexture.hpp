@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_BASE_SDLTEXTURE_H_
-#define SDL2PP_BASE_SDLTEXTURE_H_
+#ifndef SDL2PP_SDL2PP_SDL_SDLTEXTURE_HPP_
+#define SDL2PP_SDL2PP_SDL_SDLTEXTURE_HPP_
 
 #include <memory>
 #include <tuple>
@@ -124,4 +124,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_SDLTEXTURE_H_
+#endif // SDL2PP_SDL2PP_SDL_SDLTEXTURE_HPP_

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SDL2PP_BASE_BASE_SDLAUDIO_H_
-#define SDL2PP_BASE_BASE_SDLAUDIO_H_
+#ifndef SDL2PP_SDL2PP_SDL_SDLAUDIO_HPP_
+#define SDL2PP_SDL2PP_SDL_SDLAUDIO_HPP_
 
 #include <vector>
 #include <string>
@@ -52,4 +52,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_BASE_BASE_SDLAUDIO_H_
+#endif // SDL2PP_SDL2PP_SDL_SDLAUDIO_HPP_

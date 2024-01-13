@@ -1,8 +1,8 @@
 #include "SDLImage.h"
 
-#include "SDLSurface.h"
-#include "SDLTexture.h"
-#include "SDLRenderer.h"
+#include "SDLSurface.hpp"
+#include "SDLTexture.hpp"
+#include "SDLRenderer.hpp"
 
 namespace sdlpp {
 std::shared_ptr<SDLSurface> IMG_LoadSurfaceFromFile(std::string_view path) {

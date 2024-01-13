@@ -1,15 +1,15 @@
 #pragma once
-#ifndef SDL2PP_STEXTURE_H_
-#define SDL2PP_STEXTURE_H_
+#ifndef SDL2PP_SDL2PP_STEXTURE_HPP_
+#define SDL2PP_SDL2PP_STEXTURE_HPP_
 
 #include <SDL_log.h>
 
 #include "common/Math.h"
 #include "common/shape/Rect.h"
-#include "sdl2pp/sdl/SDLTexture.h"
+#include "sdl2pp/sdl/SDLTexture.hpp"
 
-#include "SRenderer.h"
-#include "Renderable.h"
+#include "SRenderer.hpp"
+#include "Renderable.hpp"
 
 namespace sdlpp {
 
@@ -64,4 +64,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_STEXTURE_H_
+#endif // SDL2PP_SDL2PP_STEXTURE_HPP_

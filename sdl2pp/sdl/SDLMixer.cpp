@@ -1,4 +1,4 @@
-#include "SDLMixer.h"
+#include "SDLMixer.hpp"
 
 #include <SDL_log.h>
 

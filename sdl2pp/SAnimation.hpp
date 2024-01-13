@@ -1,11 +1,11 @@
 #pragma once
-#ifndef SDL2PP_SANIMATION_H_
-#define SDL2PP_SANIMATION_H_
+#ifndef SDL2PP_SDL2PP_SANIMATION_HPP_
+#define SDL2PP_SDL2PP_SANIMATION_HPP_
 
 #include "common/Point.hpp"
 
-#include "STexture.h"
-#include "Renderable.h"
+#include "STexture.hpp"
+#include "Renderable.hpp"
 
 
 namespace sdlpp {
@@ -47,4 +47,4 @@ private:
 
 } // namespace sdlpp
 
-#endif // SDL2PP_SANIMATION_H_
+#endif // SDL2PP_SDL2PP_SANIMATION_HPP_
