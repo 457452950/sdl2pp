@@ -29,23 +29,18 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
         }
     });
 
+    this->shader_ = std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\shader.vert)",
+                                             R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\shader.frag)");
+
+    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
     glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 
-    float vertices[] = {
-            -0.5f,
-            -0.5f,
-            0.0f, // left
-            0.5f,
-            -0.5f,
-            0.0f, // right
-            0.0f,
-            0.5f,
-            0.0f, // top
-
-            //                        0.5f,
-            //                        0.5f,
-            //                        0.0f
-    };
+    // clang-format off
+    float vertices[] = {-0.5f, -0.5f, 0.0f,    1,  0,  0,
+                        0.5f,  -0.5f, 0.0f,    0,  1,  0,
+                        0.0f,   0.5f, 0.0f,    0,  0,  1};
+    // clang-format on
 
     unsigned int VBO;
     glGenBuffers(1, &VBO);
@@ -55,8 +50,12 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    shader_->use();
 }
 
 Window::~Window() {
@@ -67,10 +66,25 @@ Window::~Window() {
 }
 
 void Window::RenderProcess() {
-    glDrawArrays(GL_TRIANGLES, 0, 3); // 绘制0,1,2连城的三角
+    shader_->use();
+
+    glm::mat4 projection = glm::perspective(
+            glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 100.0f);
+    shader_->setMat4("projection", projection);
+
+    // camera/view transformation
+    glm::mat4 view = camera_->GetViewMatrix();
+    shader_->setMat4("view", view);
+
+    shader_->setMat4("model", glm::mat4(1.0f));
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void Window::RenderClear() { glClear(GL_COLOR_BUFFER_BIT); }
+void Window::RenderClear() {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
 void Window::RenderFlush() { SDL_GL_SwapWindow(this->Get()); }
 
