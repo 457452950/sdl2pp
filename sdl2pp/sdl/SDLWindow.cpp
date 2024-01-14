@@ -1,7 +1,7 @@
 #include "SDLWindow.h"
 
 #include "SDLRenderer.hpp"
-#include "sdl2pp/common/SDLLog.h"
+#include "sdl2pp/utils/Assert.h"
 
 namespace sdlpp {
 

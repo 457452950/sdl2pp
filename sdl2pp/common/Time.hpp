@@ -7,8 +7,8 @@
 #include <utility>
 
 #include <SDL_timer.h>
-#include <SDL_assert.h>
 
+#include "SDLLog.h"
 #include "sdl2pp/utils/Assert.h"
 
 #define TIME_USE_CHRONO

@@ -1,0 +1,3 @@
+[submodule "lazy_box"]
+	path = lazy_box
+	url = git@gitee.com:WinddTrees/lazy-box.git

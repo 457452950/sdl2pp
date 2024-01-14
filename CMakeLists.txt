@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.20)
 project(sdl2pp)
 
 set(VCPKG_FEATURE_FLAGS "version")          # 用于支持自定义依赖版本
@@ -38,6 +38,10 @@ find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED COMPONENTS OpenGL) # v3.10
 
+add_subdirectory(lazy_box)
+include_directories("lazy_box/include")
+link_directories("lazy_box/lib")
+
 include_directories(
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
@@ -45,8 +49,8 @@ include_directories(
         ${SDL2_MIXER_INCLUDE_DIRS}
         ${FMT_INCLUDE_DIRS}
         "./"
-        "thirdparty/glad/include"
 )
+include_directories("thirdparty/glad/include")
 
 set(GLAD_SOURCE "thirdparty/glad/src/glad.c")
 
@@ -61,51 +65,54 @@ add_library(
         sdl2pp/common/Math.cpp
         sdl2pp/common/Math.h
         sdl2pp/common/Point.cpp
-        sdl2pp/common/Point.h
+        sdl2pp/common/Point.hpp
         sdl2pp/common/Scale.cpp
-        sdl2pp/common/Scale.h
-        sdl2pp/common/SDLEnvironment.h
-        sdl2pp/common/SDLEnvironment.cpp
-        sdl2pp/common/SDLWindow.h
-        sdl2pp/common/SDLWindow.cpp
-        sdl2pp/common/SDLRenderer.h
-        sdl2pp/common/SDLRenderer.cpp
-        sdl2pp/common/SDLDisplay.h
-        sdl2pp/common/SDLDisplay.cpp
-        sdl2pp/common/SDLTexture.cpp
-        sdl2pp/common/SDLTexture.h
-        sdl2pp/common/SDLSurface.cpp
-        sdl2pp/common/SDLSurface.h
-        sdl2pp/common/SDLImage.cpp
-        sdl2pp/common/SDLImage.h
-        sdl2pp/common/SDLPixels.cpp
-        sdl2pp/common/SDLPixels.h
-        sdl2pp/common/SDLTTF.cpp
-        sdl2pp/common/SDLTTF.h
+        sdl2pp/common/Scale.hpp
         sdl2pp/common/Time.cpp
-        sdl2pp/common/Time.h
-        sdl2pp/common/SDLMixer.cpp
-        sdl2pp/common/SDLMixer.h
-        sdl2pp/common/SDLAudio.cpp
-        sdl2pp/common/SDLAudio.h
+        sdl2pp/common/Time.hpp
 
         sdl2pp/common/shape/Rect.cpp
         sdl2pp/common/shape/Rect.h
         sdl2pp/common/shape/Circle.cpp
         sdl2pp/common/shape/Circle.h
 
+        sdl2pp/sdl/SDLEnvironment.hpp
+        sdl2pp/sdl/SDLEnvironment.cpp
+        sdl2pp/sdl/SDLWindow.h
+        sdl2pp/sdl/SDLWindow.cpp
+        sdl2pp/sdl/SDLRenderer.hpp
+        sdl2pp/sdl/SDLRenderer.cpp
+        sdl2pp/sdl/SDLDisplay.hpp
+        sdl2pp/sdl/SDLDisplay.cpp
+        sdl2pp/sdl/SDLTexture.cpp
+        sdl2pp/sdl/SDLTexture.hpp
+        sdl2pp/sdl/SDLSurface.cpp
+        sdl2pp/sdl/SDLSurface.hpp
+        sdl2pp/sdl/SDLImage.cpp
+        sdl2pp/sdl/SDLImage.h
+        sdl2pp/sdl/SDLPixels.cpp
+        sdl2pp/sdl/SDLPixels.h
+        sdl2pp/sdl/SDLTTF.cpp
+        sdl2pp/sdl/SDLTTF.h
+        sdl2pp/sdl/SDLMixer.cpp
+        sdl2pp/sdl/SDLMixer.hpp
+        sdl2pp/sdl/SDLAudio.cpp
+        sdl2pp/sdl/SDLAudio.hpp
+
         sdl2pp/SRenderer.cpp
-        sdl2pp/SRenderer.h
+        sdl2pp/SRenderer.hpp
         sdl2pp/STexture.cpp
-        sdl2pp/STexture.h
-        sdl2pp/SWindow.h
+        sdl2pp/STexture.hpp
+        sdl2pp/SWindow.hpp
         sdl2pp/SWindow.cpp
         sdl2pp/SAnimation.cpp
-        sdl2pp/SAnimation.h
+        sdl2pp/SAnimation.hpp
         sdl2pp/Renderable.cpp
-        sdl2pp/Renderable.h
+        sdl2pp/Renderable.hpp
 
         sdl2pp/SDLpp.h
+        sdl2pp/gl/GL.cpp
+        sdl2pp/gl/GL.hpp
 )
 
 target_link_libraries(
@@ -120,6 +127,8 @@ target_link_libraries(
         imgui::imgui
         glm::glm
         ${OPENGL_LIBRARIES}
+        lbox
 )
+
 
 add_subdirectory(game)

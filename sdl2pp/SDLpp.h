@@ -73,4 +73,10 @@
 #include "SAnimation.hpp"
 // class SAnimation;
 
+/*
+ * SDL OpenGL
+ */
+
+#include "sdl2pp/gl/GL.hpp"
+
 #endif // SDL2_SDLPP_H
