@@ -2,16 +2,14 @@
 #ifndef SDL2PP_GAME_WINDOW_H_
 #define SDL2PP_GAME_WINDOW_H_
 
-#include "glad/glad.h"
+#include "sdl2pp/GLWindow.hpp"
 
-#include "sdl2pp/SDLpp.h"
-#include "sdl2pp/STexture.hpp"
 #include "Shader.h"
 #include "FPSCamera.hpp"
 
 namespace game {
 
-class Window : public sdlpp::SWindow {
+class Window : public sdlpp::GlWindow {
 public:
     Window();
 

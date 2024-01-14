@@ -26,15 +26,15 @@ int main(int argc, char *argv[]) {
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_INFO);
 #endif
 
-    ok = sdlpp::gl::GL::Init(3, 3);
+    ok = sdlpp::gl::Init(3, 3);
     Assert(ok, "Failed to init opengl {}", SDL_GetError());
 
     game::Window window;
 
-    ok = sdlpp::gl::GL::SetDoubleBuffer(true);
+    ok = sdlpp::gl::SetDoubleBuffer(true);
     Assert(ok, "Failed to set double buffer {}", SDL_GetError());
 
-    switch(sdlpp::gl::GL::GetSwapInterval()) {
+    switch(sdlpp::gl::GetSwapInterval()) {
     case 1: {
         LOG_INF(log::APP, "1 {}", SDL_GetError());
         break;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     }
     }
 
-    ok = sdlpp::gl::GL::SetSwapInterval(0);
+    ok = sdlpp::gl::SetSwapInterval(0);
     Assert(ok, "failed to set vsync {}", SDL_GetError());
 
     return window.Exec();

@@ -10,7 +10,7 @@
 
 #include "sdl2pp/sdl/SDLWindow.hpp"
 #include "common/Time.hpp"
-#include "sdl2pp/common/SDLLog.h"
+#include "common/SDLLog.h"
 #include "SRenderer.hpp"
 #include "STexture.hpp"
 

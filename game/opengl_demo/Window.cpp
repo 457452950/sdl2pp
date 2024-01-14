@@ -1,13 +1,11 @@
 #include "Window.h"
 
-#include "sdl2pp/common/SDLLog.h"
-#include "base/Sysinfo.h"
 
 namespace game {
 
 std::once_flag glad_init_flag;
 
-Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
+Window::Window() {
     this->SetSize({1200, 800});
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -24,13 +22,13 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
         return;
     }
 
-    sdlpp::gl::GL::GladInit();
-    sdlpp::gl::GL::DepthTest();
+    sdlpp::gl::ext::Init();
+    sdlpp::gl::ext::DepthTest();
 
     this->shader_ = std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\shader.vert)",
                                              R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\shader.frag)");
 
-    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     // clang-format off
     float vertices[] = {
@@ -45,8 +43,8 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
         // 此例的索引(0,1,2,3)就是顶点数组vertices的下标，
         // 这样可以由下标代表顶点组合成矩形
 
-        0, 1, 3, // 第一个三角形
-        1, 2, 3  // 第二个三角形
+        0, 1, 2, // 第一个三角形
+        0, 2, 3  // 第二个三角形
     };
     // clang-format on
 
@@ -99,7 +97,7 @@ void Window::RenderClear() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::RenderFlush() { SDL_GL_SwapWindow(this->Get()); }
+void Window::RenderFlush() { sdlpp::GlWindow::RenderFlush(); }
 
 void Window::Tick(double_t tick_ms) {
     const double_t speed = 0.001;

@@ -77,6 +77,6 @@
  * SDL OpenGL
  */
 
-#include "sdl2pp/gl/GL.hpp"
+#include "gl/GL.hpp"
 
 #endif // SDL2_SDLPP_H

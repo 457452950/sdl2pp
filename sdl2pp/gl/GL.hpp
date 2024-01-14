@@ -2,25 +2,29 @@
 #ifndef SDL2PP_SDL2PP_GL_GL_HPP_
 #define SDL2PP_SDL2PP_GL_GL_HPP_
 
+#include <glad/glad.h>
+#include <SDL_opengl.h>
+
 #include "Toy/NonCopyAble.hpp"
 
 namespace sdlpp::gl {
 
+bool Init(int major, int minor);
 
-class GL : public NonCopyAble {
-public:
-    static bool Init(int major, int minor);
+bool SetDoubleBuffer(bool v);
 
-    static bool SetDoubleBuffer(bool v);
+int GetSwapInterval();
 
-    static int GetSwapInterval();
+bool SetSwapInterval(int v);
 
-    static bool SetSwapInterval(int v);
+namespace ext {
 
-    static void GladInit();
+// glad init
+void Init();
 
-    static void DepthTest();
-};
+void DepthTest();
+
+} // namespace ext
 
 } // namespace sdlpp::gl
 

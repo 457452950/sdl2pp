@@ -78,7 +78,7 @@ add_library(
 
         sdl2pp/sdl/SDLEnvironment.hpp
         sdl2pp/sdl/SDLEnvironment.cpp
-        sdl2pp/sdl/SDLWindow.h
+        sdl2pp/sdl/SDLWindow.hpp
         sdl2pp/sdl/SDLWindow.cpp
         sdl2pp/sdl/SDLRenderer.hpp
         sdl2pp/sdl/SDLRenderer.cpp
@@ -93,11 +93,14 @@ add_library(
         sdl2pp/sdl/SDLPixels.cpp
         sdl2pp/sdl/SDLPixels.h
         sdl2pp/sdl/SDLTTF.cpp
-        sdl2pp/sdl/SDLTTF.h
+        sdl2pp/sdl/SDLTTF.hpp
         sdl2pp/sdl/SDLMixer.cpp
         sdl2pp/sdl/SDLMixer.hpp
         sdl2pp/sdl/SDLAudio.cpp
         sdl2pp/sdl/SDLAudio.hpp
+
+        sdl2pp/gl/GL.cpp
+        sdl2pp/gl/GL.hpp
 
         sdl2pp/SRenderer.cpp
         sdl2pp/SRenderer.hpp
@@ -109,10 +112,9 @@ add_library(
         sdl2pp/SAnimation.hpp
         sdl2pp/Renderable.cpp
         sdl2pp/Renderable.hpp
+        sdl2pp/GLWindow.cpp
 
         sdl2pp/SDLpp.h
-        sdl2pp/gl/GL.cpp
-        sdl2pp/gl/GL.hpp
 )
 
 target_link_libraries(

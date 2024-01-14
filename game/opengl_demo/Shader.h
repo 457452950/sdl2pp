@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "sdl2pp/gl/GL.hpp"
+
 #include "glm/glm.hpp"
 
 
