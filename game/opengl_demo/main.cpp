@@ -1,6 +1,7 @@
 ﻿#include "sdl2pp/SDLpp.h"
 
 #include "Window.h"
+#include <DEFER.hpp>
 
 int main(int argc, char *argv[]) {
     // init system
@@ -31,6 +32,8 @@ int main(int argc, char *argv[]) {
 
     game::Window window;
 
+    DEFER([] { sdlpp::gl::DestroyContext(); });
+
     ok = sdlpp::gl::SetDoubleBuffer(true);
     Assert(ok, "Failed to set double buffer {}", SDL_GetError());
 
@@ -51,8 +54,6 @@ int main(int argc, char *argv[]) {
 
     ok = sdlpp::gl::SetSwapInterval(0);
     Assert(ok, "failed to set vsync {}", SDL_GetError());
-
-    sdlpp::gl::DestroyContext();
 
     return window.Exec();
 }
