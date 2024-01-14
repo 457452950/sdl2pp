@@ -32,6 +32,27 @@ int GetSwapInterval() { return SDL_GL_GetSwapInterval(); }
 
 bool SetSwapInterval(int v) { return SDL_GL_SetSwapInterval(v) == 0; }
 
+static SDL_GLContext context{nullptr};
+
+bool CreateContext(SDL_Window *window) {
+    Assert(context == nullptr, "context has already created.");
+
+    context = SDL_GL_CreateContext(window);
+    return context != nullptr;
+}
+
+bool MakeCurrent(SDL_Window *window) {
+    Assert(context != nullptr, "context has not initialed.");
+    return SDL_GL_MakeCurrent(window, context) == 0;
+}
+
+SDL_Window *GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
+
+void DestroyContext() {
+    if(context)
+        SDL_GL_DeleteContext(context);
+}
+
 static std::once_flag glad_init_flag;
 
 namespace ext {

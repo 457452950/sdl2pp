@@ -4,6 +4,7 @@
 
 #include <glad/glad.h>
 #include <SDL_opengl.h>
+#include <SDL_video.h>
 
 #include "Toy/NonCopyAble.hpp"
 
@@ -16,6 +17,14 @@ bool SetDoubleBuffer(bool v);
 int GetSwapInterval();
 
 bool SetSwapInterval(int v);
+
+bool CreateContext(SDL_Window *window);
+
+void DestroyContext();
+
+bool MakeCurrent(SDL_Window *window);
+
+SDL_Window *GetCurrentWindow();
 
 namespace ext {
 

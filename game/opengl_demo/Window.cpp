@@ -11,16 +11,7 @@ Window::Window() {
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
     // fixme: context SDL_GL_DeleteContext
-    gl_context_ = SDL_GL_CreateContext(this->Get());
-    if(gl_context_ == nullptr) {
-        LOG_ERR(log::APP, "sdl gl create context false, {}", SDL_GetError());
-        return;
-    }
-
-    if(SDL_GL_MakeCurrent(this->Get(), gl_context_) != 0) {
-        LOG_ERR(log::APP, "SDL_GL_MakeCurrent false, {}", SDL_GetError());
-        return;
-    }
+    sdlpp::gl::CreateContext(this->Get());
 
     sdlpp::gl::ext::Init();
     sdlpp::gl::ext::DepthTest();
@@ -48,20 +39,22 @@ Window::Window() {
     };
     // clang-format on
 
-    unsigned int VBO;
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+
+    GLuint VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 8 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    unsigned int EBO;
+    GLuint EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
