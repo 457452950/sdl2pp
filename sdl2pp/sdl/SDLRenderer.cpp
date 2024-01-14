@@ -1,6 +1,6 @@
 #include "SDLRenderer.hpp"
 
-#include "SDLWindow.h"
+#include "SDLWindow.hpp"
 #include "SDLTexture.hpp"
 #include "SDLSurface.hpp"
 

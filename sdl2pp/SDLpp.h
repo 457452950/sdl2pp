@@ -25,7 +25,7 @@
 #include "sdl2pp/sdl/SDLDisplay.hpp"
 // class Display;
 
-#include "sdl2pp/sdl/SDLWindow.h"
+#include "sdl2pp/sdl/SDLWindow.hpp"
 // class SDLWindow;
 
 #include "sdl2pp/sdl/SDLRenderer.hpp"
@@ -39,7 +39,7 @@
 
 #include "sdl2pp/sdl/SDLImage.h"
 
-#include "sdl2pp/sdl/SDLTTF.h"
+#include "sdl2pp/sdl/SDLTTF.hpp"
 // class Font;
 
 #include "sdl2pp/sdl/SDLAudio.hpp"

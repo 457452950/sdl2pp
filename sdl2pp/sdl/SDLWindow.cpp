@@ -1,4 +1,4 @@
-#include "SDLWindow.h"
+#include "SDLWindow.hpp"
 
 #include "SDLRenderer.hpp"
 #include "sdl2pp/utils/Assert.h"

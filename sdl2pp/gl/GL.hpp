@@ -6,6 +6,7 @@
 
 namespace sdlpp::gl {
 
+
 class GL : public NonCopyAble {
 public:
     static bool Init(int major, int minor);
@@ -15,6 +16,10 @@ public:
     static int GetSwapInterval();
 
     static bool SetSwapInterval(int v);
+
+    static void GladInit();
+
+    static void DepthTest();
 };
 
 } // namespace sdlpp::gl

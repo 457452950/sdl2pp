@@ -8,7 +8,7 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 
-#include "sdl2pp/sdl/SDLWindow.h"
+#include "sdl2pp/sdl/SDLWindow.hpp"
 #include "common/Time.hpp"
 #include "sdl2pp/common/SDLLog.h"
 #include "SRenderer.hpp"

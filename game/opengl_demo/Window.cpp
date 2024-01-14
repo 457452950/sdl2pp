@@ -1,13 +1,16 @@
 #include "Window.h"
 
 #include "sdl2pp/common/SDLLog.h"
+#include "base/Sysinfo.h"
 
 namespace game {
 
 std::once_flag glad_init_flag;
 
 Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
-    this->SetPhysicPerS(0);
+    this->SetSize({1200, 800});
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     // fixme: context SDL_GL_DeleteContext
     gl_context_ = SDL_GL_CreateContext(this->Get());
@@ -21,25 +24,30 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
         return;
     }
 
-    std::call_once(glad_init_flag, []() {
-        // 初始化GLAD
-        if(!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-            LOG_ERR(log::APP, "gladLoadGLLoader false.");
-            return;
-        }
-    });
+    sdlpp::gl::GL::GladInit();
+    sdlpp::gl::GL::DepthTest();
 
     this->shader_ = std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\shader.vert)",
                                              R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\shader.frag)");
 
     camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
-
     // clang-format off
-    float vertices[] = {-0.5f, -0.5f, 0.0f,    1,  0,  0,
-                        0.5f,  -0.5f, 0.0f,    0,  1,  0,
-                        0.0f,   0.5f, 0.0f,    0,  0,  1};
+    float vertices[] = {
+        // positions          // colors           // texture coords
+         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
+    };
+    unsigned int indices[] = {
+        // 注意索引从0开始!
+        // 此例的索引(0,1,2,3)就是顶点数组vertices的下标，
+        // 这样可以由下标代表顶点组合成矩形
+
+        0, 1, 3, // 第一个三角形
+        1, 2, 3  // 第二个三角形
+    };
     // clang-format on
 
     unsigned int VBO;
@@ -50,10 +58,15 @@ Window::Window() : sdlpp::SWindow(SDL_WINDOW_OPENGL) {
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 8 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     shader_->use();
 }
@@ -78,7 +91,7 @@ void Window::RenderProcess() {
 
     shader_->setMat4("model", glm::mat4(1.0f));
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void Window::RenderClear() {
@@ -88,6 +101,22 @@ void Window::RenderClear() {
 
 void Window::RenderFlush() { SDL_GL_SwapWindow(this->Get()); }
 
-void Window::Tick(double_t tick_ms) {}
+void Window::Tick(double_t tick_ms) {
+    const double_t speed = 0.001;
+
+    tick_ms *= speed;
+
+    if(this->speed_x == 1) {
+        camera_->ProcessKeyboard(FORWARD, tick_ms);
+    } else if(this->speed_x == -1) {
+        camera_->ProcessKeyboard(BACKWARD, tick_ms);
+    }
+
+    if(this->speed_y == 1) {
+        camera_->ProcessKeyboard(LEFT, tick_ms);
+    } else if(this->speed_y == -1) {
+        camera_->ProcessKeyboard(RIGHT, tick_ms);
+    }
+}
 
 } // namespace game

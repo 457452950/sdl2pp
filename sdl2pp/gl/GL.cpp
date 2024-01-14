@@ -1,5 +1,6 @@
 #include "GL.hpp"
 
+#include "glad/glad.h"
 #include <SDL_video.h>
 
 #include "sdl2pp/utils/Assert.h"
@@ -31,5 +32,16 @@ bool GL::SetDoubleBuffer(bool v) { return SDL_GL_SetAttribute(SDL_GLattr::SDL_GL
 int GL::GetSwapInterval() { return SDL_GL_GetSwapInterval(); }
 
 bool GL::SetSwapInterval(int v) { return SDL_GL_SetSwapInterval(0) == 0; }
+
+static std::once_flag glad_init_flag;
+
+void GL::GladInit() {
+    std::call_once(glad_init_flag, []() -> void {
+        // 初始化GLAD
+        Assert(gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress) != 0, "gladLoadGLLoader false.");
+    });
+}
+
+void GL::DepthTest() { glEnable(GL_DEPTH_TEST); }
 
 } // namespace sdlpp::gl

@@ -1,4 +1,4 @@
-#include "SDLTTF.h"
+#include "SDLTTF.hpp"
 
 namespace sdlpp {
 std::shared_ptr<Font> Font::Open(std::string_view path, int point_size) {
