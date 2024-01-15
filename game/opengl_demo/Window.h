@@ -80,7 +80,6 @@ public:
     void Tick(double tick_ms) override;
 
 private:
-    SDL_GLContext              gl_context_{nullptr};
     std::shared_ptr<Shader>    shader_;
     std::shared_ptr<FPSCamera> camera_;
 
