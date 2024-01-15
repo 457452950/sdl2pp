@@ -7,11 +7,26 @@
 
 namespace sdlpp {
 
-class GlWindow : public sdlpp::SWindow {
+class GlWindow : public SWindow {
 public:
     GlWindow();
 
     ~GlWindow() override = default;
+
+    void SetSize(PointI size) {
+        glViewport(0, 0, size.x, size.y);
+        SWindow::SetSize(size);
+    }
+
+
+    int WindowEvent(const SDL_WindowEvent &event) override {
+        switch(event.event) {
+        case SDL_WINDOWEVENT_RESIZED: {
+            glViewport(0, 0, event.data1, event.data2);
+        } break;
+        }
+        return SWindow::WindowEvent(event);
+    }
 
     void RenderFlush() override;
 

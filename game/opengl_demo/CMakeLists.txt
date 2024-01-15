@@ -8,6 +8,8 @@ add_executable(
         main.cpp
         Window.cpp
         Window.h
+        gl/GLObject.cpp
+        gl/GLObject.hpp
 )
 
 target_link_libraries(

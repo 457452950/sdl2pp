@@ -6,6 +6,7 @@
 
 #include "Shader.h"
 #include "FPSCamera.hpp"
+#include "gl/GLObject.hpp"
 
 namespace game {
 
@@ -59,7 +60,7 @@ public:
         return SWindow::KeyEvent(event);
     }
 
-    int WindowEvent(const SDL_WindowEvent &event) override { return SWindow::WindowEvent(event); }
+    int WindowEvent(const SDL_WindowEvent &event) override { return GlWindow::WindowEvent(event); }
 
     int MouseButtonEvent(const SDL_MouseButtonEvent &event) override { return SWindow::MouseButtonEvent(event); }
 
@@ -80,8 +81,14 @@ public:
     void Tick(double tick_ms) override;
 
 private:
-    std::shared_ptr<Shader>    shader_;
+    std::shared_ptr<Shader> light_shader_;
+    std::shared_ptr<Shader> light_source_shader_;
+
     std::shared_ptr<FPSCamera> camera_;
+
+    VAO light_vao, cube_vao;
+    VBO cube_vbo;
+    EBO cube_ebo;
 
     int speed_x{0};
     int speed_y{0};
