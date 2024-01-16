@@ -6,7 +6,7 @@ namespace game {
 
 Window::Window() {
     this->SetSize({1200, 900});
-    //    glViewport(0, 0, 1200, 900);
+    this->SetFps(120);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -97,8 +97,6 @@ Window::Window() {
 Window::~Window() {}
 
 void Window::RenderProcess() {
-    glm::vec3 lightPos(2.0f, 1.0f, 1.0f);
-
     light_shader_->use();
     {
         // set mvp
@@ -110,9 +108,9 @@ void Window::RenderProcess() {
         light_shader_->setMat4("model", glm::mat4(1.0f));
     }
     {
-        light_shader_->setVec3("cubeColor", {0.5, 0, 0});
-        light_shader_->setFloat("ambientLight", 0.3);
-        light_shader_->setFloat("diffuseLight", 0.5);
+        light_shader_->setVec3("cubeColor", {0, 1, 0});
+        light_shader_->setFloat("ambientLight", 0.1);
+        light_shader_->setFloat("diffuseLight", 1);
         light_shader_->setVec3("lightPos", lightPos);
     }
     glDrawArrays(GL_TRIANGLES, 0, 36);

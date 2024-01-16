@@ -17,8 +17,6 @@ public:
     ~Window() override;
 
     int KeyEvent(const SDL_KeyboardEvent &event) override {
-        LOG_INF(log::APP, "keyboard event");
-
         switch(event.keysym.scancode) {
         case SDL_SCANCODE_UNKNOWN:
             break;
@@ -56,7 +54,6 @@ public:
         default:
             break;
         }
-        LOG_INF(log::APP, "{} {}", speed_x, speed_y);
         return SWindow::KeyEvent(event);
     }
 
@@ -89,6 +86,8 @@ private:
     VAO light_vao, cube_vao;
     VBO cube_vbo;
     EBO cube_ebo;
+
+    glm::vec3 lightPos{1.1f, 0.0f, 1.5f};
 
     int speed_x{0};
     int speed_y{0};

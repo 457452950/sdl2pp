@@ -1,6 +1,7 @@
 #include "SWindow.hpp"
 
 #include <thread>
+#include <algorithm>
 
 #include <fmt/format.h>
 
@@ -15,32 +16,22 @@ int SWindow::Exec() {
     // first render
     this->render();
 
-    current_physic_time_ = current_time_ = sdlpp::GetPerformanceCounter();
+    last_physic_time_ = last_render_time_ = sdlpp::GetPerformanceCounter();
 
+
+    // fixme: fps降低导致pollevent变慢
     while(active_) {
-        SDL_PollEvent(&event_);
-
-        this->eventHandle(event_);
+        if(SDL_PollEvent(&event_) == 1)
+            this->eventHandle(event_);
 
         if(!active_) {
             break;
         }
 
-        if(frame_delay_mics_ > 0) {
-            while(true) {
-                CheckPhysicFrame();
+        auto cur = GetPerformanceCounter();
 
-                auto pass = sdlpp::GetPerformanceCounter() - current_time_;
-                if((pass >= frame_delay_mics_)) {
-                    current_time_ += pass;
-                    break;
-                }
-            }
-        } else {
-            CheckPhysicFrame();
-        }
-
-        this->render();
+        this->CheckPhysicFrame(cur);
+        this->CheckRenderFrame(cur);
     }
 
     return 0;
@@ -58,15 +49,34 @@ void SWindow::DefaultWindowEvent(const SDL_WindowEvent &event) {
     }
 }
 
-void SWindow::CheckPhysicFrame() {
-    if(physic_delay_micrs_ == 0) {
-        return;
+uint64_t SWindow::CheckPhysicFrame(uint64_t current_time) {
+    if(physic_delay_mics_ == 0) {
+        return INT_MAX;
     }
 
-    auto pass_time = (sdlpp::GetPerformanceCounter() - current_physic_time_);
-    if((double)pass_time >= physic_delay_micrs_) {
+    auto pass_time = (current_time - last_physic_time_);
+    if(pass_time >= physic_delay_mics_) {
         this->Tick((double)pass_time / (double)sdlpp::GetPerformanceFrequency() * 1000.0);
-        current_physic_time_ += pass_time;
+        last_physic_time_ += pass_time;
+        return physic_delay_mics_;
+    } else {
+        return physic_delay_mics_ - pass_time;
+    }
+}
+
+uint64_t SWindow::CheckRenderFrame(uint64_t current_time) {
+    if(render_delay_mics_ == 0) {
+        this->render();
+        return 0;
+    }
+
+    auto pass_time = current_time - last_render_time_;
+    if(pass_time >= render_delay_mics_) {
+        this->render();
+        last_render_time_ += pass_time;
+        return render_delay_mics_;
+    } else {
+        return render_delay_mics_ - pass_time;
     }
 }
 

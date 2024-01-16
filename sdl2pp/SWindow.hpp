@@ -41,21 +41,21 @@ public:
 
     // set fps
     void SetFps(int fps) {
-        if(fps == -1) {
-            frame_delay_mics_ = 0;
+        if(fps <= 0) {
+            render_delay_mics_ = 0;
         } else {
-            frame_delay_mics_ = (sdlpp::GetPerformanceFrequency() / (uint64_t)fps);
+            render_delay_mics_ = (sdlpp::GetPerformanceFrequency() / static_cast<uint64_t>(fps));
         }
     }
     // set pps
     void SetPhysicPerS(uint32_t physic_per_s) {
         if(physic_per_s == 0) {
-            physic_delay_micrs_ = 0;
+            physic_delay_mics_ = 0;
             return;
         }
 
-        physic_delay_micrs_ = ((double)sdlpp::GetPerformanceFrequency() / double(physic_per_s));
-        LOG_DBG(log::LIB, "physic_delay_micrs_: {}", physic_delay_micrs_);
+        physic_delay_mics_ = (sdlpp::GetPerformanceFrequency() / static_cast<uint64_t>(physic_per_s));
+        LOG_DBG(log::LIB, "physic_delay_mics_: {}", physic_delay_mics_);
     }
 
     int Exec();
@@ -100,17 +100,20 @@ protected:
 
     virtual void Tick(double tick_ms) {}
 
-    void CheckPhysicFrame();
+    uint64_t CheckPhysicFrame(uint64_t current_time);
+
+    uint64_t CheckRenderFrame(uint64_t current_time);
 
 private:
     std::atomic_bool           active_;
     SDL_Event                  event_{};
     std::shared_ptr<SRenderer> renderer_{nullptr};
 
-    uint64_t current_time_{0};
-    uint32_t frame_delay_mics_{0};
-    uint64_t current_physic_time_{0};
-    double   physic_delay_micrs_{0};
+    uint64_t last_render_time_{0};
+    uint64_t last_physic_time_{0};
+
+    uint64_t render_delay_mics_{0};
+    uint64_t physic_delay_mics_{0};
 };
 
 } // namespace sdlpp
