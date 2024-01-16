@@ -70,7 +70,7 @@ protected:
         Continue,
     };
 
-    void eventHandle(const SDL_Event &event);
+    virtual void eventHandle(const SDL_Event &event);
 
     virtual int WindowEvent(const SDL_WindowEvent &event) { return Continue; }
 
