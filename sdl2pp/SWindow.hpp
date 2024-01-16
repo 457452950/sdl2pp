@@ -109,6 +109,8 @@ private:
     SDL_Event                  event_{};
     std::shared_ptr<SRenderer> renderer_{nullptr};
 
+    const int max_event_deal_count_{5};
+
     uint64_t last_render_time_{0};
     uint64_t last_physic_time_{0};
 

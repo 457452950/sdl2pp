@@ -18,11 +18,16 @@ int SWindow::Exec() {
 
     last_physic_time_ = last_render_time_ = sdlpp::GetPerformanceCounter();
 
+    int event_deal = max_event_deal_count_;
 
     // fixme: fps降低导致pollevent变慢
     while(active_) {
-        if(SDL_PollEvent(&event_) == 1)
+        // note: The order of judgment cannot be reversed, otherwise the event will be lost
+        while(event_deal > 0 && SDL_PollEvent(&event_) == 1) {
+            --event_deal;
             this->eventHandle(event_);
+        }
+        event_deal = max_event_deal_count_;
 
         if(!active_) {
             break;
