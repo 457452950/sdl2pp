@@ -91,6 +91,9 @@ public:
 
     void Tick(double tick_ms) override;
 
+protected:
+    void IMGUIProcess();
+
 private:
     std::shared_ptr<Shader> light_shader_;
     std::shared_ptr<Shader> light_source_shader_;
@@ -109,6 +112,10 @@ private:
 
     float ambientLight{0.7f};
     float diffuseLight{0.2f};
+
+    bool ambient_enable_{true};
+    bool diffuse_enable_{true};
+    bool specular_enable_{true};
 
     int speed_x{0};
     int speed_y{0};

@@ -98,13 +98,6 @@ Window::Window() { // Setup Dear ImGui context
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
     }
-
-    glm::mat4 projection = glm::perspective(
-            glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 100.0f);
-    light_shader_->use();
-    light_shader_->setMat4("projection", projection);
-    light_source_shader_->use();
-    light_source_shader_->setMat4("projection", projection);
 }
 
 Window::~Window() {
@@ -117,11 +110,10 @@ void Window::RenderProcess() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
-    ImGui::Text("Hello, world %d", 123);
-    ImGui::SliderFloat("ambientLight", &ambientLight, 0.0f, 1.0f);
-    ImGui::SliderFloat("diffuseLight", &diffuseLight, 0.0f, 1.0f);
-    ImGui::SliderFloat("r", &r, 1.0f, 5.0f);
-    ImGui::SliderFloat("speed", &speed, 0.0f, 10.0f);
+    this->IMGUIProcess();
+
+    glm::mat4 projection = glm::perspective(
+            glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 100.0f);
 
     light_shader_->use();
     {
@@ -132,18 +124,24 @@ void Window::RenderProcess() {
         light_shader_->setMat4("view", view);
 
         light_shader_->setMat4("model", glm::mat4(1.0f));
+        light_shader_->setMat4("projection", projection);
     }
     {
         light_shader_->setVec3("cubeColor", {0, 1, 0});
         light_shader_->setFloat("ambientLight", ambientLight);
         light_shader_->setFloat("diffuseLight", diffuseLight);
         light_shader_->setVec3("lightPos", lightPos);
+        light_shader_->setVec3("viewPos", camera_->Position);
+        light_shader_->setBool("ambient_enable_", ambient_enable_);
+        light_shader_->setBool("diffuse_enable_", diffuse_enable_);
+        light_shader_->setBool("specular_enable_", specular_enable_);
     }
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     light_source_shader_->use();
     {
         // set mvp
+        light_source_shader_->setMat4("projection", projection);
 
         // camera/view transformation
         glm::mat4 view = camera_->GetViewMatrix();
@@ -196,6 +194,16 @@ void Window::Tick(double_t tick_ms) {
 void Window::eventHandle(const SDL_Event &event) {
     ImGui_ImplSDL2_ProcessEvent(&event);
     SWindow::eventHandle(event);
+}
+
+void Window::IMGUIProcess() {
+    ImGui::SliderFloat("ambientLight", &ambientLight, 0.0f, 1.0f);
+    ImGui::SliderFloat("diffuseLight", &diffuseLight, 0.0f, 1.0f);
+    ImGui::SliderFloat("r", &r, 1.0f, 5.0f);
+    ImGui::SliderFloat("speed", &speed, 0.0f, 10.0f);
+    ImGui::Checkbox("ambient", &ambient_enable_);
+    ImGui::Checkbox("diffuse", &diffuse_enable_);
+    ImGui::Checkbox("specular", &specular_enable_);
 }
 
 } // namespace game
