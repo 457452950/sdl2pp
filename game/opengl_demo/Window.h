@@ -108,7 +108,7 @@ private:
     float     r{1};
     float     speed{1.0f};
     float     theta{0.0f};
-    glm::vec3 lightPos{1.0f, 0.5f, 0.0f};
+    glm::vec3 lightPos{1.0f, 0.0f, 0.0f};
 
     float ambientLight{0.7f};
     float diffuseLight{0.2f};
