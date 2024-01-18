@@ -19,7 +19,7 @@ Window::Window() { // Setup Dear ImGui context
     ImGui_ImplOpenGL3_Init();
 
     this->SetSize({1200, 900});
-    this->SetFps(120);
+    //    this->SetFps(120);
 
     //    SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -127,10 +127,16 @@ void Window::RenderProcess() {
         light_shader_->setMat4("projection", projection);
     }
     {
-        light_shader_->setVec3("cubeColor", {0, 1, 0});
-        light_shader_->setFloat("ambientLight", ambientLight);
-        light_shader_->setFloat("diffuseLight", diffuseLight);
-        light_shader_->setVec3("lightPos", lightPos);
+        light_shader_->setVec3("material.ambient", 0.0f, 0.1f, 0.06f);
+        light_shader_->setVec3("material.diffuse", 0.0f, 0.50980392f, 0.50980392f);
+        light_shader_->setVec3("material.specular", 0.50196078f, 0.50196078f, 0.50196078f);
+        light_shader_->setFloat("material.shininess", 32.0f);
+
+        light_shader_->setVec3("light.ambient", glm::vec3{1.0f});
+        light_shader_->setVec3("light.diffuse", glm::vec3{1.0f}); // 将光照调暗了一些以搭配场景
+        light_shader_->setVec3("light.specular", glm::vec3{1.0f});
+        light_shader_->setVec3("light.position", lightPos);
+
         light_shader_->setVec3("viewPos", camera_->Position);
         light_shader_->setBool("ambient_enable_", ambient_enable_);
         light_shader_->setBool("diffuse_enable_", diffuse_enable_);
