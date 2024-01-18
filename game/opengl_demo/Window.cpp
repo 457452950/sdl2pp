@@ -2,13 +2,26 @@
 
 #include "sdl2pp/SDLpp.h"
 
+#include "imgui.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
+
 namespace game {
 
-Window::Window() {
+Window::Window() { // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &io     = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplSDL2_InitForOpenGL(this->Get(), SDL_GL_GetCurrentContext());
+    ImGui_ImplOpenGL3_Init();
+
     this->SetSize({1200, 900});
     this->SetFps(120);
 
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    //    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     sdlpp::gl::ext::DepthTest();
     // 背面剔除
@@ -20,7 +33,7 @@ Window::Window() {
             std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightSourceShader.vert)",
                                      R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightSourceShader.frag)");
 
-    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 1.5f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     // clang-format off
     float vertices[] = {
@@ -94,9 +107,22 @@ Window::Window() {
     light_source_shader_->setMat4("projection", projection);
 }
 
-Window::~Window() {}
+Window::~Window() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
+}
 
 void Window::RenderProcess() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+    ImGui::Text("Hello, world %d", 123);
+    ImGui::SliderFloat("ambientLight", &ambientLight, 0.0f, 1.0f);
+    ImGui::SliderFloat("diffuseLight", &diffuseLight, 0.0f, 1.0f);
+    ImGui::SliderFloat("r", &r, 1.0f, 5.0f);
+    ImGui::SliderFloat("speed", &speed, 0.0f, 10.0f);
+
     light_shader_->use();
     {
         // set mvp
@@ -109,8 +135,8 @@ void Window::RenderProcess() {
     }
     {
         light_shader_->setVec3("cubeColor", {0, 1, 0});
-        light_shader_->setFloat("ambientLight", 0.1);
-        light_shader_->setFloat("diffuseLight", 1);
+        light_shader_->setFloat("ambientLight", ambientLight);
+        light_shader_->setFloat("diffuseLight", diffuseLight);
         light_shader_->setVec3("lightPos", lightPos);
     }
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -137,12 +163,17 @@ void Window::RenderClear() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::RenderFlush() { GlWindow::RenderFlush(); }
+void Window::RenderFlush() {
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    GlWindow::RenderFlush();
+}
 
 void Window::Tick(double_t tick_ms) {
-    const double_t speed = 0.001;
+    const double_t move_speed = 0.001;
 
-    tick_ms *= speed;
+    tick_ms *= move_speed;
 
     if(this->speed_x == 1) {
         camera_->ProcessKeyboard(FORWARD, tick_ms);
@@ -155,6 +186,16 @@ void Window::Tick(double_t tick_ms) {
     } else if(this->speed_y == -1) {
         camera_->ProcessKeyboard(RIGHT, tick_ms);
     }
+
+
+    theta      += this->speed * 0.01;
+    lightPos.x  = r * cos(theta);
+    lightPos.z  = r * sin(theta);
+}
+
+void Window::eventHandle(const SDL_Event &event) {
+    ImGui_ImplSDL2_ProcessEvent(&event);
+    SWindow::eventHandle(event);
 }
 
 } // namespace game

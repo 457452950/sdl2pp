@@ -83,6 +83,7 @@ protected:
     virtual int MouseButtonEvent(const SDL_MouseButtonEvent &event) { return Ignore; }
 
     virtual int MouseWheelEvent(const SDL_MouseWheelEvent &event) { return Ignore; }
+
 #pragma endregion
 
     // render process

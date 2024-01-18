@@ -34,7 +34,7 @@ endif ()
 
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
+#find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(OpenGL REQUIRED COMPONENTS OpenGL) # v3.10
 
@@ -51,8 +51,17 @@ include_directories(
         "./"
 )
 include_directories("thirdparty/glad/include")
+include_directories("thirdparty/imgui/include")
 
 set(GLAD_SOURCE "thirdparty/glad/src/glad.c")
+set(IMGUI_SOURCE
+        "thirdparty/imgui/src/imgui.cpp"
+        "thirdparty/imgui/src/imgui_draw.cpp"
+        "thirdparty/imgui/src/imgui_tables.cpp"
+        "thirdparty/imgui/src/imgui_widgets.cpp"
+        "thirdparty/imgui/src/imgui_impl_opengl3.cpp"
+        "thirdparty/imgui/src/imgui_impl_sdl2.cpp"
+        "thirdparty/imgui/src/imgui_impl_sdlrenderer2.cpp")
 
 set(ENGINE_NAME ${PROJECT_NAME})
 
@@ -60,6 +69,7 @@ add_library(
         ${ENGINE_NAME}
 
         ${GLAD_SOURCE}
+        ${IMGUI_SOURCE}
 
         sdl2pp/common/SDLLog.h
         sdl2pp/common/Math.cpp
@@ -126,9 +136,7 @@ target_link_libraries(
         $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
         fmt::fmt
         Eigen3::Eigen
-        imgui::imgui
         glm::glm
-        ${OPENGL_LIBRARIES}
         lbox
 )
 

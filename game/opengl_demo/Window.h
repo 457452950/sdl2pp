@@ -16,6 +16,8 @@ public:
 
     ~Window() override;
 
+    void eventHandle(const SDL_Event &event) override;
+
     int KeyEvent(const SDL_KeyboardEvent &event) override {
         switch(event.keysym.scancode) {
         case SDL_SCANCODE_UNKNOWN:
@@ -59,10 +61,22 @@ public:
 
     int WindowEvent(const SDL_WindowEvent &event) override { return GlWindow::WindowEvent(event); }
 
-    int MouseButtonEvent(const SDL_MouseButtonEvent &event) override { return SWindow::MouseButtonEvent(event); }
+    int MouseButtonEvent(const SDL_MouseButtonEvent &event) override {
+        switch(event.button) {
+        case SDL_BUTTON_RIGHT: {
+            if(event.type == SDL_MOUSEBUTTONDOWN) {
+                canMove = true;
+            } else {
+                canMove = false;
+            }
+        } break;
+        }
+        return SWindow::MouseButtonEvent(event);
+    }
 
     int MouseMoveEvent(const SDL_MouseMotionEvent &event) override {
-        camera_->ProcessMouseMovement(event.xrel, -event.yrel);
+        if(canMove)
+            camera_->ProcessMouseMovement(event.xrel, -event.yrel);
         return SWindow::MouseMoveEvent(event);
     }
 
@@ -82,12 +96,19 @@ private:
     std::shared_ptr<Shader> light_source_shader_;
 
     std::shared_ptr<FPSCamera> camera_;
+    bool                       canMove = false;
 
     VAO light_vao, cube_vao;
     VBO cube_vbo;
     EBO cube_ebo;
 
-    glm::vec3 lightPos{1.1f, 0.0f, 1.5f};
+    float     r{1};
+    float     speed{1.0f};
+    float     theta{0.0f};
+    glm::vec3 lightPos{1.0f, 0.5f, 0.0f};
+
+    float ambientLight{0.7f};
+    float diffuseLight{0.2f};
 
     int speed_x{0};
     int speed_y{0};

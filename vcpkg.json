@@ -22,9 +22,6 @@
       "version>=": "10.0.0"
     },
     {
-      "name": "imgui"
-    },
-    {
       "name": "eigen3"
     },
     {
