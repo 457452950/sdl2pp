@@ -112,6 +112,7 @@ private:
 
     float ambientLight{0.7f};
     float diffuseLight{0.2f};
+    float specularLight{1.0f};
 
     bool ambient_enable_{true};
     bool diffuse_enable_{true};

@@ -221,7 +221,7 @@ void Window::RenderProcess() {
 
         light_shader_->setVec3("light.ambient", glm::vec3{ambientLight});
         light_shader_->setVec3("light.diffuse", glm::vec3{diffuseLight});
-        light_shader_->setVec3("light.specular", glm::vec3{1.0f});
+        light_shader_->setVec3("light.specular", glm::vec3{specularLight});
         light_shader_->setVec3("light.position", lightPos);
 
         light_shader_->setVec3("viewPos", camera_->Position);
@@ -293,6 +293,7 @@ void Window::eventHandle(const SDL_Event &event) {
 void Window::IMGUIProcess() {
     ImGui::SliderFloat("ambientLight", &ambientLight, 0.0f, 1.0f);
     ImGui::SliderFloat("diffuseLight", &diffuseLight, 0.0f, 1.0f);
+    ImGui::SliderFloat("specularLight", &specularLight, 0.0f, 5.0f);
     ImGui::SliderFloat("r", &r, 1.0f, 5.0f);
     ImGui::SliderFloat("speed", &speed, 0.0f, 10.0f);
     ImGui::Checkbox("ambient", &ambient_enable_);
