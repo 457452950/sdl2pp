@@ -37,4 +37,15 @@ private:
     GLuint id_{0};
 };
 
+class GLTexture final {
+public:
+    GLTexture();
+    ~GLTexture();
+
+    void Bind();
+
+private:
+    GLuint id_{0};
+};
+
 #endif // SDL2PP_GAME_OPENGL_DEMO_GL_GLOBJECT_HPP_

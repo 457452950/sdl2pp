@@ -101,9 +101,11 @@ private:
     std::shared_ptr<FPSCamera> camera_;
     bool                       canMove = false;
 
-    VAO light_vao, cube_vao;
-    VBO cube_vbo;
-    EBO cube_ebo;
+    VAO       light_vao, cube_vao;
+    VBO       cube_vbo;
+    EBO       cube_ebo;
+    GLTexture diffuse_tex_;
+    GLTexture specular_tex_;
 
     float     r{1};
     float     speed{1.0f};

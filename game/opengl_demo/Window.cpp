@@ -105,14 +105,10 @@ Window::Window() { // Setup Dear ImGui context
         glEnableVertexAttribArray(2);
     }
     {
-        // load and create a texture
-        // -------------------------
-        unsigned int texture1;
         // texture 1
         // ---------
         glActiveTexture(GL_TEXTURE0);
-        glGenTextures(1, &texture1);
-        glBindTexture(GL_TEXTURE_2D, texture1);
+        diffuse_tex_.Bind();
         // set the texture wrapping parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -148,10 +144,8 @@ Window::Window() { // Setup Dear ImGui context
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     {
-        unsigned int texture1;
         glActiveTexture(GL_TEXTURE1);
-        glGenTextures(1, &texture1);
-        glBindTexture(GL_TEXTURE_2D, texture1);
+        specular_tex_.Bind();
         // set the texture wrapping parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
