@@ -27,8 +27,15 @@ Window::Window() { // Setup Dear ImGui context
     // 背面剔除
     //    glEnable(GL_CULL_FACE);
 
-    this->light_shader_ = std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightShader.vert)",
-                                                   R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightShader.frag)");
+    //    this->light_shader_ =
+    //    std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightShader.vert)",
+    //                                                   R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightShader.frag)");
+    //    this->light_shader_ =
+    //            std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\DirectionalLightShader.vert)",
+    //                                     R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\DirectionalLightShader.frag)");
+    this->light_shader_ =
+            std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\PointLightShader.vert)",
+                                     R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\PointLightShader.frag)");
     this->light_source_shader_ =
             std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightSourceShader.vert)",
                                      R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightSourceShader.frag)");
@@ -194,6 +201,17 @@ void Window::RenderProcess() {
     ImGui::NewFrame();
     this->IMGUIProcess();
 
+    static glm::vec3 cubePositions[] = {glm::vec3(0.0f, 0.0f, 0.0f),
+                                        glm::vec3(2.0f, 5.0f, -15.0f),
+                                        glm::vec3(-1.5f, -2.2f, -2.5f),
+                                        glm::vec3(-3.8f, -2.0f, -12.3f),
+                                        glm::vec3(2.4f, -0.4f, -3.5f),
+                                        glm::vec3(-1.7f, 3.0f, -7.5f),
+                                        glm::vec3(1.3f, -2.0f, -2.5f),
+                                        glm::vec3(1.5f, 2.0f, -2.5f),
+                                        glm::vec3(1.5f, 0.2f, -1.5f),
+                                        glm::vec3(-1.3f, 1.0f, -1.5f)};
+
     glm::mat4 projection = glm::perspective(
             glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 100.0f);
 
@@ -205,7 +223,6 @@ void Window::RenderProcess() {
         glm::mat4 view = camera_->GetViewMatrix();
         light_shader_->setMat4("view", view);
 
-        light_shader_->setMat4("model", glm::mat4(1.0f));
         light_shader_->setMat4("projection", projection);
     }
     {
@@ -218,13 +235,25 @@ void Window::RenderProcess() {
         light_shader_->setVec3("light.specular", glm::vec3{specularLight});
         light_shader_->setVec3("light.position", lightPos);
 
+        light_shader_->setFloat("light.constant", 1.0f);
+        light_shader_->setFloat("light.linear", 0.09f);
+        light_shader_->setFloat("light.quadratic", 0.032f);
+
         light_shader_->setVec3("viewPos", camera_->Position);
 
         light_shader_->setBool("ambient_enable_", ambient_enable_);
         light_shader_->setBool("diffuse_enable_", diffuse_enable_);
         light_shader_->setBool("specular_enable_", specular_enable_);
     }
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    for(unsigned int i = 0; i < 10; i++) {
+        glm::mat4 model{1.0f};
+        model       = glm::translate(model, cubePositions[i]);
+        float angle = 20.0f * i;
+        model       = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+        light_shader_->setMat4("model", model);
+
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 
     light_source_shader_->use();
     {
