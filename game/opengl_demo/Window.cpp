@@ -33,9 +33,12 @@ Window::Window() { // Setup Dear ImGui context
     //    this->light_shader_ =
     //            std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\DirectionalLightShader.vert)",
     //                                     R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\DirectionalLightShader.frag)");
+    //    this->light_shader_ =
+    //            std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\PointLightShader.vert)",
+    //                                     R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\PointLightShader.frag)");
     this->light_shader_ =
-            std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\PointLightShader.vert)",
-                                     R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\PointLightShader.frag)");
+            std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\SpotLightShader.vert)",
+                                     R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\SpotLightShader.frag)");
     this->light_source_shader_ =
             std::make_shared<Shader>(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightSourceShader.vert)",
                                      R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\LightSourceShader.frag)");
@@ -233,11 +236,12 @@ void Window::RenderProcess() {
         light_shader_->setVec3("light.ambient", glm::vec3{ambientLight});
         light_shader_->setVec3("light.diffuse", glm::vec3{diffuseLight});
         light_shader_->setVec3("light.specular", glm::vec3{specularLight});
-        light_shader_->setVec3("light.position", lightPos);
+        //        light_shader_->setVec3("light.position", lightPos);
 
-        light_shader_->setFloat("light.constant", 1.0f);
-        light_shader_->setFloat("light.linear", 0.09f);
-        light_shader_->setFloat("light.quadratic", 0.032f);
+        light_shader_->setVec3("light.position", camera_->Position);
+        light_shader_->setVec3("light.direction", camera_->Front);
+        light_shader_->setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+        light_shader_->setFloat("light.outerCutOff", glm::cos(glm::radians(15.0f)));
 
         light_shader_->setVec3("viewPos", camera_->Position);
 
