@@ -4,9 +4,11 @@
 
 #include "sdl2pp/GLWindow.hpp"
 
-#include "Shader.h"
 #include "FPSCamera.hpp"
 #include "gl/GLObject.hpp"
+#include "gl/Shader.hpp"
+#include "gl/Mesh.hpp"
+#include "game/opengl_demo/gl/Model.hpp"
 
 namespace game {
 
@@ -65,9 +67,9 @@ public:
         switch(event.button) {
         case SDL_BUTTON_RIGHT: {
             if(event.type == SDL_MOUSEBUTTONDOWN) {
-                canMove = true;
+                can_move_ = true;
             } else {
-                canMove = false;
+                can_move_ = false;
             }
         } break;
         }
@@ -75,7 +77,7 @@ public:
     }
 
     int MouseMoveEvent(const SDL_MouseMotionEvent &event) override {
-        if(canMove)
+        if(can_move_)
             camera_->ProcessMouseMovement(event.xrel, -event.yrel);
         return SWindow::MouseMoveEvent(event);
     }
@@ -95,33 +97,16 @@ protected:
     void IMGUIProcess();
 
 private:
-    std::shared_ptr<Shader> light_shader_;
-    std::shared_ptr<Shader> light_source_shader_;
+    std::shared_ptr<gl::Shader> model_shader_;
 
     std::shared_ptr<FPSCamera> camera_;
-    bool                       canMove = false;
-
-    VAO       light_vao, cube_vao;
-    VBO       cube_vbo;
-    EBO       cube_ebo;
-    GLTexture diffuse_tex_;
-    GLTexture specular_tex_;
-
-    float     r{1};
-    float     speed{1.0f};
-    float     theta{0.0f};
-    glm::vec3 lightPos{1.0f, 0.0f, 0.0f};
-
-    float ambientLight{0.7f};
-    float diffuseLight{0.2f};
-    float specularLight{1.0f};
-
-    bool ambient_enable_{true};
-    bool diffuse_enable_{true};
-    bool specular_enable_{true};
+    bool                       can_move_ = false;
 
     int speed_x{0};
     int speed_y{0};
+
+    std::shared_ptr<gl::Model> model_;
+    std::shared_ptr<gl::Mesh>  mesh_;
 };
 
 } // namespace game

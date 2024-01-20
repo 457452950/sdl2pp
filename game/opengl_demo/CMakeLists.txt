@@ -10,10 +10,18 @@ add_executable(
         Window.h
         gl/GLObject.cpp
         gl/GLObject.hpp
+        gl/Mesh.cpp
+        gl/Mesh.hpp
+        gl/Shader.cpp
+        gl/Shader.hpp
+        gl/Model.cpp
+        gl/Model.hpp
 )
 
 target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
         ${ENGINE_NAME}
+        glm::glm
+        assimp::assimp
 )
