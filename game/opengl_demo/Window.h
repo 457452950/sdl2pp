@@ -98,6 +98,7 @@ protected:
 
 private:
     std::shared_ptr<gl::Shader> model_shader_;
+    std::shared_ptr<gl::Shader> screen_shader_;
 
     std::shared_ptr<FPSCamera> camera_;
     bool                       can_move_ = false;
@@ -106,7 +107,12 @@ private:
     int speed_y{0};
 
     std::shared_ptr<gl::Model> model_;
-    std::shared_ptr<gl::Mesh>  mesh_;
+
+    FBO       fbo_;
+    GLTexture gl_texture_;
+    RBO       rbo_;
+    VAO       vao_;
+    VBO       vbo_;
 };
 
 } // namespace game
