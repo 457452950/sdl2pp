@@ -4,7 +4,9 @@
 
 #include <glad/glad.h>
 
-class VAO final {
+#include "Toy/NonCopyAble.hpp"
+
+class VAO final : public lbox::NonCopyAble {
 public:
     VAO();
     ~VAO();
@@ -15,7 +17,7 @@ private:
     GLuint id_{0};
 };
 
-class VBO final {
+class VBO final : public lbox::NonCopyAble {
 public:
     VBO();
     ~VBO();
@@ -26,7 +28,7 @@ private:
     GLuint id_{0};
 };
 
-class EBO final {
+class EBO final : public lbox::NonCopyAble {
 public:
     EBO();
     ~EBO();
@@ -37,12 +39,25 @@ private:
     GLuint id_{0};
 };
 
-class GLTexture final {
+class GLTexture final : public lbox::NonCopyAble {
 public:
     GLTexture();
     ~GLTexture();
 
     void Bind();
+
+private:
+    GLuint id_{0};
+};
+
+class FBO final : public lbox::NonCopyAble {
+public:
+    FBO();
+    ~FBO();
+
+    enum BufferType { READ, DRAW, READ_WRITE };
+
+    void Bind(BufferType type = READ_WRITE);
 
 private:
     GLuint id_{0};

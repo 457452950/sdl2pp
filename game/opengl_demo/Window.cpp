@@ -8,7 +8,8 @@
 
 namespace game {
 
-Window::Window() { // Setup Dear ImGui context
+Window::Window() {
+    // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io     = ImGui::GetIO();
@@ -25,7 +26,7 @@ Window::Window() { // Setup Dear ImGui context
 
     sdlpp::gl::ext::DepthTest();
     // 背面剔除
-    //    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     this->model_shader_ = std::make_shared<gl::Shader>();
     if(!this->model_shader_->SetShader(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\model_loading.vs)",
