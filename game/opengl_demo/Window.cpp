@@ -34,12 +34,14 @@ Window::Window() {
         LOG_ERR(log::APP, "load shader error ");
         return;
     }
-    this->screen_shader_ = std::make_shared<gl::Shader>();
-    if(!this->screen_shader_->SetShader(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\screen_shader.vs)",
-                                        R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\screen_shader.fs)")) {
+    this->sky_box_shader_ = std::make_shared<gl::Shader>();
+    if(!this->sky_box_shader_->SetShader(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\sky_box_shader.vs)",
+                                         R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\sky_box_shader.fs)")) {
         LOG_ERR(log::APP, "load shader error ");
         return;
     }
+    sky_box_shader_->Use();
+    sky_box_shader_->SetInt("skybox", 0);
 
     camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -47,44 +49,61 @@ Window::Window() {
 
 
     {
-        screen_shader_->Use();
-        screen_shader_->SetInt("screenTexture", 0);
+        sky_box_.Bind();
+        static std::string              path = "H:/Resources/image/skybox/";
+        static std::vector<std::string> faces{
+                "right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg"};
+        for(unsigned int i = 0; i < faces.size(); i++) {
+            auto img = sdlpp::IMG_LoadSurfaceFromFile(path + faces[i]);
+            if(img) {
+                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                             0,
+                             GL_RGB,
+                             img->GetWidth(),
+                             img->GetHeight(),
+                             0,
+                             GL_RGB,
+                             GL_UNSIGNED_BYTE,
+                             img->GetPixels());
 
-        fbo_.Bind();
-
-        // 生成纹理
-        gl_texture_.Bind();
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1200, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        // 将它附加到当前绑定的帧缓冲对象
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gl_texture_.GetId(), 0);
-
-        rbo_.Bind();
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1200, 900);
-
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_.GetId());
-        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-            LOG_ERR(log::APP, "ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+            } else {
+                LOG_ERR(log::APP, "Cubemap texture failed to load at path: {}", faces[i]);
+                return;
+            }
         }
-        fbo_.Unbind();
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        {
+            sky_box_shader_->Use();
+            vao_.Bind();
+            vbo_.Bind();
+            float skyboxVertices[] = {// positions
+                                      -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
+                                      1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f,
+
+                                      -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f,
+                                      -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,
+
+                                      1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,
+                                      1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f,
+
+                                      -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,  1.0f,
+                                      1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,
+
+                                      -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,
+                                      1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f,
+
+                                      -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
+                                      1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
+            glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+        }
     }
-
-    static float quadVertices[] = {
-            // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-            // positions   // texCoords
-            -1.0f, 1.0f, 0.0f, 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 1.0f, 0.0f,
-
-            -1.0f, 1.0f, 0.0f, 1.0f, 1.0f,  -1.0f, 1.0f, 0.0f, 1.0f, 1.0f,  1.0f, 1.0f};
-    vao_.Bind();
-    vbo_.Bind();
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)(2 * sizeof(float)));
-    //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 Window::~Window() {
@@ -102,18 +121,12 @@ void Window::RenderProcess() {
 
     glm::mat4 projection = glm::perspective(
             glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 100.0f);
+    glm::mat4 view = camera_->GetViewMatrix();
 
-    // 第一处理阶段(Pass)
-    fbo_.Bind();
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // 我们现在不使用模板缓冲
     {
         model_shader_->Use();
         {
-            glm::mat4 view = camera_->GetViewMatrix();
             model_shader_->SetMat4("view", view);
-
             model_shader_->SetMat4("projection", projection);
 
             // render the loaded model
@@ -127,23 +140,26 @@ void Window::RenderProcess() {
         }
         { model_->Draw(model_shader_); }
     }
-    VAO::Unbind();
+    {
+        glDepthFunc(GL_LEQUAL);
+        sky_box_shader_->Use();
+        // ... 设置观察和投影矩阵
+        glm::mat4 vview = glm::mat4(glm::mat3(camera_->GetViewMatrix()));
+        sky_box_shader_->SetMat4("view", vview);
+        sky_box_shader_->SetMat4("projection", projection);
 
-    // 第二处理阶段
-    fbo_.Unbind(); // 返回默认
-    glDisable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    screen_shader_->Use();
-    vao_.Bind();
-    gl_texture_.Bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+        vao_.Bind();
+        glActiveTexture(GL_TEXTURE0);
+        sky_box_.Bind();
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        vao_.Unbind();
+        glDepthFunc(GL_LESS); // set depth function back to default
+    }
 }
 
 void Window::RenderClear() {
-    //    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::RenderFlush() {

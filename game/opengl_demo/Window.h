@@ -98,7 +98,6 @@ protected:
 
 private:
     std::shared_ptr<gl::Shader> model_shader_;
-    std::shared_ptr<gl::Shader> screen_shader_;
 
     std::shared_ptr<FPSCamera> camera_;
     bool                       can_move_ = false;
@@ -108,11 +107,10 @@ private:
 
     std::shared_ptr<gl::Model> model_;
 
-    FBO       fbo_;
-    GLTexture gl_texture_;
-    RBO       rbo_;
-    VAO       vao_;
-    VBO       vbo_;
+    std::shared_ptr<gl::Shader> sky_box_shader_;
+    GLTextureCubeMap            sky_box_;
+    VAO                         vao_;
+    VBO                         vbo_;
 };
 
 } // namespace game

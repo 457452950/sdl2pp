@@ -52,6 +52,16 @@ public:
     static void Unbind() { glBindTexture(GL_TEXTURE_2D, 0); }
 };
 
+class GLTextureCubeMap final : public GLObject, public lbox::NonCopyAble {
+public:
+    GLTextureCubeMap() { glGenTextures(1, &id_); }
+    ~GLTextureCubeMap() { glDeleteTextures(1, &id_); }
+
+    void        Bind() { glBindTexture(GL_TEXTURE_CUBE_MAP, id_); }
+    static void Unbind() { glBindTexture(GL_TEXTURE_CUBE_MAP, 0); }
+};
+
+
 class FBO final : public GLObject, public lbox::NonCopyAble {
 public:
     FBO() { glGenFramebuffers(1, &id_); }
