@@ -92,8 +92,9 @@ void Mesh::setupMesh() {
 }
 
 void Mesh::Draw(std::shared_ptr<Shader> shader) {
-    unsigned int diffuseNr  = 1;
-    unsigned int specularNr = 1;
+    unsigned int diffuseNr    = 1;
+    unsigned int specularNr   = 1;
+    unsigned int reflectionNr = 1;
     for(unsigned int i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i); // 在绑定之前激活相应的纹理单元
         // 获取纹理序号（diffuse_textureN 中的 N）
@@ -103,8 +104,10 @@ void Mesh::Draw(std::shared_ptr<Shader> shader) {
             number = std::to_string(diffuseNr++);
         else if(name == "texture_specular")
             number = std::to_string(specularNr++);
+        else if(name == "texture_reflection")
+            number = std::to_string(reflectionNr++);
 
-        //        LOG_DBG(log::APP, "material.{} {} ", name + number, textures[i].id);
+        LOG_DBG(log::APP, "material.{} {} ", name + number, textures[i].id);
 
         shader->SetInt("material." + name + number, i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);

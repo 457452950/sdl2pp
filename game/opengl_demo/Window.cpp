@@ -40,15 +40,17 @@ Window::Window() {
         LOG_ERR(log::APP, "load shader error ");
         return;
     }
+    model_shader_->Use();
+    model_shader_->SetInt("skybox", 31);
     sky_box_shader_->Use();
-    sky_box_shader_->SetInt("skybox", 0);
+    sky_box_shader_->SetInt("skybox", 31);
 
     camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    model_ = std::make_shared<gl::Model>("H:/Code/CLion/sdl2pp/game/opengl_demo/nanosuit/nanosuit.obj");
-
+    model_ = std::make_shared<gl::Model>("H:/Code/CLion/sdl2pp/game/opengl_demo/nanosuit_reflection/nanosuit.obj");
 
     {
+        glActiveTexture(GL_TEXTURE31);
         sky_box_.Bind();
         static std::string              path = "H:/Resources/image/skybox/";
         static std::vector<std::string> faces{
@@ -103,6 +105,7 @@ Window::Window() {
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
         }
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 }
 
@@ -128,14 +131,16 @@ void Window::RenderProcess() {
         {
             model_shader_->SetMat4("view", view);
             model_shader_->SetMat4("projection", projection);
+            model_shader_->SetVec3("cameraPos", camera_->Position);
+            glActiveTexture(GL_TEXTURE31);
+            sky_box_.Bind();
 
             // render the loaded model
             glm::mat4 model = glm::mat4(1.0f);
-            //        model           = glm::translate(model,
-            //                               glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of
-            //                               the scene
-            //        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f)); // it's a bit too big for our scene, so
-            //        scale it down
+            model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of
+                                                                        // the scene
+            model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));     // it's a bit too big for our scene, so
+                                                                        // scale it down
             model_shader_->SetMat4("model", model);
         }
         { model_->Draw(model_shader_); }
@@ -147,10 +152,10 @@ void Window::RenderProcess() {
         glm::mat4 vview = glm::mat4(glm::mat3(camera_->GetViewMatrix()));
         sky_box_shader_->SetMat4("view", vview);
         sky_box_shader_->SetMat4("projection", projection);
+        glActiveTexture(GL_TEXTURE31);
+        sky_box_.Bind();
 
         vao_.Bind();
-        glActiveTexture(GL_TEXTURE0);
-        sky_box_.Bind();
         glDrawArrays(GL_TRIANGLES, 0, 36);
         vao_.Unbind();
         glDepthFunc(GL_LESS); // set depth function back to default

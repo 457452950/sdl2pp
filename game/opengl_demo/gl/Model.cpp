@@ -84,9 +84,12 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        std::vector<Texture> reflectionMaps =
+                loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_reflection");
+        textures.insert(textures.end(), reflectionMaps.begin(), reflectionMaps.end());
     }
 
-    fmt::print("{} {} {}\n", vertices.size(), indices.size(), textures.size());
+    //    fmt::print("{} {} {}\n", vertices.size(), indices.size(), textures.size());
 
     return Mesh(vertices, indices, textures);
 }
