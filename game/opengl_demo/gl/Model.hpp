@@ -22,9 +22,10 @@ public:
 
     void Draw(std::shared_ptr<Shader> shader);
 
+    std::vector<Mesh> meshes;
+
 private:
     /*  模型数据  */
-    std::vector<Mesh>    meshes;
     std::string          directory;
     std::vector<Texture> textures_loaded;
 

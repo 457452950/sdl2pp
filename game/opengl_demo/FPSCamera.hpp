@@ -106,8 +106,6 @@ public:
             Zoom = 1.0f;
         if(Zoom > 45.0f)
             Zoom = 45.0f;
-
-        LOG_INF(log::APP, "zoom {}", Zoom);
     }
 
 private:

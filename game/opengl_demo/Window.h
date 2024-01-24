@@ -97,6 +97,7 @@ protected:
     void IMGUIProcess();
 
 private:
+    std::shared_ptr<gl::Shader> instance_shader_;
     std::shared_ptr<gl::Shader> model_shader_;
 
     std::shared_ptr<FPSCamera> camera_;
@@ -105,12 +106,11 @@ private:
     int speed_x{0};
     int speed_y{0};
 
-    std::shared_ptr<gl::Model> model_;
+    unsigned int amount = 100000;
+    glm::mat4   *modelMatrices;
 
-    std::shared_ptr<gl::Shader> sky_box_shader_;
-    GLTextureCubeMap            sky_box_;
-    VAO                         vao_;
-    VBO                         vbo_;
+    std::shared_ptr<gl::Model> planet_;
+    std::shared_ptr<gl::Model> rock_;
 };
 
 } // namespace game

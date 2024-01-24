@@ -31,14 +31,15 @@ public:
 
     void Draw(std::shared_ptr<Shader> shader);
 
+    std::shared_ptr<VAO>      vao_;
+    std::vector<unsigned int> indices;
+
 private:
-    std::shared_ptr<VAO> vao_;
     std::shared_ptr<VBO> vbo_;
     std::shared_ptr<EBO> ebo_;
 
-    std::vector<Vertex>       vertices;
-    std::vector<unsigned int> indices;
-    std::vector<Texture>      textures;
+    std::vector<Vertex>  vertices;
+    std::vector<Texture> textures;
 
     void setupMesh();
 };

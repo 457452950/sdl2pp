@@ -1,3 +1,4 @@
+#include <random>
 #include "Window.h"
 
 #include "sdl2pp/SDLpp.h"
@@ -28,85 +29,85 @@ Window::Window() {
     // 背面剔除
     glEnable(GL_CULL_FACE);
 
+    this->instance_shader_ = std::make_shared<gl::Shader>();
+    if(!this->instance_shader_->SetShader(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\instance_shader.vs)",
+                                          R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\instance_shader.fs)")) {
+        LOG_ERR(log::APP, "load shader error ");
+        return;
+    }
     this->model_shader_ = std::make_shared<gl::Shader>();
     if(!this->model_shader_->SetShader(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\model_loading.vs)",
                                        R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\model_loading.fs)")) {
         LOG_ERR(log::APP, "load shader error ");
         return;
     }
-    this->sky_box_shader_ = std::make_shared<gl::Shader>();
-    if(!this->sky_box_shader_->SetShader(R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\sky_box_shader.vs)",
-                                         R"(H:\Code\CLion\sdl2pp\game\opengl_demo\shader\sky_box_shader.fs)")) {
-        LOG_ERR(log::APP, "load shader error ");
-        return;
-    }
-    model_shader_->Use();
-    model_shader_->SetInt("skybox", 31);
-    sky_box_shader_->Use();
-    sky_box_shader_->SetInt("skybox", 31);
 
-    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-    model_ = std::make_shared<gl::Model>("H:/Code/CLion/sdl2pp/game/opengl_demo/nanosuit_reflection/nanosuit.obj");
+    camera_ = std::make_shared<FPSCamera>(glm::vec3(0.0f, 0.0f, 60.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     {
-        glActiveTexture(GL_TEXTURE31);
-        sky_box_.Bind();
-        static std::string              path = "H:/Resources/image/skybox/";
-        static std::vector<std::string> faces{
-                "right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "front.jpg", "back.jpg"};
-        for(unsigned int i = 0; i < faces.size(); i++) {
-            auto img = sdlpp::IMG_LoadSurfaceFromFile(path + faces[i]);
-            if(img) {
-                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                             0,
-                             GL_RGB,
-                             img->GetWidth(),
-                             img->GetHeight(),
-                             0,
-                             GL_RGB,
-                             GL_UNSIGNED_BYTE,
-                             img->GetPixels());
+        modelMatrices = new glm::mat4[amount];
+        srand(std::random_device{}()); // 初始化随机种子
+        float radius = 150.0;
+        float offset = 2.5f;
+        for(unsigned int i = 0; i < amount; i++) {
+            glm::mat4 model(1);
+            // 1. 位移：分布在半径为 'radius' 的圆形上，偏移的范围是 [-offset, offset]
+            float     angle        = (float)i / (float)amount * 360.0f;
+            float     displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+            float     x            = sin(angle) * radius + displacement;
+            displacement           = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+            float y                = displacement * 0.4f; // 让行星带的高度比x和z的宽度要小
+            displacement           = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+            float z                = cos(angle) * radius + displacement;
+            model                  = glm::translate(model, glm::vec3(x, y, z));
 
-            } else {
-                LOG_ERR(log::APP, "Cubemap texture failed to load at path: {}", faces[i]);
-                return;
-            }
+            // 2. 缩放：在 0.05 和 0.25f 之间缩放
+            float scale = (rand() % 20) / 100.0f + 0.05;
+            //            LOG_DBG(log::APP, "scale {}\n", scale);
+            model       = glm::scale(model, glm::vec3(scale));
+
+            // 3. 旋转：绕着一个（半）随机选择的旋转轴向量进行随机的旋转
+            float rotAngle = (rand() % 360);
+            //            LOG_DBG(log::APP, "rotAngle {}\n", rotAngle);
+            model          = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+
+            // 4. 添加到矩阵的数组中
+            modelMatrices[i] = model;
         }
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        {
-            sky_box_shader_->Use();
-            vao_.Bind();
-            vbo_.Bind();
-            float skyboxVertices[] = {// positions
-                                      -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
-                                      1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f,
-
-                                      -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f,
-                                      -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,
-
-                                      1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,
-                                      1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f,
-
-                                      -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,  1.0f,
-                                      1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,
-
-                                      -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,
-                                      1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f,
-
-                                      -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
-                                      1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
-            glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
-
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-        }
-        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
+
+    planet_ = std::make_shared<gl::Model>("H:/Code/CLion/sdl2pp/game/opengl_demo/planet/planet.obj");
+    rock_   = std::make_shared<gl::Model>("H:/Code/CLion/sdl2pp/game/opengl_demo/rock/rock.obj");
+    {
+        // 顶点缓冲对象
+        unsigned int buffer;
+        glGenBuffers(1, &buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+        for(unsigned int i = 0; i < rock_->meshes.size(); i++) {
+            auto VAO = rock_->meshes[i].vao_;
+            VAO->Bind();
+            // 顶点属性
+            GLsizei vec4Size = sizeof(glm::vec4);
+            glEnableVertexAttribArray(3);
+            glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)0);
+            glEnableVertexAttribArray(4);
+            glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(vec4Size));
+            glEnableVertexAttribArray(5);
+            glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(2 * vec4Size));
+            glEnableVertexAttribArray(6);
+            glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(3 * vec4Size));
+
+            glVertexAttribDivisor(3, 1);
+            glVertexAttribDivisor(4, 1);
+            glVertexAttribDivisor(5, 1);
+            glVertexAttribDivisor(6, 1);
+
+            glBindVertexArray(0);
+        }
+    }
+    //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 Window::~Window() {
@@ -123,42 +124,35 @@ void Window::RenderProcess() {
 
 
     glm::mat4 projection = glm::perspective(
-            glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 100.0f);
+            glm::radians(camera_->GetFOV()), (float)this->GetWidth() / (float)this->GetHeight(), 0.1f, 1000.0f);
     glm::mat4 view = camera_->GetViewMatrix();
-
     {
         model_shader_->Use();
-        {
-            model_shader_->SetMat4("view", view);
-            model_shader_->SetMat4("projection", projection);
-            model_shader_->SetVec3("cameraPos", camera_->Position);
-            glActiveTexture(GL_TEXTURE31);
-            sky_box_.Bind();
+        model_shader_->SetMat4("view", view);
+        model_shader_->SetMat4("projection", projection);
+        glm::mat4 model(1);
+        model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+        model_shader_->SetMat4("model", model);
 
-            // render the loaded model
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of
-                                                                        // the scene
-            model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));     // it's a bit too big for our scene, so
-                                                                        // scale it down
-            model_shader_->SetMat4("model", model);
-        }
-        { model_->Draw(model_shader_); }
+        planet_->Draw(model_shader_);
     }
+    //    {
+    //        for(unsigned int i = 0; i < amount; i++) {
+    //            model_shader_->SetMat4("model", modelMatrices[i]);
+    //            rock_->Draw(model_shader_);
+    //        }
+    //    }
     {
-        glDepthFunc(GL_LEQUAL);
-        sky_box_shader_->Use();
-        // ... 设置观察和投影矩阵
-        glm::mat4 vview = glm::mat4(glm::mat3(camera_->GetViewMatrix()));
-        sky_box_shader_->SetMat4("view", vview);
-        sky_box_shader_->SetMat4("projection", projection);
-        glActiveTexture(GL_TEXTURE31);
-        sky_box_.Bind();
-
-        vao_.Bind();
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        vao_.Unbind();
-        glDepthFunc(GL_LESS); // set depth function back to default
+        instance_shader_->Use();
+        {
+            instance_shader_->SetMat4("view", view);
+            instance_shader_->SetMat4("projection", projection);
+            for(unsigned int i = 0; i < rock_->meshes.size(); i++) {
+                rock_->meshes[i].vao_->Bind();
+                glDrawElementsInstanced(GL_TRIANGLES, rock_->meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
+            }
+        }
     }
 }
 
@@ -175,7 +169,7 @@ void Window::RenderFlush() {
 }
 
 void Window::Tick(double_t tick_ms) {
-    const double_t move_speed = 0.001;
+    const double_t move_speed = 0.01;
 
     tick_ms *= move_speed;
 

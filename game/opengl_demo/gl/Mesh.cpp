@@ -107,7 +107,7 @@ void Mesh::Draw(std::shared_ptr<Shader> shader) {
         else if(name == "texture_reflection")
             number = std::to_string(reflectionNr++);
 
-        LOG_DBG(log::APP, "material.{} {} ", name + number, textures[i].id);
+        //        LOG_DBG(log::APP, "material.{} {} ", name + number, textures[i].id);
 
         shader->SetInt("material." + name + number, i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
