@@ -30,6 +30,10 @@ int main(int argc, char *argv[]) {
     ok = sdlpp::gl::Init(3, 3);
     Assert(ok, "Failed to init opengl {}", SDL_GetError());
 
+    // 多重缓冲
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+
     game::Window window;
 
     DEFER([] { sdlpp::gl::DestroyContext(); });
